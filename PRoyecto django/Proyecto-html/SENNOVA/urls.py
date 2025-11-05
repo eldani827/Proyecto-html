@@ -21,4 +21,5 @@ from Gesicom import views as gesicom_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', gesicom_views.index, name='index'),
+    path('login/', gesicom_views.login_view, name='login'),
 ]
