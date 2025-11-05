@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instructor · Gesicom</title>
+  <link rel="stylesheet" href="{% static 'CSS/roles.css' %}">
+</head>
+<body>
+  <header class="role-header">
+    <h1>Panel de Instructor</h1>
+    <nav>
+      <a href="javascript:history.back()" class="link">Regresar</a>
+      <a href="/portal/" class="link">Volver al portal</a>
+      <a href="/login/?role=instructor" class="link">Volver a iniciar sesión</a>
+    </nav>
+  </header>
+  <main class="container">
+    <h2>Tabla de Instructores</h2>
+    <table class="data-table" aria-describedby="Listado de instructores">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Programa</th>
+          <th>Ficha</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>María Pérez</td>
+          <td>Análisis y Desarrollo de Software</td>
+          <td>2456789</td>
+          <td><span class="status status-ok">Activo</span></td>
+          <td><a href="#" class="link">Ver evidencias</a></td>
+        </tr>
+        <tr>
+          <td>Juan Gómez</td>
+          <td>Gestión de Redes</td>
+          <td>2389011</td>
+          <td><span class="status status-warn">Pendiente</span></td>
+          <td><a href="#" class="link">Ver evidencias</a></td>
+        </tr>
+        <tr>
+          <td>Laura Díaz</td>
+          <td>Diseño Multimedia</td>
+          <td>2501123</td>
+          <td><span class="status status-ok">Activo</span></td>
+          <td><a href="#" class="link">Ver evidencias</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>
