@@ -1,29 +1,29 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
 </head>
 
 <body>
     <div class="cuadro">
-        <img src="img/gesicom.jpeg">
+        <img src="{% static 'img/gesicom.jpeg' %}">
 
         <div class="botones">
         <button>inicio</button>
-        <button> evidencia</button>
+        <button>evidencia</button>
         <button>perfil</button>
         <button>cerrar sesion</button>
         </div>
 
-
         <div class="imagenes">
-            <img src="img/enviar_evidencia.jpeg">
-            <img src="img/editar.jpeg">
-            <img src="img/estado.jpeg">
+            <img src="{% static 'img/enviar_evidencia.jpeg' %}">
+            <img src="{% static 'img/editar.jpeg' %}">
+            <img src="{% static 'img/estado.jpeg' %}">
         </div>
     </div>
 </body>

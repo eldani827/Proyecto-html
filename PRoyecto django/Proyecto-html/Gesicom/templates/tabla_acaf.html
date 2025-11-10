@@ -1,16 +1,17 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GESICOM - ACAF</title>
-  <link href="CSS/estilos.css" rel="stylesheet">
+  <link href="{% static 'CSS/estilos.css' %}" rel="stylesheet">
 </head>
 <body>
   <div class="container">
     <header>
       <div class="logo-container">
-        <img src="img/icono.jpeg" alt="GESICOM" class="logo">
+        <img src="{% static 'img/icono.jpeg' %}" alt="GESICOM" class="logo">
       </div>
       <nav>
         <a href="#">Inicio</a>
@@ -25,7 +26,8 @@
         <h2>ACAF</h2>
       </div>
 
-      <form>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
         <table>
           <thead>
             <tr>
@@ -69,4 +71,3 @@
   </div>
 </body>
 </html>
-

@@ -6,9 +6,9 @@
   <title>Bienvenido a Gesicom</title>
   {% load static %}
   <link rel="stylesheet" href="{% static 'CSS/main.css' %}">
-  </head>
+  {% block head_extra %}{% endblock %}
+</head>
 <body>
-  <h1>Bienvenido a Gesicom</h1>
-  <p>Esta es la página de inicio básica de la app.</p>
+  {% block content %}{% endblock %}
 </body>
 </html>

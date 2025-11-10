@@ -1,73 +1,39 @@
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Portal GESICOM</title>
-  {% load static %}
-  <link href="{% static 'CSS/portal.css' %}" rel="stylesheet" />
-</head>
-<body>
-  <header class="topbar">
-    <div class="brand">
-      <img src="{% static 'img/icono.jpeg' %}" alt="Logo GESICOM" class="logo-img">
-    </div>
-    <nav class="nav">
-      <a href="#">Inicio</a>
-      <a href="#">Evidencia</a>
-      <a href="#">Perfil</a>
-      <a href="#">Cerrar Sesion</a>
-    </nav>
-  </header>
+{% extends 'base.html' %}
+{% load static %}
 
-  <main class="main">
-    <h1 class="title">Bienvenido al portal GESICOM</h1>
-    <p class="subtitle">Selecciona tu rol para continuar</p>
+{% block title %}Portal GESICOM{% endblock %}
 
-    <section class="roles-grid" aria-label="Roles">
-      <article class="card">
-        <div class="card-icon">
-          <img src="{% static 'img/instructor.png' %}" alt="Instructor">
-        </div>
-        <h2>Instructor</h2>
-        <a class="btn" href="/login/?role=instructor">Ingresar</a>
-      </article>
+{% block content %}
+<header class="topbar">
+  <div class="brand">
+    <img src="{% static 'img/icono.jpeg' %}" alt="Logo GESICOM" class="logo-img">
+  </div>
+  <nav class="nav">
+    <a href="{% url 'home' %}">Inicio</a>
+    <a href="{% url 'evidencia' %}">Evidencia</a>
+    <a href="{% url 'perfil' %}">Perfil</a>
+    <a href="{% url 'logout' %}">Cerrar Sesion</a>
+  </nav>
+</header>
 
-      <article class="card">
-        <div class="card-icon">
-          <img src="{% static 'img/investigador.png' %}" alt="Investigador">
-        </div>
-        <h2>Investigador</h2>
-        <a class="btn" href="/login/?role=investigador">Ingresar</a>
-      </article>
+<main class="main">
+  <h1 class="title">Bienvenido al portal GESICOM</h1>
+  <p class="subtitle">Selecciona tu rol para continuar</p>
 
-      <article class="card">
-        <div class="card-icon">
-          <img src="{% static 'img/dinamizador.png' %}" alt="Dinamizador">
-        </div>
-        <h2>Dinamizador</h2>
-        <a class="btn" href="/login/?role=dinamizador">Ingresar</a>
-      </article>
+  <section class="roles-grid" aria-label="Roles">
+    <!-- El resto del contenido se mantiene exactamente igual -->
+    {% include 'roles_cards.html' %}
+  </section>
+</main>
 
-      <article class="card">
-        <div class="card-icon">
-          <img src="{% static 'img/coordinador.png' %}" alt="Coordinador">
-        </div>
-        <h2>Coordinador</h2>
-        <a class="btn" href="/login/?role=coordinador">Ingresar</a>
-      </article>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-left">
-      <div class="sena">SENA</div>
-    </div>
-    <div class="footer-social">
-      <span class="circle">f</span>
-      <span class="circle">t</span>
-      <span class="circle">in</span>
-    </div>
-  </footer>
-</body>
-</html>
+<footer class="footer">
+  <div class="footer-left">
+    <div class="sena">SENA</div>
+  </div>
+  <div class="footer-social">
+    <span class="circle">f</span>
+    <span class="circle">t</span>
+    <span class="circle">in</span>
+  </div>
+</footer>
+{% endblock %}

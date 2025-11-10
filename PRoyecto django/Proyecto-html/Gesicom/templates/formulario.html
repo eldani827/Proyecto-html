@@ -1,24 +1,26 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-     <link rel="stylesheet" href="css/estilos.css"> 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="{% static 'css/estilos.css' %}"> 
 </head>
 <body>
  <div class="cuadro">
-    <div class="inicio ">
-    <img src="img/WhatsApp_Image_2025-10-06_at_11.09.56_AM-removebg-preview (1).png" alt="Foto descriptiva" width="300">
-    <h1>ENVIO DE EVIDENCIAS </h1>
-    </div>
+  <div class="inicio ">
+  <img src="{% static 'img/WhatsApp_Image_2025-10-06_at_11.09.56_AM-removebg-preview (1).png' %}" alt="Foto descriptiva" width="300">
+  <h1>ENVIO DE EVIDENCIAS </h1>
+  </div>
 <br>
 
-      <form action="#" method="post">
-    <label for="nombre">Nombre</label>
-    <input type="text" id="nombre" name="nombre" class="input-linea" placeholder="Escribe tu nombre" required> <br> <br>
+    <form action="#" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+  <label for="nombre">Nombre</label>
+  <input type="text" id="nombre" name="nombre" class="input-linea" placeholder="Escribe tu nombre" required> <br> <br>
 
-    <label for="opcion">proyecto:</label>
+  <label for="opcion">proyecto:</label>
 <select id="opcion" name="opcion">
   <option value="">-- Selecciona --</option>
   <option value="opcion1">LEM</option>
@@ -30,7 +32,7 @@
   </select>
 <br><br>
 <label>
-    <p><strong>Tipo de evidencias:</strong></p>
+  <p><strong>Tipo de evidencias:</strong></p>
 
   <input type="checkbox" name="evidencias" value="planeacion">
   Planeación
@@ -46,7 +48,6 @@
   Evaluación
 </label><br>
 
-
 <label>
   <input type="checkbox" name="evidencias" value="informe_final">
   Informe final
@@ -61,16 +62,15 @@
   <label for="archivo">Subir archivo:</label>
   <input type="file" id="archivo" name="archivo"><br><br>
 
-
-    <label for="linkArchivo">Link del archivo:</label>
+  <label for="linkArchivo">Link del archivo:</label>
   <input type="url" id="linkArchivo" name="linkArchivo" placeholder="https://..." style="width: 300px;"><br><br>
 
   <label for="observaciones">Observaciones:</label><br>
 <textarea id="observaciones" name="observaciones" rows="4" cols="50" placeholder="Escribe tus observaciones aquí..."></textarea> <br> <br>
 
 <input type="submit" value="Enviar">
-
-    </div>
-     <script src="script.js"></script> 
+</form>
+  </div>
+   <script src="{% static 'script.js' %}"></script> 
 </body>
 </html>

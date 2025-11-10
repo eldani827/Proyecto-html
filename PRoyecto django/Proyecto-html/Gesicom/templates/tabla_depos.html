@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GESICOM - DEPOS</title>
-  <link href="CSS/estilos.css" rel="stylesheet">
+  <link href="{% static 'CSS/estilos.css' %}" rel="stylesheet">
 </head>
 <body>
   <div class="container">
     <header>
       <div class="logo-container">
-        <img src="gesicom_logo.jpeg" alt="GESICOM" class="logo">
+        <img src="{% static 'gesicom_logo.jpeg' %}" alt="GESICOM" class="logo">
       </div>
       <nav>
         <a href="#">Inicio</a>
@@ -25,9 +25,11 @@
         <h2>DEPOS</h2>
       </div>
 
-      <form>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
         <table>
           <thead>
+            
             <tr>
               <th>NOMBRE</th>
               <th>FECHA DE EVIDENCIA</th>
@@ -37,6 +39,7 @@
             </tr>
           </thead>
           <tbody>
+
             <tr>
               <td><input type="text" name="nombre" placeholder="Ingrese su nombre"></td>
               <td><input type="date" name="fecha"></td>
@@ -44,6 +47,7 @@
               <td><textarea name="comentario" maxlength="500" placeholder="Escriba su comentario (máx. 500 caracteres)"></textarea></td>
               <td><input type="text" name="estado" placeholder="Estado de evidencia"></td>
             </tr>
+
             <tr>
               <td><input type="text" name="nombre2" placeholder="Ingrese su nombre"></td>
               <td><input type="date" name="fecha2"></td>
@@ -51,6 +55,7 @@
               <td><textarea name="comentario2" maxlength="500" placeholder="Escriba su comentario (máx. 500 caracteres)"></textarea></td>
               <td><input type="text" name="estado2" placeholder="Estado de evidencia"></td>
             </tr>
+
             <tr>
               <td><input type="text" name="nombre3" placeholder="Ingrese su nombre"></td>
               <td><input type="date" name="fecha3"></td>
@@ -64,9 +69,9 @@
         <div class="boton-guardar">
           <button type="submit">Guardar Evidencias</button>
         </div>
+
       </form>
     </main>
   </div>
 </body>
 </html>
-
