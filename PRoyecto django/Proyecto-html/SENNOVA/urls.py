@@ -21,7 +21,6 @@ from Gesicom import views as gesicom_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     # Inicio del sitio apunta al portal
-    path('', gesicom_views.portal, name='index'),
     path('login/', gesicom_views.login_view, name='login'),
     path('roles/instructor/', gesicom_views.role_instructor, name='role_instructor'),
     path('roles/investigador/', gesicom_views.role_investigador, name='role_investigador'),
