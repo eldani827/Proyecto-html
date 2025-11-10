@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GESICOM - ACAF</title>
-  <link href="{% static 'CSS/estilos.css' %}" rel="stylesheet">
+  <link href="{% static 'css/estilos.css' %}" rel="stylesheet">
 </head>
 
 <body>
@@ -28,7 +28,7 @@
         <h2>ACAF</h2>
       </div>
 
-      <form method="post" enctype="multipart/form-data">
+      <form method="post" enctype="multipart/form-data" action="">
         {% csrf_token %}
         <table>
           <thead>
@@ -42,28 +42,70 @@
           </thead>
           <tbody>
             <tr>
-              <td><input type="text" name="nombre" placeholder="Ingrese su nombre"></td>
-              <td><input type="date" name="fecha"></td>
-              <td><input type="file" name="evidencia" accept=".pdf,.doc,.docx,.jpg,.png"></td>
-              <td><textarea name="comentario" maxlength="500"
-                  placeholder="Escriba su comentario (máx. 500 caracteres)"></textarea></td>
-              <td><input type="text" name="estado" placeholder="Estado de evidencia"></td>
+              <td>
+                <label for="nombre">Nombre</label>
+                <input id="nombre" type="text" name="nombre" placeholder="Ingrese su nombre">
+              </td>
+              <td>
+                <label for="fecha">Fecha</label>
+                <input id="fecha" type="date" name="fecha">
+              </td>
+              <td>
+                <label for="evidencia">Evidencia</label>
+                <input id="evidencia" type="file" name="evidencia" accept=".pdf,.doc,.docx,.jpg,.png">
+              </td>
+              <td>
+                <label for="comentario">Comentario</label>
+                <textarea id="comentario" name="comentario" maxlength="500" placeholder="Escriba su comentario (máx. 500 caracteres)"></textarea>
+              </td>
+              <td>
+                <label for="estado">Estado</label>
+                <input id="estado" type="text" name="estado" placeholder="Estado de evidencia">
+              </td>
             </tr>
             <tr>
-              <td><input type="text" name="nombre2" placeholder="Ingrese su nombre"></td>
-              <td><input type="date" name="fecha2"></td>
-              <td><input type="file" name="evidencia2" accept=".pdf,.doc,.docx,.jpg,.png"></td>
-              <td><textarea name="comentario2" maxlength="500"
-                  placeholder="Escriba su comentario (máx. 500 caracteres)"></textarea></td>
-              <td><input type="text" name="estado2" placeholder="Estado de evidencia"></td>
+              <td>
+                <label for="nombre2">Nombre</label>
+                <input id="nombre2" type="text" name="nombre2" placeholder="Ingrese su nombre">
+              </td>
+              <td>
+                <label for="fecha2">Fecha</label>
+                <input id="fecha2" type="date" name="fecha2">
+              </td>
+              <td>
+                <label for="evidencia2">Evidencia</label>
+                <input id="evidencia2" type="file" name="evidencia2" accept=".pdf,.doc,.docx,.jpg,.png">
+              </td>
+              <td>
+                <label for="comentario2">Comentario</label>
+                <textarea id="comentario2" name="comentario2" maxlength="500" placeholder="Escriba su comentario (máx. 500 caracteres)"></textarea>
+              </td>
+              <td>
+                <label for="estado2">Estado</label>
+                <input id="estado2" type="text" name="estado2" placeholder="Estado de evidencia">
+              </td>
             </tr>
             <tr>
-              <td><input type="text" name="nombre3" placeholder="Ingrese su nombre"></td>
-              <td><input type="date" name="fecha3"></td>
-              <td><input type="file" name="evidencia3" accept=".pdf,.doc,.docx,.jpg,.png"></td>
-              <td><textarea name="comentario3" maxlength="500"
-                  placeholder="Escriba su comentario (máx. 500 caracteres)"></textarea></td>
-              <td><input type="text" name="estado3" placeholder="Estado de evidencia"></td>
+              <td>
+                <label for="nombre3">Nombre</label>
+                <input id="nombre3" type="text" name="nombre3" placeholder="Ingrese su nombre">
+              </td>
+              <td>
+                <label for="fecha3">Fecha</label>
+                <input id="fecha3" type="date" name="fecha3">
+              </td>
+              <td>
+                <label for="evidencia3">Evidencia</label>
+                <input id="evidencia3" type="file" name="evidencia3" accept=".pdf,.doc,.docx,.jpg,.png">
+              </td>
+              <td>
+                <label for="comentario3">Comentario</label>
+                <textarea id="comentario3" name="comentario3" maxlength="500" placeholder="Escriba su comentario (máx. 500 caracteres)"></textarea>
+              </td>
+              <td>
+                <label for="estado3">Estado</label>
+                <input id="estado3" type="text" name="estado3" placeholder="Estado de evidencia">
+              </td>
             </tr>
           </tbody>
         </table>

@@ -11,19 +11,19 @@
 
 <body>
     <div class="cuadro">
-        <img src="{% static 'img/gesicom.jpeg' %}">
+        <img src="{% static 'img/gesicom.jpeg' %}" alt="Logo Gesicom">
 
         <div class="botones">
-            <button>inicio</button>
-            <button>evidencia</button>
-            <button>perfil</button>
-            <button>cerrar sesion</button>
+            <a href="{% url 'inicio' %}"><button type="button">inicio</button></a>
+            <a href="{% url 'evidencia' %}"><button type="button">evidencia</button></a>
+            <a href="{% url 'perfil' %}"><button type="button">perfil</button></a>
+            <a href="{% url 'logout' %}"><button type="button">cerrar sesion</button></a>
         </div>
 
         <div class="imagenes">
-            <img src="{% static 'img/enviar_evidencia.jpeg' %}">
-            <img src="{% static 'img/editar.jpeg' %}">
-            <img src="{% static 'img/estado.jpeg' %}">
+            <img src="{% static 'img/enviar_evidencia.jpeg' %}" alt="Enviar evidencia">
+            <img src="{% static 'img/editar.jpeg' %}" alt="Editar">
+            <img src="{% static 'img/estado.jpeg' %}" alt="Estado">
         </div>
     </div>
 </body>

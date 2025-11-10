@@ -1,9 +1,14 @@
 <!--template principal-->
 
-{% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Portal GESICOM{% endblock %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Portal GESICOM{% endblock %}</title>
+</head>
+<body>
 
 {% block content %}
 <header class="topbar">
@@ -33,7 +38,9 @@
         <div class="sena">SENA</div>
     </div>
     <div class="footer-social">
-        <span class="circle">f</span>
+{% endblock %}
+</body>
+</html>class="circle">f</span>
         <span class="circle">t</span>
         <span class="circle">in</span>
     </div>

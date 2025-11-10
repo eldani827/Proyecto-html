@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
@@ -35,27 +35,29 @@
         <option value="opcion6">TUGA</option>
       </select>
       <br><br>
-      <label>
-        <p><strong>Tipo de evidencias:</strong></p>
+      <fieldset>
+        <legend><strong>Tipo de evidencias:</strong></legend>
 
-        <input type="checkbox" name="evidencias" value="planeacion">
-        Planeación
-      </label><br>
+        <label>
+          <input type="checkbox" name="evidencias" value="planeacion">
+          Planeación
+        </label><br>
 
-      <label>
-        <input type="checkbox" name="evidencias" value="ejecucion">
-        Ejecución
-      </label><br>
+        <label>
+          <input type="checkbox" name="evidencias" value="ejecucion">
+          Ejecución
+        </label><br>
 
-      <label>
-        <input type="checkbox" name="evidencias" value="evaluacion">
-        Evaluación
-      </label><br>
+        <label>
+          <input type="checkbox" name="evidencias" value="evaluacion">
+          Evaluación
+        </label><br>
 
-      <label>
-        <input type="checkbox" name="evidencias" value="informe_final">
-        Informe final
-      </label>
+        <label>
+          <input type="checkbox" name="evidencias" value="informe_final">
+          Informe final
+        </label>
+      </fieldset>
       <br><br>
 
       <label for="fecha">Fecha:</label>
@@ -74,7 +76,7 @@
         placeholder="Escribe tus observaciones aquí..."></textarea> <br> <br>
 
       <input type="submit" value="Enviar">
-    </form>
+  <script src="{% static 'js/script.js' %}"></script>
   </div>
   <script src="{% static 'script.js' %}"></script>
 </body>
