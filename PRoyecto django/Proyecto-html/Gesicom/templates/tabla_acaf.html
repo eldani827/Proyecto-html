@@ -1,12 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GESICOM - ACAF</title>
   <link href="{% static 'CSS/estilos.css' %}" rel="stylesheet">
 </head>
+
 <body>
   <div class="container">
     <header>
@@ -43,21 +45,24 @@
               <td><input type="text" name="nombre" placeholder="Ingrese su nombre"></td>
               <td><input type="date" name="fecha"></td>
               <td><input type="file" name="evidencia" accept=".pdf,.doc,.docx,.jpg,.png"></td>
-              <td><textarea name="comentario" maxlength="500" placeholder="Escriba su comentario (máx. 500 caracteres)"></textarea></td>
+              <td><textarea name="comentario" maxlength="500"
+                  placeholder="Escriba su comentario (máx. 500 caracteres)"></textarea></td>
               <td><input type="text" name="estado" placeholder="Estado de evidencia"></td>
             </tr>
             <tr>
               <td><input type="text" name="nombre2" placeholder="Ingrese su nombre"></td>
               <td><input type="date" name="fecha2"></td>
               <td><input type="file" name="evidencia2" accept=".pdf,.doc,.docx,.jpg,.png"></td>
-              <td><textarea name="comentario2" maxlength="500" placeholder="Escriba su comentario (máx. 500 caracteres)"></textarea></td>
+              <td><textarea name="comentario2" maxlength="500"
+                  placeholder="Escriba su comentario (máx. 500 caracteres)"></textarea></td>
               <td><input type="text" name="estado2" placeholder="Estado de evidencia"></td>
             </tr>
             <tr>
               <td><input type="text" name="nombre3" placeholder="Ingrese su nombre"></td>
               <td><input type="date" name="fecha3"></td>
               <td><input type="file" name="evidencia3" accept=".pdf,.doc,.docx,.jpg,.png"></td>
-              <td><textarea name="comentario3" maxlength="500" placeholder="Escriba su comentario (máx. 500 caracteres)"></textarea></td>
+              <td><textarea name="comentario3" maxlength="500"
+                  placeholder="Escriba su comentario (máx. 500 caracteres)"></textarea></td>
               <td><input type="text" name="estado3" placeholder="Estado de evidencia"></td>
             </tr>
           </tbody>
@@ -70,4 +75,5 @@
     </main>
   </div>
 </body>
+
 </html>
