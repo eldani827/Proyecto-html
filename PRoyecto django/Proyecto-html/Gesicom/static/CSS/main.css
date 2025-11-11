@@ -88,6 +88,11 @@ body.login-body {
 .login-card a { color: #0d8a43; text-decoration: none; }
 .login-card a:hover { text-decoration: underline; }
 
+/* Jerarquía visual: título/subtítulo en registro */
+.auth-title { margin: 0 0 .5rem; font-size: 2rem; line-height: 1.2; color: #0d8a43; font-weight: 800; letter-spacing: .3px; text-align: center; }
+.auth-subtitle { margin: 0 0 1.25rem; font-size: 1rem; color: var(--muted); text-align: center; }
+.login-card form { margin-top: .75rem; }
+
 /* Header superior para páginas de autenticación */
 .topbar.topbar-auth { width: 100%; display: flex; align-items: center; justify-content: flex-start; padding: .75rem 1rem; background: #ffffff; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
 .brand-left { display: flex; align-items: center; gap: .5rem; }
