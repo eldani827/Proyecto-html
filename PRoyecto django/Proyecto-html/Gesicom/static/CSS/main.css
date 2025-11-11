@@ -19,6 +19,19 @@ h1 {
 
 .container { max-width: 1100px; margin: 0 auto; padding: 1rem; }
 .btn { display: inline-block; padding: .6rem 1rem; border-radius: 8px; background: var(--primary); color: #fff; text-decoration: none; }
+/* Alertas y tablas (feedback y listado) */
+.alert-success { background: #e6ffed; color: #0f5132; border: 1px solid #b7f3c9; padding: 10px; border-radius: 6px; }
+.alert-error { background: #ffe6e6; color: #842029; border: 1px solid #f5c2c7; padding: 10px; border-radius: 6px; }
+.table { width: 100%; border-collapse: collapse; }
+.table th, .table td { padding: 12px; border-bottom: 1px solid #eee; }
+.table th { background: #f8fafc; text-align: left; }
+.table-responsive { overflow-x: auto; }
+@media (max-width: 600px) { .table th, .table td { padding: 10px; font-size: 14px; } }
+
+/* Barra de filtros del listado */
+.filter-bar { display: flex; gap: .6rem; align-items: center; margin: 0 0 1rem; }
+.filter-bar label { font-weight: 600; color: var(--muted); }
+.filter-bar select { border: 1px solid var(--border); border-radius: 8px; padding: .4rem .6rem; }
 
 /* Estilos específicos de la página de login (scope por clase) */
 :root {
@@ -84,7 +97,7 @@ body.login-body {
 
 body { margin: 0; background: var(--bg); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; }
 .topbar { display: flex; align-items: center; justify-content: space-between; padding: .75rem 1rem; background: var(--primary); color: #fff; }
-.logo-img { width: 36px; height: 36px; border-radius: 6px; }
+.logo-img { width: 140px; height: auto; object-fit: contain; border-radius: 4px; }
 .nav a { color: #cbd5e1; text-decoration: none; margin-left: 1rem; }
 .nav a:hover { color: #fff; }
 .main { padding: 2rem; }
@@ -95,8 +108,20 @@ body { margin: 0; background: var(--bg); font-family: ui-sans-serif, system-ui, 
 .card-icon img { width: 54px; height: 54px; }
 .btn { border: none; padding: .6rem .9rem; border-radius: 8px; background: var(--primary); color: #fff; cursor: pointer; text-decoration: none; display: inline-block; }
 .btn:hover { filter: brightness(1.05); }
-.footer { display: flex; align-items: center; justify-content: space-between; padding: 1rem; border-top: 1px solid var(--border); color: var(--muted); }
-.circle { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border); margin-left: .5rem; }
+.footer { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: 1rem; background: #0d8a43; color: #ffffff; border-top: none; }
+.footer .sena { font-weight: 700; letter-spacing: .6px; }
+.footer-left { display: flex; align-items: center; gap: .5rem; }
+.footer-social { display: flex; align-items: center; }
+.circle { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border); margin-left: .5rem; }
+.footer .circle { border: none; color: #ffffff; }
+.footer .footer-social .circle:nth-child(1) { background: #1877F2; }
+.footer .footer-social .circle:nth-child(2) { background: #000000; }
+.footer .footer-social .circle:nth-child(3) { background: #0A66C2; }
+.footer .footer-social .circle.fb { background: #1877F2; }
+.footer .footer-social .circle.x { background: #000000; }
+.footer .footer-social .circle.in { background: #0A66C2; }
+.footer .footer-social .circle svg { width: 18px; height: 18px; fill: #ffffff; }
+.footer .circle:hover { filter: brightness(1.1); }
 
 /* Variante landing para parecer a la imagen (home) */
 .topbar.topbar-landing { background: #ffffff; color: #0f172a; border-bottom: 1px solid var(--border); }
@@ -184,3 +209,10 @@ input[type="submit"]:hover { filter: brightness(1.05); }
 @media (min-width: 769px) and (max-width: 1024px) {
   .landing .roles-grid { grid-template-columns: repeat(2, minmax(220px, 1fr)); }
 }
+/* ===== Listado de evidencias: orden y paginación ===== */
+.sort-link { color: #0b5ed7; text-decoration: none; }
+.sort-link.active-sort { font-weight: 600; }
+.sort-indicator { margin-left: 6px; font-size: 12px; color: #0b5ed7; }
+.pagination { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+.page-select select { padding: 6px 8px; }
+.page-info { color: #555; }
