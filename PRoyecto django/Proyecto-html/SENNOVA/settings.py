@@ -117,6 +117,14 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Email backend for password reset (development: prints emails to console)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'no-reply@gesicom.local'
+
+# Auth redirects
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 

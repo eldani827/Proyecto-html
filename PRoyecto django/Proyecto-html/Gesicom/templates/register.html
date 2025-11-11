@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registrarse · Gesicom</title>
+  <link rel="stylesheet" href="{% static 'CSS/login.css' %}">
+</head>
+<body>
+  <main class="card" role="main">
+    <div class="brand" aria-label="Gesicom">
+      <div class="logo" aria-hidden="true"></div>
+      <h1>Gesicom</h1>
+    </div>
+    {% if role %}
+    <p class="subtitle">Crear cuenta para <strong>{{ role|title }}</strong></p>
+    {% else %}
+    <p class="subtitle">Crea tu cuenta para continuar</p>
+    {% endif %}
+
+    {% if errors %}
+    <div class="error" role="alert">
+      <ul>
+        {% for e in errors %}<li>{{ e }}</li>{% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <form action="" method="post" novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="role" value="{{ role|default:'' }}" />
+      <div>
+        <label for="username">Usuario</label>
+        <input class="input" type="text" id="username" name="username" value="{{ username|default:'' }}" autofocus required />
+      </div>
+      <div>
+        <label for="email">Correo</label>
+        <input class="input" type="email" id="email" name="email" value="{{ email|default:'' }}" required />
+      </div>
+      <div>
+        <label for="password1">Contraseña</label>
+        <input class="input" type="password" id="password1" name="password1" required />
+      </div>
+      <div>
+        <label for="password2">Repetir contraseña</label>
+        <input class="input" type="password" id="password2" name="password2" required />
+      </div>
+      <div class="actions">
+        <button class="btn" type="submit">Registrarse</button>
+        <a class="helper" href="{% url 'login' %}{% if role %}?role={{ role }}{% endif %}">Volver a iniciar sesión</a>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

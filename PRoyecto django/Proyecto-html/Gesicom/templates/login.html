@@ -39,11 +39,11 @@
       </div>
       <div class="actions">
         <button class="btn" type="submit">Iniciar sesión</button>
-        <span class="helper">¿Olvidaste tu contraseña?</span>
+        <a class="helper" href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a>
       </div>
     </form>
 
-    <p class="footer">¿No tienes cuenta? <a href="/register/">Regístrate</a> o <a href="/portal/">volver al portal</a></p>
+    <p class="footer">¿No tienes cuenta? <a href="{% url 'register' %}{% if role %}?role={{ role }}{% endif %}">Regístrate</a> o <a href="{% url 'portal' %}">volver al portal</a></p>
   </main>
 </body>
 
