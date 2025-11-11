@@ -9,16 +9,16 @@
   <link rel="stylesheet" href="{% static 'CSS/main.css' %}">
 </head>
 
-<body>
-  <main class="card" role="main">
-    <div class="brand" aria-label="Gesicom">
+<body class="login-body">
+  <main class="login-card" role="main">
+    <div class="login-brand" aria-label="Gesicom">
       <div class="logo" aria-hidden="true"></div>
       <h1>Gesicom</h1>
     </div>
     {% if role %}
-    <p class="subtitle">Inicia sesión como <strong>{{ role|title }}</strong></p>
+    <p class="login-subtitle">Inicia sesión como <strong>{{ role|title }}</strong></p>
     {% else %}
-    <p class="subtitle">Inicia sesión para continuar</p>
+    <p class="login-subtitle">Inicia sesión para continuar</p>
     {% endif %}
 
     {% if error %}

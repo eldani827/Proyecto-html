@@ -8,49 +8,54 @@
   <link href="{% static 'CSS/main.css' %}" rel="stylesheet" />
 </head>
 <body>
-  <header class="topbar">
+<header class="topbar topbar-landing">
     <div class="brand">
-      <img src="{% static 'img/icono.jpeg' %}" alt="Logo GESICOM" class="logo-img">
+      <img src="{% static 'img/gesicom.jpeg' %}" alt="Logo GESICOM" class="logo-img">
     </div>
     <nav class="nav">
       <a href="{% url 'home' %}">Inicio</a>
-      <a href="/portal/">Portal</a>
-      <a href="{% url 'login' %}">Iniciar sesión</a>
+      <a href="#">Nosotros</a>
+      <a href="#">Contacto</a>
+      <a href="#">Ayuda</a>
     </nav>
   </header>
 
-  <main class="main">
+  <main class="main landing">
     <h1 class="title">Bienvenido al portal GESICOM</h1>
     <p class="subtitle">Selecciona tu rol para continuar</p>
 
     <section class="roles-grid" aria-label="Roles">
-      <article class="card">
+      <article class="card landing-card">
         <div class="card-icon">
-          <img src="{% static 'img/instructor.png' %}" alt="Instructor">
+          <!-- Instructor icon -->
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3 3 0 110 6 3 3 0 010-6zm-6 9a3 3 0 013-3h6a3 3 0 013 3v2H6v-2zm-1 5a4 4 0 014-4h8a4 4 0 014 4v2H5v-2z"/></svg>
         </div>
         <h2>Instructor</h2>
         <a class="btn" href="{% url 'login' %}?role=instructor">Ingresar</a>
       </article>
 
-      <article class="card">
+      <article class="card landing-card">
         <div class="card-icon">
-          <img src="{% static 'img/investigador.png' %}" alt="Investigador">
+          <!-- Investigador icon -->
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2a4 4 0 100 8 4 4 0 000-8zm8.32 11.9l3.38 3.38-1.42 1.42-3.38-3.38a6 6 0 10-1.42 1.42l3.84 3.84 2.83-2.83-3.84-3.85z"/></svg>
         </div>
         <h2>Investigador</h2>
         <a class="btn" href="{% url 'login' %}?role=investigador">Ingresar</a>
       </article>
 
-      <article class="card">
+      <article class="card landing-card">
         <div class="card-icon">
-          <img src="{% static 'img/dinamizador.png' %}" alt="Dinamizador">
+          <!-- Dinamizador icon -->
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3 3 0 110 6 3 3 0 010-6zM7 11h10v2H13v3h-2v-3H7v-2zm-3 7h16v2H4v-2z"/></svg>
         </div>
         <h2>Dinamizador</h2>
         <a class="btn" href="{% url 'login' %}?role=dinamizador">Ingresar</a>
       </article>
 
-      <article class="card">
+      <article class="card landing-card">
         <div class="card-icon">
-          <img src="{% static 'img/coordinador.png' %}" alt="Coordinador">
+          <!-- Coordinador icon -->
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3 3 0 110 6 3 3 0 010-6zm-6 9h12v2l-3 2v5H9v-5l-3-2v-2z"/></svg>
         </div>
         <h2>Coordinador</h2>
         <a class="btn" href="{% url 'login' %}?role=coordinador">Ingresar</a>
@@ -58,7 +63,7 @@
     </section>
   </main>
 
-  <footer class="footer">
+  <footer class="footer footer-landing">
     <div class="footer-left">
       <div class="sena">SENA</div>
     </div>
