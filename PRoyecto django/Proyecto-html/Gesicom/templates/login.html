@@ -17,9 +17,10 @@
   </header>
   <main class="login-card" role="main">
     {% if role %}
-    <p class="login-subtitle">Inicia sesión como <strong>{{ role|title }}</strong></p>
+    <h2 class="auth-title">Inicia sesión</h2>
+    <p class="auth-subtitle">Como <strong>{{ role|title }}</strong></p>
     {% else %}
-    <p class="login-subtitle">Inicia sesión para continuar</p>
+    <h2 class="auth-title">Inicia sesión para continuar</h2>
     {% endif %}
 
     {% if error %}
