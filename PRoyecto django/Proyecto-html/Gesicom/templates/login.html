@@ -10,11 +10,12 @@
 </head>
 
 <body class="login-body">
-  <main class="login-card" role="main">
-    <div class="login-brand" aria-label="Gesicom">
-      <div class="logo" aria-hidden="true"></div>
-      <h1>Gesicom</h1>
+  <header class="topbar topbar-auth">
+    <div class="brand-left">
+      <img src="{% static 'CSS/img/gesicom.jpeg' %}" alt="Logo GESICOM" class="logo-img" />
     </div>
+  </header>
+  <main class="login-card" role="main">
     {% if role %}
     <p class="login-subtitle">Inicia sesión como <strong>{{ role|title }}</strong></p>
     {% else %}
