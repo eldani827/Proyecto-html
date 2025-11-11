@@ -168,3 +168,19 @@ form label { font-weight: 700; color: #0f172a; }
 fieldset { border: 2px solid #0f172a; border-radius: 10px; padding: .75rem 1rem; }
 input[type="submit"] { background: #0d8a43; color: #fff; border: none; border-radius: 999px; padding: .6rem 1.4rem; font-weight: 700; cursor: pointer; }
 input[type="submit"]:hover { filter: brightness(1.05); }
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .topbar { flex-wrap: wrap; gap: .5rem; }
+  .topbar .nav a { margin-left: .5rem; }
+  .landing .roles-grid { grid-template-columns: 1fr; max-width: 420px; }
+  .landing .card-icon { width: 100px; height: 100px; }
+  .cuadro { margin: 1rem; padding: 1rem; border-width: 6px; }
+  .imagenes { grid-template-columns: 1fr; }
+  .imagenes img { width: 100%; max-width: 280px; margin: 0 auto; }
+  .login-card { max-width: 90%; }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .landing .roles-grid { grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+}
