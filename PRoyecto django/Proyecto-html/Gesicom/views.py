@@ -16,13 +16,31 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 def login_view(request):
-    # Redirigir el flujo de "Iniciar sesión" hacia "Crear cuenta"
-    # Preservando el parámetro de rol si viene en la URL o en el formulario
+    # Capturar rol desde GET o POST para personalizar y redirigir
     role = request.GET.get('role') or request.POST.get('role') or ''
-    register_url_name = 'register'
-    if role:
-        return redirect(f"/{register_url_name}/?role={role}")
-    return redirect(register_url_name)
+    if request.method == 'POST':
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            # Redirigir según rol seleccionado
+            role_routes = {
+                'instructor': 'role_instructor',
+                'investigador': 'role_investigador',
+                'dinamizador': 'role_dinamizador',
+                'coordinador': 'role_coordinador',
+            }
+            target = role_routes.get(role, 'home')
+            return redirect(target)
+        else:
+            return render(request, 'login.html', {
+                'error': 'Usuario o contraseña incorrectos',
+                'role': role,
+                'username': username,
+            })
+    # GET: mostrar formulario con el rol si viene en la URL
+    return render(request, 'login.html', {'role': role})
 
 def register_view(request):
     # Permite registrar un usuario y luego redirige al login, preservando el rol si viene en la URL

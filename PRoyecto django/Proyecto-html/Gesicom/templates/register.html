@@ -4,19 +4,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Registrarse · Gesicom</title>
+  <title>Crear cuenta · GESICOM</title>
   <link rel="stylesheet" href="{% static 'CSS/main.css' %}">
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#0d8a43" />
+  <link rel="icon" href="{% static 'CSS/img/gesicom.jpeg' %}" />
+  <link rel="apple-touch-icon" href="{% static 'CSS/img/gesicom.jpeg' %}" />
+  <meta name="robots" content="noindex" />
+  <meta name="description" content="Crear cuenta en el portal GESICOM" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="generator" content="GESICOM" />
 </head>
-<body>
-  <main class="card" role="main">
-    <div class="brand" aria-label="Gesicom">
-      <div class="logo" aria-hidden="true"></div>
-      <h1>Gesicom</h1>
+<body class="login-body">
+  <main class="login-card" role="main">
+    <div class="login-brand" aria-label="GESICOM">
+      <img class="logo-img" src="{% static 'CSS/img/gesicom.jpeg' %}" alt="Logo GESICOM" />
+      <h1>GESICOM</h1>
     </div>
     {% if role %}
-    <p class="subtitle">Crear cuenta para <strong>{{ role|title }}</strong></p>
+    <p class="login-subtitle">Crear cuenta para <strong>{{ role|title }}</strong></p>
     {% else %}
-    <p class="subtitle">Crea tu cuenta para continuar</p>
+    <p class="login-subtitle">Crea tu cuenta para continuar</p>
     {% endif %}
 
     {% if errors %}
@@ -48,7 +58,6 @@
       </div>
       <div class="actions">
         <button class="btn" type="submit">Registrarse</button>
-        <a class="helper" href="{% url 'login' %}{% if role %}?role={{ role }}{% endif %}">Volver a iniciar sesión</a>
       </div>
     </form>
   </main>
