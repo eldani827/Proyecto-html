@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from Gesicom import views as gesicom_views
 
@@ -30,9 +32,16 @@ urlpatterns = [
     path('roles/investigador/', gesicom_views.role_investigador, name='role_investigador'),
     path('roles/dinamizador/', gesicom_views.role_dinamizador, name='role_dinamizador'),
     path('roles/coordinador/', gesicom_views.role_coordinador, name='role_coordinador'),
+    # Evidencias: formulario de envío
+    path('evidencia/', gesicom_views.evidencia, name='evidencia'),
+    path('evidencias/', gesicom_views.evidencias_list, name='evidencias_list'),
     # Password reset flow
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]
+
+# Servir archivos media en desarrollo
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
