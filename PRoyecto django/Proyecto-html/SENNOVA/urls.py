@@ -25,6 +25,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # Inicio del sitio apunta a home
     path('', gesicom_views.home, name='home'),
+    path('nosotros/', gesicom_views.nosotros, name='nosotros'),
+    path('contacto/', gesicom_views.contacto, name='contacto'),
+    path('ayuda/', gesicom_views.ayuda, name='ayuda'),
     path('login/', gesicom_views.login_view, name='login'),
     path('register/', gesicom_views.register_view, name='register'),
     path('portal/', gesicom_views.portal, name='portal'),
