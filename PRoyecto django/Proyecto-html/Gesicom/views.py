@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from .models import Envio
 
@@ -67,6 +69,12 @@ def register_view(request):
             errors.append('El correo es obligatorio.')
         if password1 != password2:
             errors.append('Las contraseñas no coinciden.')
+
+        # Validación de contraseña del lado servidor (usa AUTH_PASSWORD_VALIDATORS)
+        try:
+            validate_password(password1)
+        except ValidationError as e:
+            errors.extend(list(e.messages))
         if User.objects.filter(username=username).exists():
             errors.append('Ese usuario ya existe. Prueba con otro.')
 

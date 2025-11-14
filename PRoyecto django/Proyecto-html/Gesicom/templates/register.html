@@ -52,11 +52,11 @@
       </div>
       <div>
         <label for="password1">Contraseña</label>
-        <input class="input" type="password" id="password1" name="password1" required />
+        <input class="input" type="password" id="password1" name="password1" required minlength="8" maxlength="8" pattern="^(?=.*[A-Z])(?=.*[0-9\W]).{8}$" title="Debe tener exactamente 8 caracteres, al menos una mayúscula y mínimo un número o carácter especial" />
       </div>
       <div>
         <label for="password2">Repetir contraseña</label>
-        <input class="input" type="password" id="password2" name="password2" required />
+        <input class="input" type="password" id="password2" name="password2" required minlength="8" maxlength="8" pattern="^(?=.*[A-Z])(?=.*[0-9\W]).{8}$" title="Debe tener exactamente 8 caracteres, al menos una mayúscula y mínimo un número o carácter especial" />
       </div>
       <div class="actions actions-center">
         <button class="btn" type="submit">Registrarse</button>

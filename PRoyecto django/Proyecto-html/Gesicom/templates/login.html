@@ -16,6 +16,12 @@
     </div>
   </header>
   <main class="login-card" role="main">
+    <div class="login-logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="64" height="64" role="img" aria-label="Icono de usuario">
+        <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" fill="none" />
+        <path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" />
+      </svg>
+    </div>
     {% if role %}
     <h2 class="auth-title">Inicia sesión</h2>
     <p class="auth-subtitle">Como <strong>{{ role|title }}</strong></p>
@@ -37,15 +43,15 @@
       </div>
       <div>
         <label for="password">Contraseña</label>
-        <input class="input" type="password" id="password" name="password" required />
+        <input class="input" type="password" id="password" name="password" required minlength="8" maxlength="8" pattern="^(?=.*[A-Z])(?=.*[0-9\W]).{8}$" title="Debe tener exactamente 8 caracteres, al menos una mayúscula y mínimo un número o carácter especial" />
       </div>
       <div class="actions">
         <button class="btn" type="submit">Iniciar sesión</button>
         <a class="helper" href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a>
+        <a class="no-account" href="{% url 'register' %}{% if role %}?role={{ role }}{% endif %}">¿No tienes cuenta?</a>
       </div>
     </form>
 
-    <p class="footer"><a class="no-account" href="{% url 'register' %}{% if role %}?role={{ role }}{% endif %}">¿No tienes cuenta?</a></p>
   </main>
 </body>
 

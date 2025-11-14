@@ -91,8 +91,24 @@ body.login-body {
 .login-card .footer { margin-top: 1rem; text-align: center; font-size: .8rem; color: var(--muted); background: transparent; }
 .login-card a { color: #0d8a43; text-decoration: none; }
 .login-card a:hover { text-decoration: underline; }
-/* En el pie del login, los enlaces no deben ser verdes */
-.login-card .footer a { color: #0f172a; display: block; margin-top: .35rem; }
+/* En acciones del login, el enlace 'No tienes cuenta?' debe verse centrado y neutro */
+.login-card .actions .no-account { color: #0f172a; }
+/* Fondo suave y padding para enlaces de ayuda y registro dentro de acciones */
+.login-card .actions a.helper,
+.login-card .actions a.no-account {
+  display: inline-block;
+  background: #eaf3ff; /* azul claro */
+  color: #0f172a; /* texto legible sobre fondo claro */
+  padding: .25rem .5rem;
+  border-radius: .375rem;
+}
+.login-card .actions a.helper:hover,
+.login-card .actions a.no-account:hover {
+  background: #dcebff;
+}
+/* En el pie del login, centrar el enlace y usar color neutro */
+.login-card .footer { text-align: center; }
+.login-card .footer a { color: #0f172a; display: inline-block; margin-top: .35rem; }
 /* Asegura separación y distribución vertical del helper */
 .login-card .helper { display: block; margin-top: .25rem; }
 
@@ -100,6 +116,23 @@ body.login-body {
 .auth-title { margin: 0 0 .5rem; font-size: 2rem; line-height: 1.2; color: #0d8a43; font-weight: 800; letter-spacing: .3px; text-align: center; }
 .auth-subtitle { margin: 0 0 1.25rem; font-size: 1rem; color: var(--muted); text-align: center; }
 .login-card form { margin-top: .75rem; }
+
+/* Icono centrado sobre el título de login */
+.login-card .login-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: .5rem;
+}
+.login-card .login-logo svg {
+  width: 96px;
+  height: 96px;
+  color: #1f6feb; /* usa currentColor para el trazo */
+  background: #eaf3ff;
+  border-radius: 50%;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
 
 /* Header superior para páginas de autenticación */
 .topbar.topbar-auth { width: 100%; display: flex; align-items: center; justify-content: flex-start; padding: .75rem 1rem; background: #ffffff; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
