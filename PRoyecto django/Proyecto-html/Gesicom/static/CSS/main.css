@@ -69,6 +69,34 @@ body.login-body {
 .login-subtitle { margin: 0 0 1.5rem; color: var(--muted); font-size: .95rem; }
 .login-card form { display: grid; gap: .9rem; }
 .login-card label { font-size: .82rem; color: var(--muted); }
+.password-label { display: inline-flex; align-items: center; gap: .5rem; }
+.toggle-password { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border: none; background: #eaf3ff; color: #0f172a; border-radius: 8px; padding: 2px; cursor: pointer; }
+.toggle-password:hover { background: #dcebff; }
+.toggle-password svg { width: 28px; height: 28px; }
+
+/* Input de contraseña con icono a la izquierda */
+.password-field { display: grid; gap: .3rem; }
+.login-card .input.password-with-icon { padding-left: 0; }
+.username-field { display: grid; gap: .3rem; }
+.login-card .input.username-with-icon { padding-left: 0; }
+
+/* Fila con icono externo a la izquierda */
+.input-row { display: flex; align-items: center; gap: .6rem; }
+.input-row .input-icon.left,
+.input-row .toggle-password.left {
+  position: static;
+  transform: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: #eaf3ff;
+}
+.input-row .input-icon.left svg,
+.input-row .toggle-password.left svg { width: 32px; height: 32px; }
 .login-card .input {
   width: 100%; background: #ffffff; color: #0f172a; border: 2px solid #0f172a;
   border-radius: 10px; padding: .8rem .9rem; outline: none; transition: border-color .15s ease, box-shadow .15s ease;
@@ -125,8 +153,8 @@ body.login-body {
   margin-bottom: .5rem;
 }
 .login-card .login-logo svg {
-  width: 96px;
-  height: 96px;
+  width: 128px;
+  height: 128px;
   color: #1f6feb; /* usa currentColor para el trazo */
   background: #eaf3ff;
   border-radius: 50%;

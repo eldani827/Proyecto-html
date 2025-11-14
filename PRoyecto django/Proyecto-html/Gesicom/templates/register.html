@@ -42,26 +42,81 @@
     <form action="" method="post" novalidate>
       {% csrf_token %}
       <input type="hidden" name="role" value="{{ role|default:'' }}" />
-      <div>
+      <div class="username-field">
         <label for="username">Usuario</label>
-        <input class="input" type="text" id="username" name="username" value="{{ username|default:'' }}" autofocus required />
+        <div class="input-row">
+          <span class="input-icon left" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="32" height="32" role="img" aria-hidden="true">
+              <circle cx="8" cy="8" r="4" stroke="currentColor" stroke-width="2" fill="none" />
+              <path d="M2 20c0-3.5 3.5-5.25 6-5.25" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" />
+              <path d="M16 14l-2 8 8-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" />
+              <path d="M18 13l3 3" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" />
+            </svg>
+          </span>
+          <input class="input" type="text" id="username" name="username" value="{{ username|default:'' }}" autofocus required />
+        </div>
       </div>
-      <div>
+      <div class="email-field">
         <label for="email">Correo</label>
-        <input class="input" type="email" id="email" name="email" value="{{ email|default:'' }}" required />
+        <div class="input-row">
+          <span class="input-icon left" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="32" height="32" role="img" aria-hidden="true">
+              <path d="M3 5h18v14H3z" stroke="currentColor" stroke-width="2" fill="none" />
+              <path d="M3 7l9 6 9-6" stroke="currentColor" stroke-width="2" fill="none" />
+            </svg>
+          </span>
+          <input class="input" type="email" id="email" name="email" value="{{ email|default:'' }}" required />
+        </div>
       </div>
-      <div>
+      <div class="password-field">
         <label for="password1">Contraseña</label>
-        <input class="input" type="password" id="password1" name="password1" required minlength="8" maxlength="8" pattern="^(?=.*[A-Z])(?=.*[0-9\W]).{8}$" title="Debe tener exactamente 8 caracteres, al menos una mayúscula y mínimo un número o carácter especial" />
+        <div class="input-row">
+          <button type="button" id="toggle-password1" class="toggle-password left" aria-label="Mostrar u ocultar contraseña" aria-pressed="false">
+            <svg viewBox="0 0 24 24" width="32" height="32" role="img" aria-hidden="true">
+              <path d="M1 12s4-7 11-7c3 0 5.7 1 7.8 2.6" stroke="currentColor" stroke-width="2" fill="none"/>
+              <path d="M23 12s-4 7-11 7c-3 0-5.7-1-7.8-2.6" stroke="currentColor" stroke-width="2" fill="none"/>
+              <path d="M3 3l18 18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <input class="input" type="password" id="password1" name="password1" required minlength="8" maxlength="8" pattern="^(?=.*[A-Z])(?=.*[0-9\W]).{8}$" title="Debe tener exactamente 8 caracteres, al menos una mayúscula y mínimo un número o carácter especial" />
+        </div>
       </div>
-      <div>
+      <div class="password-field">
         <label for="password2">Repetir contraseña</label>
-        <input class="input" type="password" id="password2" name="password2" required minlength="8" maxlength="8" pattern="^(?=.*[A-Z])(?=.*[0-9\W]).{8}$" title="Debe tener exactamente 8 caracteres, al menos una mayúscula y mínimo un número o carácter especial" />
+        <div class="input-row">
+          <button type="button" id="toggle-password2" class="toggle-password left" aria-label="Mostrar u ocultar contraseña" aria-pressed="false">
+            <svg viewBox="0 0 24 24" width="32" height="32" role="img" aria-hidden="true">
+              <path d="M1 12s4-7 11-7c3 0 5.7 1 7.8 2.6" stroke="currentColor" stroke-width="2" fill="none"/>
+              <path d="M23 12s-4 7-11 7c-3 0-5.7-1-7.8-2.6" stroke="currentColor" stroke-width="2" fill="none"/>
+              <path d="M3 3l18 18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <input class="input" type="password" id="password2" name="password2" required minlength="8" maxlength="8" pattern="^(?=.*[A-Z])(?=.*[0-9\W]).{8}$" title="Debe tener exactamente 8 caracteres, al menos una mayúscula y mínimo un número o carácter especial" />
+        </div>
       </div>
       <div class="actions actions-center">
         <button class="btn" type="submit">Registrarse</button>
       </div>
     </form>
   </main>
+  <script>
+    (function(){
+      function setupToggle(btnId, inputId){
+        var input = document.getElementById(inputId);
+        var btn = document.getElementById(btnId);
+        if(!input || !btn) return;
+        var eyeOpen = '<svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" fill="none"/></svg>';
+        var eyeOff = '<svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M1 12s4-7 11-7c3 0 5.7 1 7.8 2.6" stroke="currentColor" stroke-width="2" fill="none"/><path d="M23 12s-4 7-11 7c-3 0-5.7-1-7.8-2.6" stroke="currentColor" stroke-width="2" fill="none"/><path d="M3 3l18 18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>';
+        btn.addEventListener('click', function(){
+          var visible = input.type === 'text';
+          input.type = visible ? 'password' : 'text';
+          btn.innerHTML = visible ? eyeOff : eyeOpen;
+          btn.setAttribute('aria-pressed', (!visible).toString());
+        });
+      }
+      setupToggle('toggle-password1','password1');
+      setupToggle('toggle-password2','password2');
+    })();
+  </script>
 </body>
 </html>
