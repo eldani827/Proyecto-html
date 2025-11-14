@@ -77,19 +77,24 @@ body.login-body {
 }
 
 .login-card .input:focus { border-color: #7c3aed; box-shadow: 0 0 0 4px rgba(124,58,237,.15); }
-.login-card .actions { display: flex; align-items: center; justify-content: space-between; margin-top: .5rem; }
+.login-card .actions { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .5rem; margin-top: .5rem; }
 .login-card .btn {
   appearance: none; border: none; cursor: pointer; padding: .9rem 1.2rem; border-radius: 999px;
   background: #0d8a43; color: white; font-weight: 700;
-  box-shadow: 0 8px 16px rgba(13,138,67,.25); transition: transform .08s ease, box-shadow .15s ease;
+  box-shadow: 0 4px 10px rgba(13,138,67,.18); transition: transform .08s ease, box-shadow .15s ease;
+  display: inline-block; margin: 0 auto;
 }
 
-.login-card .btn:hover { transform: translateY(-1px); box-shadow: 0 16px 32px rgba(79,70,229,.45); }
+.login-card .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 16px rgba(13,138,67,.28); }
 .login-card .helper { font-size: .85rem; color: var(--muted); }
 .login-card .error { background: rgba(239,68,68,.1); color: #fecaca; border: 1px solid rgba(239,68,68,.35); padding: .65rem .8rem; border-radius: 10px; margin-bottom: .75rem; }
-.login-card .footer { margin-top: 1rem; text-align: center; font-size: .8rem; color: var(--muted); }
+.login-card .footer { margin-top: 1rem; text-align: center; font-size: .8rem; color: var(--muted); background: transparent; }
 .login-card a { color: #0d8a43; text-decoration: none; }
 .login-card a:hover { text-decoration: underline; }
+/* En el pie del login, los enlaces no deben ser verdes */
+.login-card .footer a { color: #0f172a; display: block; margin-top: .35rem; }
+/* Asegura separación y distribución vertical del helper */
+.login-card .helper { display: block; margin-top: .25rem; }
 
 /* Jerarquía visual: título/subtítulo en registro */
 .auth-title { margin: 0 0 .5rem; font-size: 2rem; line-height: 1.2; color: #0d8a43; font-weight: 800; letter-spacing: .3px; text-align: center; }
@@ -106,7 +111,7 @@ body.login-body {
 .brand { display: grid; place-items: center; gap: .6rem; margin-bottom: 1.25rem; }
 .brand .logo-img { width: 96px; height: 96px; object-fit: contain; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.12); }
 .brand h1 { font-size: 2rem; margin: 0; color: #0f172a; }
-.actions { display: flex; align-items: center; justify-content: space-between; margin-top: .5rem; }
+.actions { display: flex; align-items: center; justify-content: center; gap: .75rem; margin-top: .5rem; }
 .actions-center { justify-content: center; }
 
 /* Estilos del portal GESICOM */

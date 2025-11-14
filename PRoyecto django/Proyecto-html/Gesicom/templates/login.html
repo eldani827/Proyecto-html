@@ -45,7 +45,7 @@
       </div>
     </form>
 
-    <p class="footer">¿No tienes cuenta? <a href="{% url 'register' %}{% if role %}?role={{ role }}{% endif %}">Regístrate</a> o <a href="{% url 'portal' %}">volver al portal</a></p>
+    <p class="footer"><a class="no-account" href="{% url 'register' %}{% if role %}?role={{ role }}{% endif %}">¿No tienes cuenta?</a></p>
   </main>
 </body>
 
