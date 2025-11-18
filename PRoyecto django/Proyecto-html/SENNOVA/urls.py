@@ -18,31 +18,12 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.auth import views as auth_views
 from Gesicom import views as gesicom_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # Inicio del sitio apunta a home
-    path('', gesicom_views.home, name='home'),
-    path('nosotros/', gesicom_views.nosotros, name='nosotros'),
-    path('contacto/', gesicom_views.contacto, name='contacto'),
-    path('ayuda/', gesicom_views.ayuda, name='ayuda'),
-    path('login/', gesicom_views.login_view, name='login'),
-    path('register/', gesicom_views.register_view, name='register'),
-    path('portal/', gesicom_views.portal, name='portal'),
-    path('roles/instructor/', gesicom_views.role_instructor, name='role_instructor'),
-    path('roles/investigador/', gesicom_views.role_investigador, name='role_investigador'),
-    path('roles/dinamizador/', gesicom_views.role_dinamizador, name='role_dinamizador'),
-    path('roles/coordinador/', gesicom_views.role_coordinador, name='role_coordinador'),
-    # Evidencias: formulario de envío
-    path('evidencia/', gesicom_views.evidencia, name='evidencia'),
-    path('evidencias/', gesicom_views.evidencias_list, name='evidencias_list'),
-    # Password reset flow
-    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
-    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    # Inicio del sitio apunta al login
+    path('', gesicom_views.login_view, name='login'),
 ]
 
 # Servir archivos media en desarrollo

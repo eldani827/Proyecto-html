@@ -16,53 +16,12 @@
     </div>
     <nav class="nav">
       <a href="{% url 'home' %}">Inicio</a>
-      <a href="{% url 'nosotros' %}">Nosotros</a>
-      <a href="{% url 'contacto' %}">Contacto</a>
-      <a href="{% url 'ayuda' %}">Ayuda</a>
     </nav>
   </header>
 
   <main class="main landing">
-    <h1 class="title">Bienvenido al portal GESICOM</h1>
-    <p class="subtitle">Selecciona tu rol para continuar</p>
-
-    <section class="roles-grid" aria-label="Roles">
-      <article class="card landing-card">
-        <div class="card-icon">
-          <!-- Instructor icon -->
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3 3 0 110 6 3 3 0 010-6zm-6 9a3 3 0 013-3h6a3 3 0 013 3v2H6v-2zm-1 5a4 4 0 014-4h8a4 4 0 014 4v2H5v-2z"/></svg>
-        </div>
-        <h2>Instructor</h2>
-        <a class="btn" href="{% url 'login' %}?role=instructor">Ingresar</a>
-      </article>
-
-      <article class="card landing-card">
-        <div class="card-icon">
-          <!-- Investigador icon -->
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2a4 4 0 100 8 4 4 0 000-8zm8.32 11.9l3.38 3.38-1.42 1.42-3.38-3.38a6 6 0 10-1.42 1.42l3.84 3.84 2.83-2.83-3.84-3.85z"/></svg>
-        </div>
-        <h2>Investigador</h2>
-        <a class="btn" href="{% url 'login' %}?role=investigador">Ingresar</a>
-      </article>
-
-      <article class="card landing-card">
-        <div class="card-icon">
-          <!-- Dinamizador icon -->
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3 3 0 110 6 3 3 0 010-6zM7 11h10v2H13v3h-2v-3H7v-2zm-3 7h16v2H4v-2z"/></svg>
-        </div>
-        <h2>Dinamizador</h2>
-        <a class="btn" href="{% url 'login' %}?role=dinamizador">Ingresar</a>
-      </article>
-
-      <article class="card landing-card">
-        <div class="card-icon">
-          <!-- Coordinador icon -->
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3 3 0 110 6 3 3 0 010-6zm-6 9h12v2l-3 2v5H9v-5l-3-2v-2z"/></svg>
-        </div>
-        <h2>Coordinador</h2>
-        <a class="btn" href="{% url 'login' %}?role=coordinador">Ingresar</a>
-      </article>
-    </section>
+    <h1 class="title">Inicio</h1>
+    <p class="subtitle">Bienvenido</p>
   </main>
 
   <footer class="footer footer-landing" role="contentinfo">

@@ -24,13 +24,6 @@ class Usuario(models.Model):
     def __str__(self):
         return self.usuario
 
-# Clase para almacenar información sobre los roles de los usuarios del sistema.
-
-class Rol(models.Model):
-    Rol = models.CharField(max_length=50)
-    descripcion = models.CharField(max_length=100)
-    def __str__(self):
-        return self.Rol
 
 # Clase para almacenar a los usuarios con el rol de instructor en el sistema 
 

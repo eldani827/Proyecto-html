@@ -42,7 +42,8 @@ def login_view(request):
                 'dinamizador': 'role_dinamizador',
                 'coordinador': 'role_coordinador',
             }
-            target = role_routes.get(role, 'home')
+            # Si no hay rol, permanecer en login (página principal)
+            target = role_routes.get(role, 'login')
             return redirect(target)
         else:
             return render(request, 'login.html', {
