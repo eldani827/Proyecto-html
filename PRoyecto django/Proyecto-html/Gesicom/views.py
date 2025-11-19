@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import Group
@@ -138,6 +138,46 @@ def admin_menu(request):
 def portal(request):
     # Redirige al selector de roles (home)
     return redirect('home')
+
+# === Proyecciones / Estadísticas de evidencias ===
+def proyecciones(request):
+    # Totales por categoría de evidencia y por proyecto
+    categoria_stats = (
+        Envio.objects.values('tipo_evidencia')
+        .annotate(total=Count('id'))
+        .order_by('-total', 'tipo_evidencia')
+    )
+    proyecto_stats = (
+        Envio.objects.values('proyecto')
+        .annotate(total=Count('id'))
+        .order_by('-total', 'proyecto')
+    )
+    total_envios = Envio.objects.count()
+
+    # Calcular porcentajes
+    categoria_stats = [
+        {
+            'tipo_evidencia': item['tipo_evidencia'] or 'Sin categoría',
+            'total': item['total'],
+            'porcentaje': round((item['total'] / total_envios) * 100, 2) if total_envios else 0,
+        }
+        for item in categoria_stats
+    ]
+    proyecto_stats = [
+        {
+            'proyecto': item['proyecto'] or 'Sin proyecto',
+            'total': item['total'],
+            'porcentaje': round((item['total'] / total_envios) * 100, 2) if total_envios else 0,
+        }
+        for item in proyecto_stats
+    ]
+
+    context = {
+        'total_envios': total_envios,
+        'categoria_stats': categoria_stats,
+        'proyecto_stats': proyecto_stats,
+    }
+    return render(request, 'admin/proyecciones.html', context)
 
 @login_required
 def evidencia(request):
