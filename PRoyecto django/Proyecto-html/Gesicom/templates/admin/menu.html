@@ -12,7 +12,6 @@
     <aside class="admin-sidebar" role="navigation" aria-label="Menú de administración">
       <div class="sidebar-brand">
         <img src="{% static 'CSS/img/gesicom.jpeg' %}" alt="Logo GESICOM" class="logo-img" />
-        <div class="brand-text">GESICOM</div>
       </div>
       <nav class="sidebar-nav">
         <a href="#" class="sidebar-link">
@@ -31,7 +30,7 @@
           <span class="icon">📅</span>
           <span>Programación</span>
         </a>
-        <a href="#" class="sidebar-link">
+        <a href="{% url 'proyecciones' %}" class="sidebar-link">
           <span class="icon">📈</span>
           <span>Proyecciones</span>
         </a>
@@ -73,7 +72,6 @@
           <div class="form-row">
             <label>Roles</label>
             <div class="roles-grid-inline" role="group" aria-label="Roles">
-              <label><input type="checkbox" /> Administrador</label>
               <label><input type="checkbox" /> Coordinador</label>
               <label><input type="checkbox" /> Programador</label>
               <label><input type="checkbox" /> Gestor</label>

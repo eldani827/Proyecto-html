@@ -30,7 +30,6 @@
           </svg>
         </div>
 
-<<<<<<< Updated upstream
         {% if role %}
           <h1 id="login-title" class="auth-title">Inicia sesión</h1>
           <p class="auth-subtitle">Como <strong>{{ role|title }}</strong></p>
@@ -47,8 +46,6 @@
         {% csrf_token %}
         <input type="hidden" name="role" value="{{ role|default:'' }}" />
 
-        <fieldset class="credentials" aria-describedby="credentials-desc">
-          <legend class="visually-hidden">Credenciales de acceso</legend>
           <p id="credentials-desc" class="visually-hidden">Introduzca su usuario y contraseña para iniciar sesión.</p>
 
           <div class="username-field">
@@ -79,20 +76,17 @@
               <input class="input" type="password" id="password" name="password" required minlength="8" maxlength="8" pattern="^(?=.*[A-Z])(?=.*[0-9\W]).{8}$" title="Debe tener exactamente 8 caracteres, al menos una mayúscula y mínimo un número o carácter especial" autocomplete="current-password" />
             </div>
           </div>
-        </fieldset>
 
         <div class="actions">
           <button class="btn" type="submit">Iniciar sesión</button>
         </div>
       </form>
     </section>
-=======
     <div class="actions actions-center">
       <a class="link" href="{% url 'register' %}{% if role %}?role={{ role }}{% endif %}">Registrarse</a>
       <a class="link" href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a>
     </div>
 
->>>>>>> Stashed changes
   </main>
 
   <footer class="footer footer-landing" role="contentinfo">
