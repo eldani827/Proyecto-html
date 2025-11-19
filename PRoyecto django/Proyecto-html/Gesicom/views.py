@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import Group
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -12,7 +14,10 @@ def index(request):
     return render(request, 'home.html')
 
 def home(request):
-    return render(request, 'home.html')
+    is_basic = False
+    if request.user.is_authenticated:
+        is_basic = request.user.groups.filter(name='usuario').exists()
+    return render(request, 'home.html', {'is_basic_user': is_basic})
 
 def nosotros(request):
     return render(request, 'nosotros.html')
@@ -35,14 +40,18 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            # Redirigir según rol seleccionado
             role_routes = {
                 'instructor': 'role_instructor',
                 'investigador': 'role_investigador',
                 'dinamizador': 'role_dinamizador',
                 'coordinador': 'role_coordinador',
             }
-            # Si no hay rol, permanecer en login (página principal)
+            if role and not user.groups.filter(name=role).exists():
+                return render(request, 'login.html', {
+                    'error': 'Tu cuenta no tiene permisos para ese rol.',
+                    'role': role,
+                    'username': username,
+                })
             target = role_routes.get(role, 'login')
             return redirect(target)
         else:
@@ -96,22 +105,41 @@ def register_view(request):
 
     return render(request, 'register.html', {'role': role})
 
+def _in_group(name):
+    def check(u):
+        return u.groups.filter(name=name).exists()
+    return check
+
+@login_required
+@user_passes_test(_in_group('instructor'), login_url='access_denied')
 def role_instructor(request):
     return render(request, 'roles/instructor.html')
 
+@login_required
+@user_passes_test(_in_group('investigador'), login_url='access_denied')
 def role_investigador(request):
     return render(request, 'roles/investigador.html')
 
+@login_required
+@user_passes_test(_in_group('dinamizador'), login_url='access_denied')
 def role_dinamizador(request):
     return render(request, 'roles/dinamizador.html')
 
+@login_required
+@user_passes_test(_in_group('coordinador'), login_url='access_denied')
 def role_coordinador(request):
     return render(request, 'roles/coordinador.html')
+
+# === Panel de administración ===
+def admin_menu(request):
+    # Página de menú de administración con listado de usuarios (mock)
+    return render(request, 'admin/menu.html')
 
 def portal(request):
     # Redirige al selector de roles (home)
     return redirect('home')
 
+@login_required
 def evidencia(request):
     # Formulario de envío de evidencias: guarda archivo y link
     if request.method == 'POST':
@@ -155,6 +183,7 @@ def evidencia(request):
 
     return render(request, 'formulario.html')
 
+@login_required
 def evidencias_list(request):
     qs = Envio.objects.all()
 
@@ -195,3 +224,5 @@ def evidencias_list(request):
         'q': q,
     }
     return render(request, 'evidencias_list.html', context)
+def access_denied(request):
+    return render(request, 'access_denied.html')

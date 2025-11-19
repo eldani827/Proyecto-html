@@ -22,6 +22,9 @@
   <main class="main landing">
     <h1 class="title">Inicio</h1>
     <p class="subtitle">Bienvenido</p>
+    {% if is_basic_user %}
+    <div class="error" role="alert">Tu cuenta es de tipo usuario básico y tiene acceso limitado.</div>
+    {% endif %}
   </main>
 
   <footer class="footer footer-landing" role="contentinfo">
