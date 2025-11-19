@@ -108,6 +108,11 @@ def role_dinamizador(request):
 def role_coordinador(request):
     return render(request, 'roles/coordinador.html')
 
+# === Panel de administración ===
+def admin_menu(request):
+    # Página de menú de administración con listado de usuarios (mock)
+    return render(request, 'admin/menu.html')
+
 def portal(request):
     # Redirige al selector de roles (home)
     return redirect('home')

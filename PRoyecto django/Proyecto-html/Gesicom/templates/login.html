@@ -4,71 +4,116 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Iniciar sesión · Gesicom</title>
   {% load static %}
+  <title>Iniciar sesión · Gesicom</title>
   <link rel="stylesheet" href="{% static 'CSS/main.css' %}">
 </head>
 
 <body class="login-body">
-  <header class="topbar topbar-auth">
+  <header class="topbar topbar-auth" role="banner">
     <div class="brand-left">
-      <img src="{% static 'CSS/img/gesicom.jpeg' %}" alt="Logo GESICOM" class="logo-img" />
+      <a href="/" class="brand-link" aria-label="Ir al inicio">
+        <figure class="brand-figure" aria-hidden="true">
+          <img src="{% static 'CSS/img/gesicom.jpeg' %}" alt="Logo GESICOM" class="logo-img" />
+        </figure>
+      </a>
     </div>
   </header>
-  <main class="login-card" role="main">
-    <div class="login-logo" aria-hidden="true">
-      <svg viewBox="0 0 24 24" width="64" height="64" role="img" aria-label="Icono de usuario">
-        <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" fill="none" />
-        <path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" />
-      </svg>
-    </div>
-    {% if role %}
-    <h2 class="auth-title">Inicia sesión</h2>
-    <p class="auth-subtitle">Como <strong>{{ role|title }}</strong></p>
-    {% else %}
-    <h2 class="auth-title">Inicia sesión para continuar</h2>
-    {% endif %}
 
-    {% if error %}
-    <div class="error" role="alert">{{ error }}</div>
-    {% endif %}
-
-    <form action="" method="post" novalidate>
-      {% csrf_token %}
-      <input type="hidden" name="role" value="{{ role|default:'' }}" />
-      <div class="username-field">
-        <label for="username">Usuario</label>
-        <div class="input-row">
-          <span class="input-icon left" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="32" height="32" role="img" aria-hidden="true">
-              <circle cx="8" cy="8" r="4" stroke="currentColor" stroke-width="2" fill="none" />
-              <path d="M2 20c0-3.5 3.5-5.25 6-5.25" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" />
-              <path d="M16 14l-2 8 8-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" />
-              <path d="M18 13l3 3" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" />
-            </svg>
-          </span>
-          <input class="input" type="text" id="username" name="username" value="{{ username|default:'' }}" autofocus required />
+  <main id="main" class="site-main" role="main">
+    <section class="login-card" aria-labelledby="login-title">
+      <header class="login-header">
+        <div class="login-logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="64" height="64" role="img" aria-label="Icono de usuario">
+            <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" fill="none" />
+            <path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" />
+          </svg>
         </div>
-      </div>
-      <div class="password-field">
-        <label for="password">Contraseña</label>
-        <div class="input-row">
-          <button type="button" id="toggle-password" class="toggle-password left" aria-label="Mostrar u ocultar contraseña" aria-pressed="false">
-            <svg viewBox="0 0 24 24" width="32" height="32" role="img" aria-hidden="true">
-              <path d="M1 12s4-7 11-7c3 0 5.7 1 7.8 2.6" stroke="currentColor" stroke-width="2" fill="none"/>
-              <path d="M23 12s-4 7-11 7c-3 0-5.7-1-7.8-2.6" stroke="currentColor" stroke-width="2" fill="none"/>
-              <path d="M3 3l18 18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
-            </svg>
-          </button>
-          <input class="input" type="password" id="password" name="password" required minlength="8" maxlength="8" pattern="^(?=.*[A-Z])(?=.*[0-9\W]).{8}$" title="Debe tener exactamente 8 caracteres, al menos una mayúscula y mínimo un número o carácter especial" />
-        </div>
-      </div>
-      <div class="actions">
-        <button class="btn" type="submit">Iniciar sesión</button>
-      </div>
-    </form>
 
+        {% if role %}
+          <h1 id="login-title" class="auth-title">Inicia sesión</h1>
+          <p class="auth-subtitle">Como <strong>{{ role|title }}</strong></p>
+        {% else %}
+          <h1 id="login-title" class="auth-title">Inicia sesión para continuar</h1>
+        {% endif %}
+      </header>
+
+      {% if error %}
+        <div class="error" role="alert">{{ error }}</div>
+      {% endif %}
+
+      <form action="" method="post" novalidate aria-describedby="{% if error %}login-error{% endif %}">
+        {% csrf_token %}
+        <input type="hidden" name="role" value="{{ role|default:'' }}" />
+
+        <fieldset class="credentials" aria-describedby="credentials-desc">
+          <legend class="visually-hidden">Credenciales de acceso</legend>
+          <p id="credentials-desc" class="visually-hidden">Introduzca su usuario y contraseña para iniciar sesión.</p>
+
+          <div class="username-field">
+            <label for="username">Usuario</label>
+            <div class="input-row">
+              <span class="input-icon left" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="32" height="32" role="img" aria-hidden="true">
+                  <circle cx="8" cy="8" r="4" stroke="currentColor" stroke-width="2" fill="none" />
+                  <path d="M2 20c0-3.5 3.5-5.25 6-5.25" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" />
+                  <path d="M16 14l-2 8 8-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" />
+                  <path d="M18 13l3 3" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" />
+                </svg>
+              </span>
+              <input class="input" type="text" id="username" name="username" value="{{ username|default:'' }}" autofocus required autocomplete="username" />
+            </div>
+          </div>
+
+          <div class="password-field">
+            <label for="password">Contraseña</label>
+            <div class="input-row">
+              <button type="button" id="toggle-password" class="toggle-password left" aria-label="Mostrar u ocultar contraseña" aria-pressed="false">
+                <svg viewBox="0 0 24 24" width="32" height="32" role="img" aria-hidden="true">
+                  <path d="M1 12s4-7 11-7c3 0 5.7 1 7.8 2.6" stroke="currentColor" stroke-width="2" fill="none"/>
+                  <path d="M23 12s-4 7-11 7c-3 0-5.7-1-7.8-2.6" stroke="currentColor" stroke-width="2" fill="none"/>
+                  <path d="M3 3l18 18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                </svg>
+              </button>
+              <input class="input" type="password" id="password" name="password" required minlength="8" maxlength="8" pattern="^(?=.*[A-Z])(?=.*[0-9\W]).{8}$" title="Debe tener exactamente 8 caracteres, al menos una mayúscula y mínimo un número o carácter especial" autocomplete="current-password" />
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button class="btn" type="submit">Iniciar sesión</button>
+        </div>
+      </form>
+    </section>
   </main>
+
+  <footer class="footer footer-landing" role="contentinfo">
+    <div class="footer-left">
+      <div class="sena">CENTRO DE COMERCIO Y SERVICIOS</div>
+      <div class="address">Regional Tolima</div>
+    </div>
+    <div class="footer-social" aria-label="Redes sociales">
+      <a class="circle fb" aria-label="Facebook (SENA)" title="Facebook del SENA" href="https://www.facebook.com/SENA/" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15 3h-3a4 4 0 00-4 4v3H6v4h2v7h4v-7h3l1-4h-4V7a1 1 0 011-1h3z"></path>
+        </svg>
+      </a>
+      <a class="circle x" aria-label="X (Twitter) SENA" title="Cuenta X del SENA" href="https://x.com/SENAComunica" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 4l16 16" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"></path>
+          <path d="M20 4L4 20" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"></path>
+        </svg>
+      </a>
+      <a class="circle in" aria-label="LinkedIn (SENA)" title="LinkedIn del SENA" href="https://www.linkedin.com/school/servicio-nacional-de-aprendizaje-sena-/" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="7" cy="8" r="1.7"></circle>
+          <path d="M6 10h2.8v8H6z"></path>
+          <path d="M10.8 10H14a3 3 0 013 3v5h-2.8v-4.5c0-.8-.6-1.5-1.4-1.5h-2z"></path>
+        </svg>
+      </a>
+    </div>
+  </footer>
+
   <script>
     (function(){
       var input = document.getElementById('password');

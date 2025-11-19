@@ -24,6 +24,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # Inicio del sitio apunta al login
     path('', gesicom_views.login_view, name='login'),
+    # Panel de administración
+    path('administracion/', gesicom_views.admin_menu, name='admin_menu'),
 ]
 
 # Servir archivos media en desarrollo

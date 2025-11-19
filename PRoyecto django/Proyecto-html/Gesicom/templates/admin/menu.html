@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Administración · Gesicom</title>
+  <link rel="stylesheet" href="{% static 'CSS/main.css' %}">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar" role="navigation" aria-label="Menú de administración">
+      <div class="sidebar-brand">
+        <img src="{% static 'CSS/img/gesicom.jpeg' %}" alt="Logo GESICOM" class="logo-img" />
+        <div class="brand-text">GESICOM</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="sidebar-link">
+          <span class="icon">🏠</span>
+          <span>Home</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="icon">⚙️</span>
+          <span>Configuración</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="icon">🗓️</span>
+          <span>Planeación</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="icon">📅</span>
+          <span>Programación</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="icon">📈</span>
+          <span>Proyecciones</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="icon">📊</span>
+          <span>Reportes</span>
+        </a>
+        <div class="sidebar-section">Administración</div>
+        <a href="#" class="sidebar-link">
+          <span class="icon">🧩</span>
+          <span>Roles</span>
+        </a>
+        <a href="#" class="sidebar-link active" aria-current="page">
+          <span class="icon">👥</span>
+          <span>Usuarios</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="icon">🔐</span>
+          <span>Permisos</span>
+        </a>
+      </nav>
+    </aside>
+
+    <main class="admin-content" role="main">
+      <header class="admin-header">
+        <nav class="breadcrumb" aria-label="Ruta">
+          <span>Administración</span>
+          <span class="sep">›</span>
+          <span class="current">Usuarios</span>
+        </nav>
+      </header>
+
+      <section class="card admin-card">
+        <form class="admin-form" action="#" method="post" onsubmit="return false;">
+          <div class="form-row">
+            <label for="nombre">Nombre</label>
+            <input class="input" type="text" id="nombre" name="nombre" placeholder="Nombre del usuario" />
+          </div>
+          <div class="form-row">
+            <label>Roles</label>
+            <div class="roles-grid-inline" role="group" aria-label="Roles">
+              <label><input type="checkbox" /> Administrador</label>
+              <label><input type="checkbox" /> Coordinador</label>
+              <label><input type="checkbox" /> Programador</label>
+              <label><input type="checkbox" /> Gestor</label>
+              <label><input type="checkbox" /> Instructor</label>
+              <label><input type="checkbox" /> Usuario</label>
+            </div>
+          </div>
+          <div class="actions actions-left">
+            <button class="btn" type="submit">Guardar</button>
+            <button class="btn btn-secondary" type="reset">Limpiar</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="admin-table-section">
+        <div class="table-toolbar">
+          <div class="search-box">
+            <input class="input" type="search" placeholder="Buscar usuario..." />
+          </div>
+          <div class="table-controls">
+            <button class="btn btn-secondary" type="button">Columnas</button>
+            <select class="input small">
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+            </select>
+          </div>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Roles</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Jose Alonso Oviedo Monroy</td>
+              <td>Programador, Instructor</td>
+              <td>
+                <button class="btn btn-small btn-secondary" type="button">Editar</button>
+                <button class="btn btn-small btn-danger" type="button">Eliminar</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Jose Alonso Rubio Velásquez</td>
+              <td>Instructor</td>
+              <td>
+                <button class="btn btn-small btn-secondary" type="button">Editar</button>
+                <button class="btn btn-small btn-danger" type="button">Eliminar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
