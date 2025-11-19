@@ -4,14 +4,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Crear cuenta · GESICOM</title>
+  <title>Registrarse · GESICOM</title>
   <link rel="stylesheet" href="{% static 'CSS/main.css' %}">
   <meta name="color-scheme" content="light" />
   <meta name="theme-color" content="#0d8a43" />
   <link rel="icon" href="{% static 'CSS/img/gesicom.jpeg' %}" />
   <link rel="apple-touch-icon" href="{% static 'CSS/img/gesicom.jpeg' %}" />
   <meta name="robots" content="noindex" />
-  <meta name="description" content="Crear cuenta en el portal GESICOM" />
+  <meta name="description" content="Registrarse en el portal GESICOM" />
   <meta name="format-detection" content="telephone=no" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="x-ua-compatible" content="ie=edge" />
@@ -25,10 +25,10 @@
   </header>
   <main class="login-card" role="main">
     {% if role %}
-      <h2 class="auth-title">Crear cuenta</h2>
+      <h2 class="auth-title">Registrarse</h2>
       <p class="auth-subtitle">Para <strong>{{ role|title }}</strong></p>
     {% else %}
-      <h2 class="auth-title">Crea tu cuenta para continuar</h2>
+      <h2 class="auth-title">Regístrate para continuar</h2>
     {% endif %}
 
     {% if errors %}

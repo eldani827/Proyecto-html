@@ -30,6 +30,7 @@
           </svg>
         </div>
 
+<<<<<<< Updated upstream
         {% if role %}
           <h1 id="login-title" class="auth-title">Inicia sesión</h1>
           <p class="auth-subtitle">Como <strong>{{ role|title }}</strong></p>
@@ -85,6 +86,13 @@
         </div>
       </form>
     </section>
+=======
+    <div class="actions actions-center">
+      <a class="link" href="{% url 'register' %}{% if role %}?role={{ role }}{% endif %}">Registrarse</a>
+      <a class="link" href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a>
+    </div>
+
+>>>>>>> Stashed changes
   </main>
 
   <footer class="footer footer-landing" role="contentinfo">

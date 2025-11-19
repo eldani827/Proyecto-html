@@ -108,16 +108,16 @@ body.login-body {
 .login-card .actions { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .5rem; margin-top: .5rem; }
 .login-card .btn {
   appearance: none; border: none; cursor: pointer; padding: .9rem 1.2rem; border-radius: 999px;
-  background: #0d8a43; color: white; font-weight: 700;
-  box-shadow: 0 4px 10px rgba(13,138,67,.18); transition: transform .08s ease, box-shadow .15s ease;
+  background: #1a73e8; color: white; font-weight: 700;
+  box-shadow: 0 4px 10px rgba(26,115,232,.24); transition: transform .08s ease, box-shadow .15s ease;
   display: inline-block; margin: 0 auto;
 }
 
-.login-card .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 16px rgba(13,138,67,.28); }
+.login-card .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 16px rgba(26,115,232,.32); }
 .login-card .helper { font-size: .85rem; color: var(--muted); }
 .login-card .error { background: rgba(239,68,68,.1); color: #fecaca; border: 1px solid rgba(239,68,68,.35); padding: .65rem .8rem; border-radius: 10px; margin-bottom: .75rem; }
 .login-card .footer { margin-top: 1rem; text-align: center; font-size: .8rem; color: var(--muted); background: transparent; }
-.login-card a { color: #0d8a43; text-decoration: none; }
+.login-card a { color: #1a73e8; text-decoration: none; }
 .login-card a:hover { text-decoration: underline; }
 /* En acciones del login, el enlace 'No tienes cuenta?' debe verse centrado y neutro */
 .login-card .actions .no-account { color: #0f172a; }
@@ -338,3 +338,14 @@ input[type="submit"]:hover { filter: brightness(1.05); }
 .pagination { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
 .page-select select { padding: 6px 8px; }
 .page-info { color: #555; }
+.login-card .link {
+  display: inline;
+  background: transparent;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  color: #1a73e8;
+  text-decoration: underline;
+  font-weight: 600;
+}
