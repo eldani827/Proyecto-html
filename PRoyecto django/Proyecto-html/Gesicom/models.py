@@ -35,7 +35,7 @@ class Instructor(models.Model):
     contraseña= models.CharField(max_length=8)
     Rol = models.ForeignKey(Roles, on_delete=models.CASCADE)
     def __str__(self):
-        return self.usuario
+        return self.nombre
     
 class Envio(models.Model):
     PROYECTO_CHOICES = [

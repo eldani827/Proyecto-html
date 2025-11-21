@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import Group
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -12,7 +14,10 @@ def index(request):
     return render(request, 'home.html')
 
 def home(request):
-    return render(request, 'home.html')
+    is_basic = False
+    if request.user.is_authenticated:
+        is_basic = request.user.groups.filter(name='usuario').exists()
+    return render(request, 'home.html', {'is_basic_user': is_basic})
 
 def nosotros(request):
     return render(request, 'nosotros.html')
@@ -35,14 +40,19 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            # Redirigir según rol seleccionado
             role_routes = {
                 'instructor': 'role_instructor',
                 'investigador': 'role_investigador',
                 'dinamizador': 'role_dinamizador',
                 'coordinador': 'role_coordinador',
             }
-            target = role_routes.get(role, 'home')
+            if role and not user.groups.filter(name=role).exists():
+                return render(request, 'login.html', {
+                    'error': 'Tu cuenta no tiene permisos para ese rol.',
+                    'role': role,
+                    'username': username,
+                })
+            target = role_routes.get(role, 'login')
             return redirect(target)
         else:
             return render(request, 'login.html', {
@@ -87,34 +97,89 @@ def register_view(request):
             })
 
         user = User.objects.create_user(username=username, email=email, password=password1)
-        login(request, user)
-        role_routes = {
-            'instructor': 'role_instructor',
-            'investigador': 'role_investigador',
-            'dinamizador': 'role_dinamizador',
-            'coordinador': 'role_coordinador',
-        }
-        target = role_routes.get(role, 'home')
-        return redirect(target)
+        # Tras crear el usuario, redirigir al login del rol (si existe)
+        login_url = 'login'
+        if role:
+            return redirect(f"/{login_url}/?role={role}")
+        return redirect(login_url)
 
     return render(request, 'register.html', {'role': role})
 
+def _in_group(name):
+    def check(u):
+        return u.groups.filter(name=name).exists()
+    return check
+
+@login_required
+@user_passes_test(_in_group('instructor'), login_url='access_denied')
 def role_instructor(request):
     return render(request, 'roles/instructor.html')
 
+@login_required
+@user_passes_test(_in_group('investigador'), login_url='access_denied')
 def role_investigador(request):
     return render(request, 'roles/investigador.html')
 
+@login_required
+@user_passes_test(_in_group('dinamizador'), login_url='access_denied')
 def role_dinamizador(request):
     return render(request, 'roles/dinamizador.html')
 
+@login_required
+@user_passes_test(_in_group('coordinador'), login_url='access_denied')
 def role_coordinador(request):
     return render(request, 'roles/coordinador.html')
+
+# === Panel de administración ===
+def admin_menu(request):
+    # Página de menú de administración con listado de usuarios (mock)
+    return render(request, 'admin/menu.html')
 
 def portal(request):
     # Redirige al selector de roles (home)
     return redirect('home')
 
+# === Proyecciones / Estadísticas de evidencias ===
+def proyecciones(request):
+    # Totales por categoría de evidencia y por proyecto
+    categoria_stats = (
+        Envio.objects.values('tipo_evidencia')
+        .annotate(total=Count('id'))
+        .order_by('-total', 'tipo_evidencia')
+    )
+    proyecto_stats = (
+        Envio.objects.values('proyecto')
+        .annotate(total=Count('id'))
+        .order_by('-total', 'proyecto')
+    )
+    total_envios = Envio.objects.count()
+
+    # Calcular porcentajes
+    categoria_stats = [
+        {
+            'tipo_evidencia': item['tipo_evidencia'] or 'Sin categoría',
+            'total': item['total'],
+            'porcentaje': round((item['total'] / total_envios) * 100, 2) if total_envios else 0,
+        }
+        for item in categoria_stats
+    ]
+    proyecto_stats = [
+        {
+            'proyecto': item['proyecto'] or 'Sin proyecto',
+            'total': item['total'],
+            'porcentaje': round((item['total'] / total_envios) * 100, 2) if total_envios else 0,
+        }
+        for item in proyecto_stats
+    ]
+
+    context = {
+        'total_envios': total_envios,
+        'categoria_stats': categoria_stats,
+        'proyecto_stats': proyecto_stats,
+    }
+    return render(request, 'admin/proyecciones.html', context)
+
+@login_required
 def evidencia(request):
     # Formulario de envío de evidencias: guarda archivo y link
     if request.method == 'POST':
@@ -158,6 +223,7 @@ def evidencia(request):
 
     return render(request, 'formulario.html')
 
+@login_required
 def evidencias_list(request):
     qs = Envio.objects.all()
 
@@ -198,3 +264,5 @@ def evidencias_list(request):
         'q': q,
     }
     return render(request, 'evidencias_list.html', context)
+def access_denied(request):
+    return render(request, 'access_denied.html')

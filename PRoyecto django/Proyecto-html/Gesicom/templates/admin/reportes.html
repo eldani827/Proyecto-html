@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reportes · Gesicom</title>
+  <link rel="stylesheet" href="{% static 'CSS/main.css' %}">
+  <style>
+    .filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: .75rem; margin-bottom: 1rem; }
+    .filters .input, .filters select { width: 100%; }
+    .filters label { font-weight: 600; color: #333; margin-bottom: .25rem; display: block; }
+    .filters .input, .filters select { padding: .55rem .7rem; border-radius: 8px; border: 1px solid #d1d5db; background: #fff; }
+    .filters .input:focus, .filters select:focus { outline: none; border-color: #00610f; box-shadow: 0 0 0 3px rgba(0,97,15,.15); }
+
+    .actions { display:flex; gap:.35rem; flex-wrap: wrap; align-items: center; }
+    .actions .btn { display:inline-flex; align-items:center; gap:.2rem; border-radius: 999px; padding:.2rem .5rem; line-height:1; font-weight:600; font-size:.75rem; background:#00610f; color:#fff; border:none; box-shadow:0 1px 3px rgba(0,0,0,.08); transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }
+    .actions .btn:hover { transform: translateY(-1px); box-shadow:0 3px 8px rgba(0,0,0,.14); background:#008f17; }
+    .actions .btn-secondary { background: transparent; color: #374151; border: 1px solid #6b7280; }
+    .actions .btn-secondary:hover { background: #f3f4f6; }
+    .actions .icon { font-size: .75rem; }
+    .table { width: 100%; border-collapse: collapse; }
+    .table th, .table td { padding: .6rem .8rem; border-bottom: 1px solid #e5e7eb; text-align: left; }
+    .bar { height: 10px; background: #004d0c; border-radius: 4px; }
+    .bar-wrap { background: #e5e7eb; border-radius: 4px; overflow: hidden; }
+  </style>
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar" role="navigation" aria-label="Menú de administración">
+      <div class="sidebar-brand">
+        <img src="{% static 'CSS/img/gesicom.jpeg' %}" alt="Logo GESICOM" class="logo-img" />
+      </div>
+      <nav class="sidebar-nav">
+        <a href="{% url 'admin_menu' %}" class="sidebar-link">
+          <span class="icon">🧭</span>
+          <span>Menú</span>
+        </a>
+        <a href="{% url 'proyecciones' %}" class="sidebar-link">
+          <span class="icon">📈</span>
+          <span>Proyecciones</span>
+        </a>
+        <a href="{% url 'reportes' %}" class="sidebar-link active" aria-current="page">
+          <span class="icon">📊</span>
+          <span>Reportes</span>
+        </a>
+      </nav>
+    </aside>
+
+    <main class="admin-content" role="main">
+      <header class="admin-header">
+        <nav class="breadcrumb" aria-label="Ruta">
+          <span>Administración</span>
+          <span class="sep">›</span>
+          <span class="current">Reportes</span>
+        </nav>
+      </header>
+
+      <section class="card admin-card">
+        <form class="filters" action="" method="get">
+          <div>
+            <label>Proyecto</label>
+            <select class="input" name="proyecto">
+              <option value="">Todos</option>
+              {% for p in proyecto_choices %}
+                <option value="{{ p }}" {% if proyecto == p %}selected{% endif %}>{{ p }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div>
+            <label>Desde (mes)</label>
+            <input class="input" type="month" name="start" value="{{ start }}" />
+          </div>
+          <div>
+            <label>Hasta (mes)</label>
+            <input class="input" type="month" name="end" value="{{ end }}" />
+          </div>
+          <div class="actions">
+            <button class="btn" type="submit"><span class="icon">✅</span><span>Aplicar</span></button>
+            <a class="btn btn-secondary" href="{% url 'reportes' %}"><span class="icon">🧹</span><span>Limpiar</span></a>
+            <a class="btn btn-secondary" href="{% url 'reportes_csv' %}?proyecto={{ proyecto }}&start={{ start }}&end={{ end }}"><span class="icon">⬇️</span><span>Descargar CSV</span></a>
+          </div>
+        </form>
+      </section>
+
+      <section class="admin-table-section">
+        <h2>Evidencias por mes</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Mes</th>
+              <th>Total</th>
+              <th>Distribución</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for m in monthly_stats %}
+            <tr>
+              <td>{{ m.month|date:"Y-m" }}</td>
+              <td>{{ m.total }}</td>
+              <td style="width:40%">
+                <div class="bar-wrap"><div class="bar" style="width: {{ m.porcentaje }}%"></div></div>
+              </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3">No hay datos para el filtro seleccionado.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+
+      <section class="admin-table-section">
+        <h2>Evidencias por categoría</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Categoría</th>
+              <th>Total</th>
+              <th>%</th>
+              <th>Distribución</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in categoria_stats %}
+            <tr>
+              <td>{{ c.tipo_evidencia }}</td>
+              <td>{{ c.total }}</td>
+              <td>{{ c.porcentaje }}%</td>
+              <td style="width:40%">
+                <div class="bar-wrap"><div class="bar" style="width: {{ c.porcentaje }}%"></div></div>
+              </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">No hay evidencias registradas en el rango seleccionado.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

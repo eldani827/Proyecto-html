@@ -1,10 +1,17 @@
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyc
 *.egg-info/
 .pytest_cache/
 *.log
+*.sqlite3
+db.sqlite3
+.DS_Store
+Thumbs.db
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyc
 
 # Django local database
 db.sqlite3

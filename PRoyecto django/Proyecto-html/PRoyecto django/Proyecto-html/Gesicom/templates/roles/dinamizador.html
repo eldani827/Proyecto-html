@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dinamizador · Gesicom</title>
+  <link rel="stylesheet" href="{% static 'CSS/main.css' %}">
+</head>
+<body>
+  <header class="role-header">
+    <h1>Panel de Dinamizador</h1>
+    <nav>
+      <a href="{% url 'portal' %}" class="link">Volver al portal</a>
+      <a href="{% url 'login' %}?role=dinamizador" class="link">Volver a iniciar sesión</a>
+    </nav>
+  </header>
+  <main class="container">
+    <p>Contenido del rol Dinamizador.</p>
+  </main>
+</body>
+</html>
