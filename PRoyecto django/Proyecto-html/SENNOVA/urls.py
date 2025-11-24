@@ -20,16 +20,17 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from Gesicom import views as gesicom_views
+from Usuarios import views as usuarios_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', gesicom_views.login_view, name='login_root'),
+    path('', usuarios_views.login_view, name='login_root'),
     path('home/', gesicom_views.home, name='home'),
     path('nosotros/', gesicom_views.nosotros, name='nosotros'),
     path('contacto/', gesicom_views.contacto, name='contacto'),
     path('ayuda/', gesicom_views.ayuda, name='ayuda'),
-    path('login/', gesicom_views.login_view, name='login'),
-    path('register/', gesicom_views.register_view, name='register'),
+    path('login/', usuarios_views.login_view, name='login'),
+    path('register/', usuarios_views.register_view, name='register'),
     path('portal/', gesicom_views.portal, name='portal'),
     path('roles/instructor/', gesicom_views.role_instructor, name='role_instructor'),
     path('roles/investigador/', gesicom_views.role_investigador, name='role_investigador'),
