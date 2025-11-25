@@ -24,6 +24,12 @@
     </div>
   </header>
   <main class="login-card" role="main">
+    <div class="login-logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="128" height="128" role="img" aria-label="Icono de usuario">
+        <circle cx="12" cy="7.5" r="4" stroke="#00304D" stroke-width="2" fill="none" />
+        <path d="M6 20c0-3 3.5-5 6-5s6 2 6 5" stroke="#00304D" stroke-width="2" fill="none" stroke-linecap="round" />
+      </svg>
+    </div>
     {% if role %}
       <h2 class="auth-title">Registrarse</h2>
       <p class="auth-subtitle">Para <strong>{{ role|title }}</strong></p>
@@ -44,19 +50,53 @@
       <input type="hidden" name="role" value="{{ role|default:'' }}" />
       <div class="username-field">
         <label for="username">Usuario</label>
-        <input id="username" name="username" type="text" class="input" placeholder="Tu usuario" value="{{ username|default:'' }}" required />
+        <div class="input-row">
+          <div class="input-icon left" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="32" height="32" role="img" aria-hidden="true">
+              <circle cx="12" cy="7.5" r="4" stroke="#00304D" stroke-width="2" fill="none" />
+              <path d="M6 20c0-3 3.5-5 6-5s6 2 6 5" stroke="#00304D" stroke-width="2" fill="none" stroke-linecap="round" />
+            </svg>
+          </div>
+          <input id="username" name="username" type="text" class="input username-with-icon" placeholder="Tu usuario" value="{{ username|default:'' }}" required />
+        </div>
       </div>
       <div class="username-field">
         <label for="email">Correo electrónico</label>
-        <input id="email" name="email" type="email" class="input" placeholder="tu@correo.com" value="{{ email|default:'' }}" required />
+        <div class="input-row">
+          <div class="input-icon left" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="32" height="32" role="img" aria-hidden="true">
+              <path d="M3 5h18v14H3z" stroke="#00304D" stroke-width="2" fill="none" />
+              <path d="M3 7l9 6 9-6" stroke="#00304D" stroke-width="2" fill="none" />
+            </svg>
+          </div>
+          <input id="email" name="email" type="email" class="input username-with-icon" placeholder="tu@correo.com" value="{{ email|default:'' }}" required />
+        </div>
       </div>
       <div class="password-field">
         <label for="password1">Contraseña</label>
-        <input id="password1" name="password1" type="password" class="input" minlength="8" maxlength="8" pattern="^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8}$" required />
+        <div class="input-row">
+          <button type="button" id="toggle-password1" class="toggle-password left" aria-label="Mostrar u ocultar contraseña" aria-pressed="false">
+            <svg viewBox="0 0 24 24" width="32" height="32" role="img" aria-hidden="true">
+              <path d="M1 12s4-7 11-7c3 0 5.7 1 7.8 2.6" stroke="#1a73e8" stroke-width="2" fill="none"/>
+              <path d="M23 12s-4 7-11 7c-3 0-5.7-1-7.8-2.6" stroke="#1a73e8" stroke-width="2" fill="none"/>
+              <path d="M3 3l18 18" stroke="#1a73e8" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <input id="password1" name="password1" type="password" class="input password-with-icon" minlength="8" maxlength="8" pattern="^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8}$" required />
+        </div>
       </div>
       <div class="password-field">
         <label for="password2">Confirmar contraseña</label>
-        <input id="password2" name="password2" type="password" class="input" minlength="8" maxlength="8" pattern="^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8}$" required />
+        <div class="input-row">
+          <button type="button" id="toggle-password2" class="toggle-password left" aria-label="Mostrar u ocultar contraseña" aria-pressed="false">
+            <svg viewBox="0 0 24 24" width="32" height="32" role="img" aria-hidden="true">
+              <path d="M1 12s4-7 11-7c3 0 5.7 1 7.8 2.6" stroke="#1a73e8" stroke-width="2" fill="none"/>
+              <path d="M23 12s-4 7-11 7c-3 0-5.7-1-7.8-2.6" stroke="#1a73e8" stroke-width="2" fill="none"/>
+              <path d="M3 3l18 18" stroke="#1a73e8" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <input id="password2" name="password2" type="password" class="input password-with-icon" minlength="8" maxlength="8" pattern="^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8}$" required />
+        </div>
       </div>
       <div class="actions actions-center">
         <button type="submit" class="btn">Crear cuenta</button>
@@ -64,5 +104,22 @@
       </div>
     </form>
   </main>
+  <script>
+    (function(){
+      function setupToggle(btnId, inputId){
+        var input = document.getElementById(inputId);
+        var btn = document.getElementById(btnId);
+        if(!input || !btn) return;
+        var visible = false;
+        btn.addEventListener('click', function(){
+          visible = !visible;
+          input.type = visible ? 'text' : 'password';
+          btn.setAttribute('aria-pressed', visible ? 'true' : 'false');
+        });
+      }
+      setupToggle('toggle-password1','password1');
+      setupToggle('toggle-password2','password2');
+    })();
+  </script>
 </body>
 </html>
