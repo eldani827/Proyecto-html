@@ -98,6 +98,7 @@ body.login-body {
   border: 1px solid rgba(0,0,0,0.08);
   background: #50E5F9;
 }
+.input-row .input-icon.left { color: #00304D; }
 .input-row .input-icon.left svg,
 .input-row .toggle-password.left svg { width: 32px; height: 32px; }
 .login-card .input {
