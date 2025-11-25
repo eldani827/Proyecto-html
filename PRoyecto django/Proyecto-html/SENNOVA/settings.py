@@ -130,10 +130,36 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # If EMAIL_HOST_USER is set in environment, use SMTP; otherwise, console backend
 if os.environ.get('EMAIL_HOST_USER'):
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
-    EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
-    EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
-    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+    _user = os.environ.get('EMAIL_HOST_USER')
+    _domain = (_user.split('@')[-1] if '@' in _user else '').lower()
+    _providers = {
+        'gmail.com': {'host': 'smtp.gmail.com', 'port': 587, 'tls': True},
+        'outlook.com': {'host': 'smtp.office365.com', 'port': 587, 'tls': True},
+        'hotmail.com': {'host': 'smtp.office365.com', 'port': 587, 'tls': True},
+        'live.com': {'host': 'smtp.office365.com', 'port': 587, 'tls': True},
+        'yahoo.com': {'host': 'smtp.mail.yahoo.com', 'port': 587, 'tls': True},
+        'yahoo.es': {'host': 'smtp.mail.yahoo.com', 'port': 587, 'tls': True},
+        'icloud.com': {'host': 'smtp.mail.me.com', 'port': 587, 'tls': True},
+        'zoho.com': {'host': 'smtp.zoho.com', 'port': 587, 'tls': True},
+        'proton.me': {'host': 'smtp.protonmail.ch', 'port': 587, 'tls': True},
+        'protonmail.com': {'host': 'smtp.protonmail.ch', 'port': 587, 'tls': True},
+    }
+    _env_host = os.environ.get('EMAIL_HOST')
+    _env_port = os.environ.get('EMAIL_PORT')
+    _env_tls = os.environ.get('EMAIL_USE_TLS')
+    _env_ssl = os.environ.get('EMAIL_USE_SSL')
+    _cfg = _providers.get(_domain)
+    _host = _env_host or (_cfg['host'] if _cfg else 'smtp.gmail.com')
+    _port = int(_env_port or (_cfg['port'] if _cfg else 587))
+    _tls = (_env_tls == 'True') if _env_tls is not None else ((_cfg['tls'] if _cfg else True))
+    _ssl = (_env_ssl == 'True') if _env_ssl is not None else False
+    if _ssl:
+        _tls = False
+    EMAIL_HOST = _host
+    EMAIL_PORT = _port
+    EMAIL_USE_TLS = _tls
+    EMAIL_USE_SSL = _ssl
+    EMAIL_HOST_USER = _user
     EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
