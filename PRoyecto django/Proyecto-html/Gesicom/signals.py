@@ -4,7 +4,7 @@ from django.contrib.auth.models import User, Group
 
 @receiver(post_migrate)
 def ensure_groups(sender, **kwargs):
-    for name in ["usuario", "instructor", "investigador", "dinamizador", "coordinador"]:
+    for name in ["usuario", "instructor", "investigador", "dinamizador", "coordinador", "administrador"]:
         Group.objects.get_or_create(name=name)
 
 @receiver(post_save, sender=User)
