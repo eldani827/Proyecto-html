@@ -8,21 +8,25 @@
   --neutral: #F6F6F6;
 }
 
+*, *::before, *::after { box-sizing: border-box; }
+
 body { margin: 0; color: var(--black); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; }
 .topbar.topbar-auth { width: 100%; display: flex; align-items: center; justify-content: flex-start; padding: .75rem 1rem; background: transparent; border-bottom: 0; position: static; }
 .brand-left { display: flex; align-items: center; gap: .5rem; }
 .brand-left .logo-img { width: 220px; height: auto; object-fit: contain; }
 .topbar.topbar-auth .logo-img { position: fixed; top: 8px; left: 8px; width: clamp(140px, 20vw, 280px); height: auto; z-index: 1000; pointer-events: none; }
 
-.login-body { background: var(--white); min-height: 100vh; display: grid; place-items: center; padding: 0; }
-.login-card { width: 100%; max-width: 520px; background: var(--white); border: 3px solid var(--blue-dark); border-radius: 18px; padding: 1.6rem; box-shadow: 0 18px 32px rgba(0,0,0,0.12); margin: 0; }
-.login-card label { font-size: .92rem; color: var(--blue-dark); }
-.login-card .input { width: 100%; background: var(--white); color: var(--black); border: 2px solid var(--blue-dark); border-radius: 12px; padding: .85rem .95rem; outline: none; font-size: .93rem; }
+.login-body { background: var(--white); min-height: 100vh; display: grid; place-items: center; padding: 1rem; }
+.login-card { width: 100%; max-width: 520px; background: var(--white); border: 3px solid var(--blue-dark); border-radius: 18px; padding: 1.6rem; box-shadow: 0 18px 32px rgba(0,0,0,0.12); margin: 0; overflow: hidden; }
+.login-card label { font-size: .92rem; color: var(--blue-dark); display: block; margin-bottom: .35rem; }
+.login-card .input { width: 100%; max-width: 100%; display: block; background: var(--white); color: var(--black); border: 2px solid var(--blue-dark); border-radius: 12px; padding: .85rem .95rem; outline: none; font-size: .93rem; }
 .login-card .input:focus { border-color: var(--blue-dark); box-shadow: 0 0 0 4px rgba(0,48,77,.15); }
 .input-row { display: flex; align-items: center; gap: .6rem; }
 .input-row .input-icon.left, .input-row .toggle-password.left { width: 52px; height: 52px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid rgba(0,0,0,0.08); background: var(--blue-light); }
 .toggle-password { border: none; background: var(--blue-light); color: var(--blue-dark); border-radius: 10px; padding: 4px; cursor: pointer; }
 .toggle-password:hover { filter: brightness(1.05); }
+
+.username-field, .password-field { margin-bottom: .9rem; }
 
 .login-card .btn { appearance: none; border: none; cursor: pointer; padding: .9rem 1.2rem; border-radius: 999px; background: var(--green); color: var(--white); font-weight: 700; box-shadow: 0 4px 10px rgba(57,169,0,.18); display: block; margin: 0 auto; }
 .login-card .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 16px rgba(57,169,0,.28); }
@@ -38,6 +42,15 @@ body { margin: 0; color: var(--black); font-family: ui-sans-serif, system-ui, -a
 .brand h1 { font-size: 2rem; margin: 0; color: var(--blue-dark); }
 .actions { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: .6rem; margin-top: .75rem; }
 .actions-center { justify-content: center; }
-.error { background: rgba(239,68,68,.1); color: #842029; border: 1px solid rgba(239,68,68,.35); padding: .65rem .8rem; border-radius: 10px; margin-bottom: .75rem; }
+.error { background: #FDECEC; color: #6A0E0E; border: 2px solid #EF4444; border-left-width: 6px; padding: .75rem 1rem; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 2px 10px rgba(0,0,0,.08); font-size: 1rem; line-height: 1.5; word-break: break-word; overflow-wrap: anywhere; }
+.error ul { margin: 0; padding-left: 1.25rem; list-style: disc; }
+.error li { margin: .2rem 0; }
 
 .login-card .btn { padding: 1rem 1.4rem; box-shadow: 0 6px 12px rgba(57,169,0,.18); font-size: 1rem; }
+
+@media (max-width: 480px) {
+  .login-card { max-width: 92vw; padding: 1.2rem; }
+  .auth-title { font-size: 1.8rem; }
+  .login-card .input { font-size: .95rem; padding: .8rem .9rem; }
+  .topbar.topbar-auth .logo-img { width: clamp(96px, 26vw, 160px); }
+}

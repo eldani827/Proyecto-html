@@ -52,11 +52,11 @@
       </div>
       <div class="password-field">
         <label for="password1">Contraseña</label>
-        <input id="password1" name="password1" type="password" class="input" required />
+        <input id="password1" name="password1" type="password" class="input" minlength="8" maxlength="8" pattern="^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8}$" required />
       </div>
       <div class="password-field">
         <label for="password2">Confirmar contraseña</label>
-        <input id="password2" name="password2" type="password" class="input" required />
+        <input id="password2" name="password2" type="password" class="input" minlength="8" maxlength="8" pattern="^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8}$" required />
       </div>
       <div class="actions actions-center">
         <button type="submit" class="btn">Crear cuenta</button>
