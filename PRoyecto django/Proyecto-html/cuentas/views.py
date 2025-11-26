@@ -61,8 +61,28 @@ def restablecer_password(request):
         return JsonResponse({"error": "Método no permitido"}, status=405)
 
     email = request.POST.get("email")
+    codigo = request.POST.get("codigo")
     nueva = request.POST.get("password")
 
+    if not email or not codigo or not nueva:
+        return JsonResponse({"error": "Datos incompletos"}, status=400)
+
+    if email not in codigos:
+        return JsonResponse({"error": "No se solicitó código"}, status=400)
+
+    data = codigos[email]
+    try:
+        codigo = int(codigo)
+    except ValueError:
+        return JsonResponse({"error": "Código inválido"}, status=400)
+
+    if timezone.now() > data["expira"]:
+        return JsonResponse({"error": "Código expirado"}, status=400)
+
+    if codigo != data["codigo"]:
+        return JsonResponse({"error": "Código incorrecto"}, status=400)
+
+    usuarios[email] = usuarios.get(email, {})
     usuarios[email]["password"] = nueva
 
     return JsonResponse({"mensaje": "Contraseña cambiada con éxito"})
