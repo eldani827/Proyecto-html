@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Gesicom',
     'Usuarios.apps.UsuariosConfig',
+    'cuentas',
 ]
 
 MIDDLEWARE = [
@@ -161,6 +162,13 @@ if os.environ.get('EMAIL_HOST_USER'):
     EMAIL_USE_SSL = _ssl
     EMAIL_HOST_USER = _user
     EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+    
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = "smtp.gmail.com"
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    EMAIL_HOST_USER = "tu_correo@gmail.com"
+    EMAIL_HOST_PASSWORD = "tu_contraseña_de_aplicación"
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
