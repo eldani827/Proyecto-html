@@ -1,8 +1,7 @@
-/* Fondo general */
-body {
+.usuario-wrap {
     margin: 0;
     padding: 0;
-    height: 100vh;
+    min-height: 60vh;
     background: linear-gradient(135deg, #b0f2c2, #55d68c);
     display: flex;
     justify-content: center;

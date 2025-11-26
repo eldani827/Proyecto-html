@@ -8,6 +8,13 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User, Group
 from .models import Envio
 
+def _in_group(name):
+    def check(u):
+        if u.is_superuser or u.groups.filter(name='administrador').exists():
+            return True
+        return u.groups.filter(name=name).exists()
+    return check
+
 def index(request):
     # Mantener compatibilidad; usar home como contenido principal
     return render(request, 'home.html')
@@ -17,6 +24,11 @@ def home(request):
     if request.user.is_authenticated:
         is_basic = request.user.groups.filter(name='usuario').exists()
     return render(request, 'home.html', {'is_basic_user': is_basic})
+
+@login_required
+@user_passes_test(_in_group('usuario'), login_url='access_denied')
+def role_usuario(request):
+    return render(request, 'home.html', {'is_basic_user': True})
 
 def nosotros(request):
     return render(request, 'nosotros.html')
@@ -31,12 +43,6 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
-def _in_group(name):
-    def check(u):
-        if u.is_superuser or u.groups.filter(name='administrador').exists():
-            return True
-        return u.groups.filter(name=name).exists()
-    return check
 
 @login_required
 @user_passes_test(_in_group('instructor'), login_url='access_denied')

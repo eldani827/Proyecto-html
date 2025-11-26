@@ -31,6 +31,7 @@ urlpatterns = [
     path('login/', usuarios_views.login_view, name='login'),
     path('register/', usuarios_views.register_view, name='register'),
     path('home/', gesicom_views.home, name='home'),
+    path('usuario/', gesicom_views.role_usuario, name='usuario'),
     path('nosotros/', gesicom_views.nosotros, name='nosotros'),
     path('contacto/', gesicom_views.contacto, name='contacto'),
     path('ayuda/', gesicom_views.ayuda, name='ayuda'),
