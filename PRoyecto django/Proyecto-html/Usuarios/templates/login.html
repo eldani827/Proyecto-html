@@ -10,9 +10,9 @@
 </head>
 
 <body class="login-body">
-  <header class="topbar topbar-auth">
+  <header class="topbar topbar-auth" aria-label="Encabezado de autenticación">
     <div class="brand-left">
-      <img src="{% static 'CSS/img/gesicom.jpeg' %}" alt="Logo GESICOM" class="logo-img" />
+      <img src="{% static 'CSS/img/logo.png' %}" alt="Logo SENA" class="logo-img" />
     </div>
   </header>
   <main class="login-card" role="main">
@@ -22,12 +22,7 @@
         <path d="M6 20c0-3 3.5-5 6-5s6 2 6 5" stroke="#00304D" stroke-width="2" fill="none" stroke-linecap="round" />
       </svg>
     </div>
-    {% if role %}
-    <h2 class="auth-title">Inicia sesión</h2>
-    <p class="auth-subtitle">Como <strong>{{ role|title }}</strong></p>
-    {% else %}
-    <h2 class="auth-title">Inicia sesión para continuar</h2>
-    {% endif %}
+    <h2 class="auth-title">Iniciar sesión</h2>
 
     {% if error %}
     <div class="error" role="alert">{{ error }}</div>
@@ -37,7 +32,7 @@
       {% csrf_token %}
       <input type="hidden" name="role" value="{{ role|default:'' }}" />
       <div class="username-field">
-        <label for="username">Usuario</label>
+        <label for="username">Correo electrónico</label>
         <div class="input-row">
           <div class="input-icon left" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="32" height="32" role="img" aria-hidden="true">
@@ -45,7 +40,7 @@
               <path d="M6 20c0-3 3.5-5 6-5s6 2 6 5" stroke="#00304D" stroke-width="2" fill="none" stroke-linecap="round" />
             </svg>
           </div>
-          <input id="username" name="username" type="text" class="input username-with-icon" placeholder="Tu usuario" value="{{ username|default:'' }}" required />
+          <input id="username" name="username" type="text" class="input username-with-icon" placeholder="tu@correo.com" value="{{ username|default:'' }}" required />
         </div>
       </div>
 
@@ -63,13 +58,18 @@
         </div>
       </div>
 
+      <div class="remember-field">
+        <label class="remember-label"><input type="checkbox" name="remember" class="checkbox" /> Recordarme</label>
+      </div>
       <div class="actions">
-        <button type="submit" class="btn">Iniciar sesión</button>
-        <a href="{% url 'register' %}?role={{ role|default:'' }}" class="no-account">Regístrate</a>
+        <button type="submit" class="btn">Entrar</button>
         <a href="{% url 'password_reset' %}" class="helper">¿Olvidaste tu contraseña?</a>
       </div>
     </form>
   </main>
+  <footer class="auth-footer" role="contentinfo">
+    <div class="footer-copy">© SENA 2025 - Servicio Nacional de Aprendizaje</div>
+  </footer>
   <script>
     (function(){
       var btn = document.getElementById('toggle-password');
