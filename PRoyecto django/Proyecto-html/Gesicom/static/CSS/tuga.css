@@ -6,7 +6,7 @@
 }
 
 body {
-  background: linear-gradient(to bottom right, #45b44c, #5ec06d);
+  background: linear-gradient(to bottom right,#007832);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -68,7 +68,7 @@ thead {
 }
 
 th, td {
-  border: 2px solid #3f9b41;
+  border: 2px solid #007832;
   padding: 12px;
   text-align: center;
   vertical-align: middle;
