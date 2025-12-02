@@ -21,8 +21,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 from Gesicom import views as gesicom_views
 from Usuarios import views as usuarios_views
-from django.contrib import admin
-from django.urls import path
 from cuentas import views as cuentas_views
 
 urlpatterns = [
@@ -54,8 +52,7 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='Registro/password_reset_confirm.html'), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='Registro/password_reset_complete.html'), name='password_reset_complete'),
     
-    #verid¿ficaion al gmail
-    path('admin/', admin.site.urls),
+    # recuperación con código
     path('olvide-password/', cuentas_views.olvide_password, name='olvide_password'),
     path('verificar-codigo/', cuentas_views.verificar_codigo, name='verificar_codigo'),
     path('restablecer-password/', cuentas_views.restablecer_password, name='restablecer_password'),
