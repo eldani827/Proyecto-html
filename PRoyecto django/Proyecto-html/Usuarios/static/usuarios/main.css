@@ -17,8 +17,9 @@ body { margin: 0; color: var(--black); font-family: ui-sans-serif, system-ui, -a
 .topbar.topbar-auth { margin-bottom: clamp(.6rem, 3vw, 1.6rem); }
 .brand-left { display: flex; align-items: center; justify-content: center; gap: .5rem; }
 .brand-left .logo-wrap { display: block; }
-.brand-left .logo-img { display: block; width: clamp(120px, 20vw, 180px); height: auto; object-fit: contain; filter: none; opacity: 1; background: transparent; }
-.topbar.topbar-auth .logo-img { position: static; width: clamp(120px, 18vw, 200px); height: auto; }
+.brand-left .logo-img { display: none; }
+.brand-left .logo-svg { display: block; width: clamp(120px, 20vw, 180px); height: auto; }
+.topbar.topbar-auth .logo-svg { position: static; width: clamp(120px, 18vw, 200px); height: auto; }
 
 .login-body { background: linear-gradient(180deg, #eaf7ee 0%, #39A900 100%); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: clamp(1rem, 4vw, 2rem) clamp(.8rem, 3vw, 1.4rem); }
 .login-card { width: 100%; max-width: clamp(340px, 92vw, 560px); background: #ffffff; border: 0; border-radius: 22px; padding: clamp(1.2rem, 3.2vw, 2rem); box-shadow: 0 20px 40px rgba(0,0,0,.16); margin: clamp(.5rem, 2.5vw, 1.2rem) 0 clamp(1rem, 4vw, 2rem); overflow: hidden; }
