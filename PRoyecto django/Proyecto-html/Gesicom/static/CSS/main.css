@@ -198,11 +198,14 @@ header.topbar.topbar-auth + .card { margin-top: clamp(96px, 12vw, 140px); }
 }
 
 body { margin: 0; background: var(--bg); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+/* Layout general: asegura footer al fondo cuando el contenido es corto */
+html { height: 100%; }
+body:not(.login-body) { min-height: 100vh; display: flex; flex-direction: column; }
 .topbar { display: flex; align-items: center; justify-content: space-between; padding: .75rem 1rem; background: var(--primary); color: #fff; }
 .logo-img { width: 140px; height: auto; object-fit: contain; border-radius: 4px; }
 .nav a { color: #cbd5e1; text-decoration: none; margin-left: 1rem; }
 .nav a:hover { color: #fff; }
-main.main { padding: clamp(1rem, 3vw, 2rem); }
+main.main { padding: clamp(1rem, 3vw, 2rem); flex: 1 0 auto; }
 .title { margin: 0 0 .25rem; }
 .subtitle { margin: 0 0 1.25rem; color: var(--muted); }
 .card .subtitle { text-align: center; font-size: 2.4rem; line-height: 1.2; color: #39A900; font-weight: 800; letter-spacing: .3px; }
@@ -224,7 +227,7 @@ main.main { padding: clamp(1rem, 3vw, 2rem); }
 .card-icon img { width: 54px; height: 54px; }
 .btn { border: none; padding: .6rem .9rem; border-radius: 8px; background: var(--primary); color: #fff; cursor: pointer; text-decoration: none; display: inline-block; }
 .btn:hover { filter: brightness(1.05); }
-.footer { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: 1rem; background: #39A900; color: #ffffff; border-top: none; }
+.footer { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: 1rem; background: #39A900; color: #ffffff; border-top: none; width: 100%; margin-top: auto; min-height: clamp(120px, 22vh, 260px); }
 .auth-footer { width: 100%; margin-top: auto; }
 .footer .sena { font-weight: 700; letter-spacing: .6px; }
 .footer-left { display: flex; align-items: center; gap: .5rem; }
@@ -252,7 +255,7 @@ main.main { padding: clamp(1rem, 3vw, 2rem); }
 .landing .card h2 { margin: .5rem 0 .75rem; color: #000000; font-weight: 700; }
 .landing .btn { background: #39A900; border-radius: 999px; padding: .5rem .9rem; font-weight: 600; }
 
-.footer.footer-landing { background: #39A900; color: #ffffff; border-top: none; }
+.footer.footer-landing { background: #39A900; color: #ffffff; border-top: none; min-height: clamp(120px, 22vh, 260px); }
 .footer.footer-landing .sena { font-weight: 700; }
 .footer.footer-landing .circle { color: #ffffff; border-color: rgba(255,255,255,.5); }
 .footer.footer-landing .address { font-size: .9rem; opacity: .9; }

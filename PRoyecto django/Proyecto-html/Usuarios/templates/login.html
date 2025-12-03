@@ -12,7 +12,10 @@
 <body class="login-body">
   <header class="topbar topbar-auth" aria-label="Encabezado de autenticación">
     <div class="brand-left">
-      <img src="{% static 'CSS/img/logo.png' %}" alt="Logo SENA" class="logo-img" />
+      <picture class="logo-wrap">
+        <source srcset="{% static 'CSS/img/logo_sena.svg' %}" type="image/svg+xml" />
+        <img src="{% static 'CSS/img/logo.png' %}" alt="Logo SENA" class="logo-img" />
+      </picture>
     </div>
   </header>
   <main class="login-card" role="main">
