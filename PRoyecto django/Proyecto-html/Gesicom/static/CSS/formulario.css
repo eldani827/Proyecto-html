@@ -1,0 +1,120 @@
+/*imagen*/
+.inicio{
+     border: 2px solid #006100; 
+     background-color: #006100;
+     color: white;  
+  padding: 10px;
+  display: flex;           
+  align-items: center;      
+  gap: 20px;              
+  max-width: 600px;   
+}
+
+.inicio img {
+  width: 100px;             
+  height: auto;
+  display: block;
+}
+/*tamaño formulario*/
+.cuadro{
+  border: 2px solid #000;     /* Borde negro */
+  border-radius: 10px;        /* Esquinas redondeadas */
+  padding: 20px;
+  max-width: 700px;
+  margin: 30px auto;          /* Centra el cuadro en la página */
+  background-color: #f9f9f9;  /* Color de fondo claro */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+/*cuadros verdes*/
+#nombre{
+    border: 2px solid#006100;
+    padding: 5px;
+}
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+/*cuadro verde de  proyecto*/
+
+#opcion {
+  border: 2px solid #006100;
+  padding: 5px;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 16px;
+}
+
+/*cuadro verde chekpoint*/
+input[type="checkbox"] {
+  accent-color: #006100; /* Hace que el cuadro y el check sean verdes */
+  width: 18px;
+  height: 18px;
+}
+/*cuadro de fecha*/
+#fecha {
+  border: 2px solid #006100;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100%; /* opcional, para que se alinee con los otros campos */
+}
+
+/*cuadro subir archivo*/
+#archivo {
+  border: 2px solid #006100;
+  padding: 6px;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/*cuadro link del archivo*/
+#linkArchivo {
+  border: 2px solid #006100;
+  padding: 8px;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 300px; /* igual que antes */
+  box-sizing: border-box;
+}
+
+
+/*cuadro observaciones*/
+#observaciones {
+  border: 2px solid green;
+  border-radius: 5px;
+}
+
+/*formulario general*/
+.cuadro {
+  max-width: 600px;
+  margin: 0 auto;
+  
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 8px;
+
+  margin-top: 5px;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+input[type="checkbox"] {
+  width: auto;
+  margin-right: 10px;
+}
+
+
+/*boton de enviar*/
+input[type="submit"] {
+  background-color: #006100;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar sesión · Usuarios</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'usuarios/main.css' %}">
+</head>
+
+<body class="login-body">
+  <header class="topbar topbar-auth" aria-label="Encabezado de autenticación">
+    <div class="brand-left">
+      <div class="logo-wrap">
+        <svg class="logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" role="img" aria-label="Logo SENA">
+          <defs>
+            <filter id="toMask" color-interpolation-filters="sRGB">
+              <feComponentTransfer>
+                <feFuncR type="table" tableValues="1 0"/>
+                <feFuncG type="table" tableValues="1 0"/>
+                <feFuncB type="table" tableValues="1 0"/>
+              </feComponentTransfer>
+              <feColorMatrix type="luminanceToAlpha"/>
+            </filter>
+            <mask id="senaLogoMask">
+              <image x="0" y="0" width="100%" height="100%" href="{% static 'CSS/img/logo.png' %}" preserveAspectRatio="xMidYMid meet" filter="url(#toMask)"/>
+            </mask>
+          </defs>
+          <rect width="100%" height="100%" fill="#0c6b2c" mask="url(#senaLogoMask)"/>
+        </svg>
+      </div>
+    </div>
+  </header>
+  <main class="login-card" role="main">
+    <div class="login-logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="128" height="128" role="img" aria-label="Icono de usuario">
+        <circle cx="12" cy="7.5" r="4" stroke="#00304D" stroke-width="2" fill="none" />
+        <path d="M6 20c0-3 3.5-5 6-5s6 2 6 5" stroke="#00304D" stroke-width="2" fill="none" stroke-linecap="round" />
+      </svg>
+    </div>
+    <h2 class="auth-title">Iniciar sesión</h2>
+
+    {% if error %}
+    <div class="error" role="alert">{{ error }}</div>
+    {% endif %}
+
+    <form action="" method="post" novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="role" value="{{ role|default:'' }}" />
+      <div class="username-field">
+        <label for="username">Correo electrónico</label>
+        <div class="input-row">
+          <div class="input-icon left" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="32" height="32" role="img" aria-hidden="true">
+              <circle cx="12" cy="7.5" r="4" stroke="#00304D" stroke-width="2" fill="none" />
+              <path d="M6 20c0-3 3.5-5 6-5s6 2 6 5" stroke="#00304D" stroke-width="2" fill="none" stroke-linecap="round" />
+            </svg>
+          </div>
+          <input id="username" name="username" type="text" class="input username-with-icon" placeholder="tu@correo.com" value="{{ username|default:'' }}" required />
+        </div>
+      </div>
+
+      <div class="password-field">
+        <label for="password" class="password-label">Contraseña</label>
+        <div class="input-row">
+          <button type="button" id="toggle-password" class="toggle-password left" aria-label="Mostrar u ocultar contraseña" aria-pressed="false">
+            <svg viewBox="0 0 24 24" width="32" height="32" role="img" aria-hidden="true">
+              <path d="M1 12s4-7 11-7c3 0 5.7 1 7.8 2.6" stroke="currentColor" stroke-width="2" fill="none"/>
+              <path d="M23 12s-4 7-11 7c-3 0-5.7-1-7.8-2.6" stroke="currentColor" stroke-width="2" fill="none"/>
+              <path d="M3 3l18 18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <input id="password" name="password" type="password" class="input password-with-icon" placeholder="Tu contraseña" required />
+        </div>
+      </div>
+
+      <div class="remember-field">
+        <label class="remember-label"><input type="checkbox" name="remember" class="checkbox" /> Recordarme</label>
+      </div>
+      <div class="actions">
+        <button type="submit" class="btn">Entrar</button>
+        <a href="{% url 'password_reset' %}" class="helper">¿Olvidaste tu contraseña?</a>
+      </div>
+    </form>
+  </main>
+  <footer class="auth-footer" role="contentinfo">
+    <div class="footer-copy">© SENA 2025 - Servicio Nacional de Aprendizaje</div>
+  </footer>
+  <script>
+    (function(){
+      var btn = document.getElementById('toggle-password');
+      var input = document.getElementById('password');
+      if(!btn || !input) return;
+      var svg = btn.querySelector('svg');
+      function setVisible(v){
+        if(v){
+          input.type = 'text';
+          btn.setAttribute('aria-pressed','true');
+          svg.innerHTML = '<path d="M1 12s4-7 11-7c3 0 5.7 1 7.8 2.6" stroke="currentColor" stroke-width="2" fill="none"/>'+
+                          '<path d="M23 12s-4 7-11 7c-3 0-5.7-1-7.8-2.6" stroke="currentColor" stroke-width="2" fill="none"/>';
+        } else {
+          input.type = 'password';
+          btn.setAttribute('aria-pressed','false');
+          svg.innerHTML = '<path d="M1 12s4-7 11-7c3 0 5.7 1 7.8 2.6" stroke="currentColor" stroke-width="2" fill="none"/>'+
+                          '<path d="M23 12s-4 7-11 7c-3 0-5.7-1-7.8-2.6" stroke="currentColor" stroke-width="2" fill="none"/>'+
+                          '<path d="M3 3l18 18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>';
+        }
+      }
+      btn.addEventListener('click', function(){
+        var next = input.type === 'password';
+        setVisible(next);
+      });
+    })();
+  </script>
+</body>
+</html>

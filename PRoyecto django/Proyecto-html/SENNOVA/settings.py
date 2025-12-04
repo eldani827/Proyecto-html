@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Gesicom',
+    'Usuarios.apps.UsuariosConfig',
+    'cuentas',
 ]
 
 MIDDLEWARE = [
@@ -97,6 +100,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+    {
+        'NAME': 'Gesicom.validators.EightCharUpperNumberOrSpecialValidator',
+    },
 ]
 
 
@@ -116,6 +122,48 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# Media (uploads de archivos de evidencias)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# Email backend (configurable por variables de entorno)
+# Si se define EMAIL_HOST_USER, usa SMTP; si no, usa backend de consola
+if os.environ.get('EMAIL_HOST_USER'):
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+    EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
+    EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', 'False') == 'True'
+    if EMAIL_USE_SSL:
+        EMAIL_USE_TLS = False
+    _domain = EMAIL_HOST_USER.split('@')[-1].lower() if '@' in EMAIL_HOST_USER else ''
+    _providers = {
+        'gmail.com': ('smtp.gmail.com', 587, True, False),
+        'outlook.com': ('smtp.office365.com', 587, True, False),
+        'hotmail.com': ('smtp.office365.com', 587, True, False),
+        'live.com': ('smtp.office365.com', 587, True, False),
+        'yahoo.com': ('smtp.mail.yahoo.com', 587, True, False),
+        'yahoo.es': ('smtp.mail.yahoo.com', 587, True, False),
+        'icloud.com': ('smtp.mail.me.com', 587, True, False),
+        'zoho.com': ('smtp.zoho.com', 587, True, False),
+        'proton.me': ('smtp.protonmail.ch', 587, True, False),
+        'protonmail.com': ('smtp.protonmail.ch', 587, True, False),
+    }
+    if os.environ.get('EMAIL_HOST'):
+        EMAIL_HOST = os.environ.get('EMAIL_HOST')
+        EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
+    else:
+        _fallback = _providers.get(_domain, ('smtp.gmail.com', 587, True, False))
+        EMAIL_HOST, EMAIL_PORT, EMAIL_USE_TLS, EMAIL_USE_SSL = _fallback
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'no-reply@gesicom.local')
+
+# Auth redirects
+LOGIN_REDIRECT_URL = '/home/'
+LOGOUT_REDIRECT_URL = '/login/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

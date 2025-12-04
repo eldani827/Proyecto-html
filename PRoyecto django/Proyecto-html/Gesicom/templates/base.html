@@ -1,0 +1,64 @@
+<!--template principal-->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Portal GESICOM{% endblock %}</title>
+    <link href="{% static 'CSS/main.css' %}" rel="stylesheet" />
+</head>
+<body>
+
+{% block content %}
+<header class="topbar">
+    <div class="brand">
+        <img src="{% static 'CSS/img/gesicom.jpeg' %}" alt="Logo GESICOM" class="logo-img">
+    </div>
+    <nav class="nav">
+        <a href="{% url 'home' %}">Inicio</a>
+        <a href="{% url 'nosotros' %}">Nosotros</a>
+        <a href="{% url 'contacto' %}">Contacto</a>
+        <a href="{% url 'ayuda' %}">Ayuda</a>
+    </nav>
+</header>
+
+<main class="main">
+    <h1 class="title">Bienvenido al portal GESICOM</h1>
+    <p class="subtitle">Selecciona tu rol para continuar</p>
+
+    <section class="roles-grid" aria-label="Roles">
+        <!-- El resto del contenido se mantiene exactamente igual -->
+        {% include 'roles_cards.html' %}
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="footer-left">
+        <div class="sena">SENA</div>
+    </div>
+    <div class="footer-social" aria-label="Redes sociales">
+        <a class="circle fb" aria-label="Facebook (SENA)" title="Facebook del SENA" href="https://www.facebook.com/SENA/" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 3h-3a4 4 0 00-4 4v3H6v4h2v7h4v-7h3l1-4h-4V7a1 1 0 011-1h3z"></path>
+          </svg>
+        </a>
+        <a class="circle x" aria-label="X (Twitter) SENA" title="Cuenta X del SENA" href="https://x.com/SENAComunica" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 4l16 16" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"></path>
+            <path d="M20 4L4 20" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"></path>
+          </svg>
+        </a>
+        <a class="circle in" aria-label="LinkedIn (SENA)" title="LinkedIn del SENA" href="https://www.linkedin.com/school/servicio-nacional-de-aprendizaje-sena-/" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="7" cy="8" r="1.7"></circle>
+            <path d="M6 10h2.8v8H6z"></path>
+            <path d="M10.8 10H14a3 3 0 013 3v5h-2.8v-4.5c0-.8-.6-1.5-1.4-1.5h-2z"></path>
+          </svg>
+        </a>
+    </div>
+</footer>
+{% endblock %}
+</body>
+</html>
