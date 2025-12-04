@@ -45,6 +45,8 @@ urlpatterns = [
     # Panel de administración
     path('administracion/', gesicom_views.admin_menu, name='admin_menu'),
     path('proyecciones/', gesicom_views.proyecciones, name='proyecciones'),
+    path('reportes/', gesicom_views.reportes, name='reportes'),
+    path('reportes.csv', gesicom_views.reportes_csv, name='reportes_csv'),
     
     # Password reset
     path('password-reset/', auth_views.PasswordResetView.as_view(template_name='Registro/password_reset_form.html'), name='password_reset'),
