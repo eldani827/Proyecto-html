@@ -49,8 +49,12 @@ def register_view(request):
         if password1 != password2:
             errors.append('Las contraseñas no coinciden.')
 
-        if not re.match(r'^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8}$', password1 or ''):
-            errors.append('La contraseña debe tener 8 caracteres, incluir al menos una letra mayúscula y un número.')
+        # Validar: 8 caracteres exactamente, 1+ mayúscula, 1+ dígito O carácter especial
+        # Pattern: ^(?=.*[A-Z])(?=.*[\d\W])[A-Za-z\d\W]{8}$
+        has_upper = re.search(r'[A-Z]', password1) is not None
+        has_digit_or_special = re.search(r'[\d\W]', password1) is not None
+        if not (len(password1) == 8 and has_upper and has_digit_or_special):
+            errors.append('La contraseña debe tener exactamente 8 caracteres, al menos una letra mayúscula y un número o carácter especial.')
         if User.objects.filter(username=username).exists():
             errors.append('Ese usuario ya existe. Prueba con otro.')
 
