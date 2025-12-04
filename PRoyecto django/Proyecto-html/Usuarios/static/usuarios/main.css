@@ -42,6 +42,7 @@ body { margin: 0; color: var(--black); font-family: ui-sans-serif, system-ui, -a
 .auth-subtitle { margin: 0 0 1.25rem; font-size: 1rem; color: var(--blue-dark); text-align: center; }
 .login-card .login-logo { display: flex; justify-content: center; align-items: center; }
 .login-card .login-logo svg { display: none; }
+.login-card .login-logo .logo-img { display: block; width: clamp(120px, 22vw, 180px); height: auto; object-fit: contain; }
 .card { background: var(--white); border: 3px solid var(--blue-dark); border-radius: 16px; padding: 2rem; box-shadow: 0 18px 32px rgba(0,0,0,0.12); }
 .brand { display: grid; place-items: center; gap: .6rem; margin-bottom: 1.25rem; }
 .brand .logo { width: 96px; height: 96px; border-radius: 50%; background: var(--blue-dark); }
