@@ -1,12 +1,17 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
+from django.db.models.functions import TruncMonth
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User, Group
 from .models import Envio
+from django.http import HttpResponse
+import csv
+import datetime
+import calendar
 
 def _in_group(name):
     def check(u):
@@ -107,6 +112,115 @@ def proyecciones(request):
         'proyecto_stats': proyecto_stats,
     }
     return render(request, 'admin/proyecciones.html', context)
+
+def reportes(request):
+    proyecto = request.GET.get('proyecto', '')
+    start = request.GET.get('start', '')
+    end = request.GET.get('end', '')
+
+    qs = Envio.objects.all()
+    if proyecto:
+        qs = qs.filter(proyecto=proyecto)
+
+    def parse_month(s):
+        try:
+            year, month = map(int, s.split('-'))
+            return datetime.date(year, month, 1)
+        except Exception:
+            return None
+
+    start_date = parse_month(start) if start else None
+    end_date = parse_month(end) if end else None
+    if end_date:
+        last_day = calendar.monthrange(end_date.year, end_date.month)[1]
+        end_date = datetime.date(end_date.year, end_date.month, last_day)
+    if start_date:
+        qs = qs.filter(fecha_envio__gte=start_date)
+    if end_date:
+        qs = qs.filter(fecha_envio__lte=end_date)
+
+    total_envios = qs.count()
+    categoria_stats_qs = (
+        qs.values('tipo_evidencia')
+        .annotate(total=Count('id'))
+        .order_by('-total', 'tipo_evidencia')
+    )
+    categoria_stats = [
+        {
+            'tipo_evidencia': item['tipo_evidencia'] or 'Sin categoría',
+            'total': item['total'],
+            'porcentaje': round((item['total'] / total_envios) * 100, 2) if total_envios else 0,
+        }
+        for item in categoria_stats_qs
+    ]
+
+    monthly_qs = (
+        qs.annotate(month=TruncMonth('fecha_envio'))
+        .values('month')
+        .annotate(total=Count('id'))
+        .order_by('month')
+    )
+    monthly_stats = [
+        {
+            'month': item['month'],
+            'total': item['total'],
+            'porcentaje': round((item['total'] / total_envios) * 100, 2) if total_envios else 0,
+        }
+        for item in monthly_qs
+    ]
+
+    proyecto_choices = [p for p, _ in Envio.PROYECTO_CHOICES]
+
+    context = {
+        'proyecto': proyecto,
+        'start': start,
+        'end': end,
+        'proyecto_choices': proyecto_choices,
+        'monthly_stats': monthly_stats,
+        'categoria_stats': categoria_stats,
+    }
+    return render(request, 'admin/reportes.html', context)
+
+def reportes_csv(request):
+    proyecto = request.GET.get('proyecto', '')
+    start = request.GET.get('start', '')
+    end = request.GET.get('end', '')
+
+    qs = Envio.objects.all()
+    if proyecto:
+        qs = qs.filter(proyecto=proyecto)
+
+    def parse_month(s):
+        try:
+            year, month = map(int, s.split('-'))
+            return datetime.date(year, month, 1)
+        except Exception:
+            return None
+
+    start_date = parse_month(start) if start else None
+    end_date = parse_month(end) if end else None
+    if end_date:
+        last_day = calendar.monthrange(end_date.year, end_date.month)[1]
+        end_date = datetime.date(end_date.year, end_date.month, last_day)
+    if start_date:
+        qs = qs.filter(fecha_envio__gte=start_date)
+    if end_date:
+        qs = qs.filter(fecha_envio__lte=end_date)
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="reportes.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['fecha_envio', 'nombre', 'proyecto', 'tipo_evidencia', 'link_evidencia', 'observaciones'])
+    for e in qs.order_by('fecha_envio'):
+        writer.writerow([
+            e.fecha_envio.isoformat() if e.fecha_envio else '',
+            e.nombre,
+            e.proyecto,
+            e.tipo_evidencia,
+            e.link_evidencia or '',
+            (e.observaciones or '').replace('\r\n', ' ').replace('\n', ' '),
+        ])
+    return response
 
 @login_required
 def evidencia(request):

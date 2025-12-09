@@ -25,7 +25,7 @@
       {% csrf_token %}
       <input type="hidden" name="role" value="{{ role|default:'' }}" />
       <div class="username-field">
-        <label for="username">Correo electrónico</label>
+        <label for="username">Usuario o correo electrónico</label>
         <div class="input-row">
           <div class="input-icon left" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="32" height="32" role="img" aria-hidden="true">
@@ -33,7 +33,7 @@
               <path d="M6 20c0-3 3.5-5 6-5s6 2 6 5" stroke="#00304D" stroke-width="2" fill="none" stroke-linecap="round" />
             </svg>
           </div>
-          <input id="username" name="username" type="text" class="input username-with-icon" placeholder="tu@correo.com" value="{{ username|default:'' }}" required />
+          <input id="username" name="username" type="text" class="input username-with-icon" placeholder="tu@correo.com o tu usuario" value="{{ username|default:'' }}" required />
         </div>
       </div>
 
@@ -57,6 +57,7 @@
       <div class="actions">
         <button type="submit" class="btn">Entrar</button>
         <a href="{% url 'password_reset' %}" class="helper">¿Olvidaste tu contraseña?</a>
+        <a href="{% url 'register' %}?role={{ role|default:'' }}" class="helper">¿No tienes cuenta? Regístrate</a>
       </div>
     </form>
   </main>
