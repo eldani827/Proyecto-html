@@ -12,6 +12,8 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            if user.is_superuser:
+                return redirect('admin:index')
             role_routes = {
                 'instructor': 'role_instructor',
                 'investigador': 'role_investigador',
