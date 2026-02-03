@@ -1,3 +1,4 @@
 from django.test import TestCase
 
-# Create your tests here.
+# Aquí se deben escribir las pruebas para los flujos de 'cuentas'
+# (ej.: enviar código, verificar código, restablecer contraseña).

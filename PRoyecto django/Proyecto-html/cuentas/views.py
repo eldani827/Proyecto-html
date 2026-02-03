@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model
 import random, datetime
 
-# GUARDAR CÓDIGOS TEMPORALES
+# Almacena temporalmente los códigos de recuperación en memoria (no persistente).
 codigos = {}
 User = get_user_model()
 
@@ -13,6 +13,7 @@ def olvide_password(request):
     if request.method != "POST":
         return JsonResponse({"error": "Método no permitido"}, status=405)
 @csrf_exempt
+# Envía un código de recuperación al correo del usuario. Debe recibir POST con 'email'.
 def olvide_password(request):
     if request.method != "POST":
         return JsonResponse({"error": "Método no permitido"}, status=405)
@@ -38,9 +39,10 @@ def olvide_password(request):
 
     return JsonResponse({"mensaje": "Código enviado al correo."})
 @csrf_exempt
+# Verifica que el código enviado sea correcto y no haya expirado. POST: 'email', 'codigo'.
 def verificar_codigo(request):
     if request.method != "POST":
-        return JsonResponse({"error": "Método no permitido"}, status=405)
+        return JsonResponse({"error": "Método no permitido"}, status=405) 
 
     email = request.POST.get("email")
     codigo_raw = request.POST.get("codigo")
@@ -64,9 +66,10 @@ def verificar_codigo(request):
 
     return JsonResponse({"mensaje": "Código correcto"})
 @csrf_exempt
+# Cambia la contraseña si el código es válido. POST: 'email', 'codigo', 'password'.
 def restablecer_password(request):
     if request.method != "POST":
-        return JsonResponse({"error": "Método no permitido"}, status=405)
+        return JsonResponse({"error": "Método no permitido"}, status=405) 
 
     email = request.POST.get("email")
     codigo = request.POST.get("codigo")
