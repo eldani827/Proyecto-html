@@ -1,3 +1,11 @@
+"""Vistas de la app 'Gesicom'.
+
+Incluye:
+- Páginas públicas (home, contacto, ayuda)
+- Gestión y listas de envíos de evidencia
+- Reportes y exportación CSV
+- Control de acceso por grupos/roles
+"""
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
@@ -14,6 +22,10 @@ import datetime
 import calendar
 
 def _in_group(name):
+    """Devuelve una función para usar con `user_passes_test`.
+
+    Comprueba si el usuario es superuser o pertenece al grupo `name`.
+    """
     def check(u):
         if u.is_superuser or u.groups.filter(name='administrador').exists():
             return True

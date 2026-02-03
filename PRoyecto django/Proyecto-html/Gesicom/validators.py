@@ -3,11 +3,12 @@ from django.core.exceptions import ValidationError
 
 
 class EightCharUpperNumberOrSpecialValidator:
-    """
-    Enforce password rules:
-    - Exactly 8 characters
-    - At least one uppercase letter
-    - At least one digit OR one special character
+    """Validador de contraseñas:
+
+    Reglas:
+    - Exactamente 8 caracteres
+    - Al menos una letra mayúscula
+    - Al menos un dígito o un carácter especial
     """
 
     def validate(self, password, user=None):

@@ -7,8 +7,10 @@ register = template.Library()
 
 @register.filter
 def highlight(value, query):
-    """Wrap matching substrings of 'value' with <mark> for the given query.
-    Case-insensitive; safely escapes original value and marks result safe.
+    """Envuelve las coincidencias de 'query' en 'value' con <mark>.
+
+    Búsqueda case-insensitive; escapa el texto original y marca el resultado
+    como seguro para poder renderizar el HTML de marcado.
     """
     if not value or not query:
         return value

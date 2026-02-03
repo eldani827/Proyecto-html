@@ -1,3 +1,10 @@
+"""Administración de la app `cuentas`.
+
+Registra aquí los modelos para que puedan gestionarse desde el panel de
+administración (ej.: RecoveryCode para códigos de recuperación).
+"""
 from django.contrib import admin
 
-# Registra aquí los modelos para que aparezcan en el panel de administración de Django.
+# Ejemplo de registro (descomentar si creas el modelo):
+# from .models import RecoveryCode
+# admin.site.register(RecoveryCode)
