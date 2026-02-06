@@ -1,46 +1,43 @@
 """
-URL configuration for SENNOVA project.
+🔗 CONFIGURACIÓN DE RUTAS (URLs) DEL PROYECTO SENNOVA
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+Este archivo mapea URLs a funciones/vistas:
+- /login/ → Página de inicio de sesión
+- /register/ → Página de registro
+- /home/ → Página principal
+- /roles/instructor/ → Panel de instructor
+- /admin/ → Panel de administración
+
+Las rutas definen qué se muestra al acceder a cada URL.
 """
-from django.contrib import admin
-from django.urls import path
-from django.contrib.auth import views as auth_views
-from django.conf import settings
-from django.conf.urls.static import static
-from Gesicom import views as gesicom_views
-from Usuarios import views as usuarios_views
-from cuentas import views as cuentas_views
+from django.contrib import admin                           # Panel admin
+from django.urls import path                               # Definir rutas
+from django.contrib.auth import views as auth_views       # Vistas de recuperación contraseña
+from django.conf import settings                           # Configuración del proyecto
+from django.conf.urls.static import static                # Servir archivos media
+from Gesicom import views as gesicom_views                # Vistas principales
+from Usuarios import views as usuarios_views              # Vistas de login/registro
+from cuentas import views as cuentas_views                # Vistas de recuperación
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', usuarios_views.login_view, name='login_root'),
-    path('login/', usuarios_views.login_view, name='login'),
-    path('register/', usuarios_views.register_view, name='register'),
-    path('home/', gesicom_views.home, name='home'),
-    path('usuario/', gesicom_views.role_usuario, name='usuario'),
-    path('nosotros/', gesicom_views.nosotros, name='nosotros'),
-    path('contacto/', gesicom_views.contacto, name='contacto'),
-    path('ayuda/', gesicom_views.ayuda, name='ayuda'),
-    path('portal/', gesicom_views.portal, name='portal'),
+    path('admin/', admin.site.urls),                                 # 🏢 Panel de administración
+    path('', usuarios_views.login_view, name='login_root'),         # 🏠 Inicio → redirige a login
+    path('login/', usuarios_views.login_view, name='login'),        # 🔓 Página de login
+    path('register/', usuarios_views.register_view, name='register'), # 📝 Página de registro
+    path('home/', gesicom_views.home, name='home'),                 # 🏠 Página principal
+    path('usuario/', gesicom_views.role_usuario, name='usuario'),   # 👤 Panel de usuario
+    path('nosotros/', gesicom_views.nosotros, name='nosotros'),     # ℹ️ Página nosotros
+    path('contacto/', gesicom_views.contacto, name='contacto'),     # 📞 Página contacto
+    path('ayuda/', gesicom_views.ayuda, name='ayuda'),              # ❓ Página de ayuda
+    path('portal/', gesicom_views.portal, name='portal'),           # 🚪 Portal
     
+    # 👥 RUTAS POR ROLES (diferentes paneles según el rol del usuario)
     path('roles/instructor/', gesicom_views.role_instructor, name='role_instructor'),
     path('roles/instructor-table/', gesicom_views.instructor_table, name='instructor_table'),
     path('roles/investigador/', gesicom_views.role_investigador, name='role_investigador'),
     path('roles/dinamizador/', gesicom_views.role_dinamizador, name='role_dinamizador'),
     path('roles/coordinador/', gesicom_views.role_coordinador, name='role_coordinador'),
-    path('access-denied/', gesicom_views.access_denied, name='access_denied'),
+    path('access-denied/', gesicom_views.access_denied, name='access_denied'),  # 🚫 Acceso denegado
     
     # Panel de administración
     path('administracion/', gesicom_views.admin_menu, name='admin_menu'),
@@ -61,6 +58,6 @@ urlpatterns = [
     
 ]
 
-# Servir archivos media en desarrollo
+# 🖼️ Servir archivos media (imágenes, PDFs, etc) solo en desarrollo
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
