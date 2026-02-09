@@ -35,3 +35,5 @@ Thumbs.db
 
 # Ignore Python compiled and distribution files in site-packages or venv
 *.egg
+
+#
