@@ -5,6 +5,7 @@ import re
 
 register = template.Library()
 
+
 @register.filter
 def highlight(value, query):
     """Envuelve las coincidencias de 'query' en 'value' con <mark>.

@@ -64,7 +64,3 @@ class Envio(models.Model):
     def __str__(self):
         return self.tipo_evidencia
 
-
-
-
-

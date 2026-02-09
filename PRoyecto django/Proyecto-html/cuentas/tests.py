@@ -6,6 +6,5 @@ Sugerencias de pruebas a implementar:
 - Restablecimiento de contraseña y verificación de login con nueva contraseña (`restablecer_password`).
 - Casos borde: métodos no permitidos, datos faltantes, correo no registrado.
 """
-from django.test import TestCase
 
 # Implementa tests que cubran los flujos anteriores.

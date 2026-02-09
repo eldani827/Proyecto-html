@@ -12,8 +12,6 @@ Ejemplo (comentado):
 #     expires_at = models.DateTimeField()
 #     used = models.BooleanField(default=False)
 #     created_at = models.DateTimeField(auto_now_add=True)
-
 """
-from django.db import models
 
 # Define aquí los modelos de datos de la app (por ejemplo, códigos de recuperación o registros relacionados).

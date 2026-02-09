@@ -6,6 +6,5 @@ Sugerencias de pruebas a implementar:
 - Vistas de reportes y exportación CSV.
 - Comprobación de permisos por roles (decoradores `user_passes_test`).
 """
-from django.test import TestCase
 
 # Implementa TestCase y pruebas específicas aquí.

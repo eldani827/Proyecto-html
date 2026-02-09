@@ -10,16 +10,14 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
 from django.db.models.functions import TruncMonth
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User, Group
 from .models import Envio
 from django.http import HttpResponse
 import csv
 import datetime
 import calendar
+
 
 def _in_group(name):
     """Devuelve una función para usar con `user_passes_test`.
@@ -32,9 +30,11 @@ def _in_group(name):
         return u.groups.filter(name=name).exists()
     return check
 
+
 def index(request):
     # Mantener compatibilidad; usar home como contenido principal
     return render(request, 'home.html')
+
 
 def home(request):
     is_basic = False
@@ -42,19 +42,24 @@ def home(request):
         is_basic = request.user.groups.filter(name='usuario').exists()
     return render(request, 'home.html', {'is_basic_user': is_basic})
 
+
 @login_required
 @user_passes_test(_in_group('usuario'), login_url='access_denied')
 def role_usuario(request):
     return render(request, 'home.html', {'is_basic_user': True})
 
+
 def nosotros(request):
     return render(request, 'nosotros.html')
+
 
 def contacto(request):
     return render(request, 'contacto.html')
 
+
 def ayuda(request):
     return render(request, 'ayuda.html')
+
 
 def logout_view(request):
     logout(request)
@@ -66,27 +71,33 @@ def logout_view(request):
 def role_instructor(request):
     return render(request, 'roles/instructor.html')
 
+
 @login_required
 @user_passes_test(_in_group('investigador'), login_url='access_denied')
 def role_investigador(request):
     return render(request, 'roles/investigador.html')
+
 
 @login_required
 @user_passes_test(_in_group('dinamizador'), login_url='access_denied')
 def role_dinamizador(request):
     return render(request, 'roles/dinamizador.html')
 
+
 @login_required
 @user_passes_test(_in_group('coordinador'), login_url='access_denied')
 def role_coordinador(request):
     return render(request, 'roles/coordinador.html')
 
+
 def portal(request):
     # Redirige al selector de roles (home)
     return redirect('home')
 
+
 def admin_menu(request):
     return render(request, 'admin/menu.html')
+
 
 def proyecciones(request):
     categoria_stats = (
@@ -124,6 +135,7 @@ def proyecciones(request):
         'proyecto_stats': proyecto_stats,
     }
     return render(request, 'admin/proyecciones.html', context)
+
 
 def reportes(request):
     proyecto = request.GET.get('proyecto', '')
@@ -193,6 +205,7 @@ def reportes(request):
     }
     return render(request, 'admin/reportes.html', context)
 
+
 def reportes_csv(request):
     proyecto = request.GET.get('proyecto', '')
     start = request.GET.get('start', '')
@@ -233,6 +246,7 @@ def reportes_csv(request):
             (e.observaciones or '').replace('\r\n', ' ').replace('\n', ' '),
         ])
     return response
+
 
 @login_required
 def evidencia(request):
@@ -278,6 +292,7 @@ def evidencia(request):
 
     return render(request, 'formulario.html')
 
+
 @login_required
 def evidencias_list(request):
     qs = Envio.objects.all()
@@ -320,11 +335,20 @@ def evidencias_list(request):
     }
     return render(request, 'evidencias_list.html', context)
 
+
 def access_denied(request):
     return render(request, 'access_denied.html')
 
+
 @login_required
-@user_passes_test(lambda u: (u.is_superuser or u.groups.filter(name='administrador').exists() or u.groups.filter(name__in=['coordinador','dinamizador']).exists()), login_url='access_denied')
+@user_passes_test(
+    lambda u: (
+        u.is_superuser
+        or u.groups.filter(name='administrador').exists()
+        or u.groups.filter(name__in=['coordinador', 'dinamizador']).exists()
+    ),
+    login_url='access_denied',
+)
 def instructor_table(request):
     qs = Envio.objects.all().order_by('-fecha_envio')
     return render(request, 'roles/instructor_table.html', {'envios': qs})

@@ -14,6 +14,8 @@ def login_view(request):
             login(request, user)
             if user.is_superuser:
                 return redirect('admin:index')
+            if user.groups.filter(name='administrador').exists():
+                return redirect('admin_menu')
             role_routes = {
                 'instructor': 'role_instructor',
                 'investigador': 'role_investigador',
@@ -24,7 +26,11 @@ def login_view(request):
             if role:
                 target = role_routes.get(role, 'home')
             else:
-                target = 'usuario' if user.groups.filter(name='usuario').exists() else 'home'
+                target = (
+                    'usuario'
+                    if user.groups.filter(name='usuario').exists()
+                    else 'home'
+                )
             return redirect(target)
         else:
             return render(request, 'login.html', {
@@ -56,7 +62,10 @@ def register_view(request):
         has_upper = re.search(r'[A-Z]', password1) is not None
         has_digit_or_special = re.search(r'[\d\W]', password1) is not None
         if not (len(password1) == 8 and has_upper and has_digit_or_special):
-            errors.append('La contraseña debe tener exactamente 8 caracteres, al menos una letra mayúscula y un número o carácter especial.')
+            errors.append(
+                'La contraseña debe tener exactamente 8 caracteres, '
+                'al menos una letra mayúscula y un número o carácter especial.'
+            )
         if User.objects.filter(username=username).exists():
             errors.append('Ese usuario ya existe. Prueba con otro.')
 

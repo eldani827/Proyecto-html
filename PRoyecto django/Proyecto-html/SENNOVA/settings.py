@@ -28,7 +28,7 @@ DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
 # Allow hosts can be configured with comma-separated env var
 _hosts = os.environ.get('DJANGO_ALLOWED_HOSTS', '')
-ALLOWED_HOSTS = [h.strip() for h in _hosts.split(',') if h.strip()] if _hosts else []
+ALLOWED_HOSTS = [h.strip() for h in _hosts.split(',') if h.strip()] if _hosts else ['127.0.0.1', 'localhost', '0.0.0.0']
 
 
 # Application definition
