@@ -23,7 +23,7 @@ class Roles(models.Model):
 # Modelo alternativo para usuarios; considerar usar el modelo de Django en su lugar
 class Usuario(models.Model):
     usuario = models.CharField(max_length=50)
-    contraseña = models.CharField(max_length=50)  # ATENCIÓN: mejor usar sistema de usuarios de Django
+    contraseña = models.CharField(max_length=50)  
     Rol = models.ForeignKey(Roles, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -36,7 +36,7 @@ class Instructor(models.Model):
     apellido = models.CharField(max_length=50)
     email = models.EmailField(max_length=60)
     telefono = models.CharField(max_length=20, null=True, blank=True)
-    contraseña = models.CharField(max_length=8)  # ATENCIÓN: ver nota de seguridad arriba
+    contraseña = models.CharField(max_length=8)  
     Rol = models.ForeignKey(Roles, on_delete=models.CASCADE)
 
     def __str__(self):
