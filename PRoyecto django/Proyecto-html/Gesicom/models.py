@@ -1,49 +1,33 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.utils import timezone
 
 
-# Modelo que representa datos personales básicos (persona de contacto)
-class Persona(models.Model):
-    nombre = models.CharField(max_length=50)
-    apellido = models.CharField(max_length=50)
-    email = models.EmailField(max_length=60)
-    telefono = models.CharField(max_length=20, null=True, blank=True)
-    contraseña = models.CharField(max_length=8)  # ATENCIÓN: campo en texto plano (mejor usar User)
-
-
-# Modelo que describe un rol asociado a una persona
-class Roles(models.Model):
-    Rol = models.CharField(max_length=50)
+class Rol(models.Model):
+    nombre = models.CharField(max_length=50, unique=True)
     descripcion = models.CharField(max_length=100)
-    Persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.Rol
-
-
-# Modelo alternativo para usuarios; considerar usar el modelo de Django en su lugar
-class Usuario(models.Model):
-    usuario = models.CharField(max_length=50)
-    contraseña = models.CharField(max_length=50)  
-    Rol = models.ForeignKey(Roles, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.usuario
-
-
-# Clase para almacenar a los usuarios con rol de instructor (estructura similar a Persona)
-class Instructor(models.Model):
-    nombre = models.CharField(max_length=50)
-    apellido = models.CharField(max_length=50)
-    email = models.EmailField(max_length=60)
-    telefono = models.CharField(max_length=20, null=True, blank=True)
-    contraseña = models.CharField(max_length=8)  
-    Rol = models.ForeignKey(Roles, on_delete=models.CASCADE)
+    class Meta:
+        ordering = ['nombre']
+        verbose_name = 'Rol'
+        verbose_name_plural = 'Roles'
 
     def __str__(self):
         return self.nombre
 
 
-# Modelo que representa un envío de evidencia (link o archivo)
+class InstructorProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    especialidad = models.CharField(max_length=100, blank=True, null=True)
+    
+    class Meta:
+        verbose_name = 'Perfil de Instructor'
+        verbose_name_plural = 'Perfiles de Instructores'
+    
+    def __str__(self):
+        return f"Instructor: {self.user.get_full_name()}"
+
+
 class Envio(models.Model):
     PROYECTO_CHOICES = [
         ("LEM", "LEM"),
@@ -53,14 +37,27 @@ class Envio(models.Model):
         ("IFPI", "IFPI"),
         ("TUGA", "TUGA"),
     ]
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='envios')
     nombre = models.CharField(max_length=80, blank=True)
-    proyecto = models.CharField(max_length=20, choices=PROYECTO_CHOICES, blank=True)
+    proyecto = models.CharField(max_length=20, choices=PROYECTO_CHOICES, blank=True, db_index=True)
     tipo_evidencia = models.CharField(max_length=50)
     link_evidencia = models.URLField(max_length=200, blank=True, null=True)
     archivo_evidencia = models.FileField(upload_to='evidencias/', blank=True, null=True)
     observaciones = models.TextField(blank=True, null=True)
-    fecha_envio = models.DateField(auto_now_add=True)
+    fecha_envio = models.DateField(auto_now_add=True, db_index=True)
+
+    class Meta:
+        ordering = ['-fecha_envio']
+        verbose_name = 'Envío de Evidencia'
+        verbose_name_plural = 'Envíos de Evidencia'
+        indexes = [
+            models.Index(fields=['proyecto']),
+            models.Index(fields=['fecha_envio']),
+            models.Index(fields=['usuario', 'fecha_envio']),
+        ]
 
     def __str__(self):
-        return self.tipo_evidencia
-
+        return f"{self.tipo_evidencia} ({self.proyecto}) - {self.fecha_envio}"
+    
+    def get_proyecto_display_name(self):
+        return dict(self.PROYECTO_CHOICES).get(self.proyecto, 'Sin proyecto')

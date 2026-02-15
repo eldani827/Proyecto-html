@@ -1,106 +1,45 @@
 from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.utils import timezone
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model
+from django.contrib.auth.tokens import default_token_generator
+from django.views.decorators.http import require_http_methods
+from django.middleware.csrf import get_token
 import random
 import datetime
 
-# Almacena temporalmente los códigos de recuperación en memoria (no persistente).
-codigos = {}
 User = get_user_model()
 
 
+@require_http_methods(["POST"])
 def olvide_password(request):
-    if request.method != "POST":
-        return JsonResponse({"error": "Método no permitido"}, status=405)
-
-    email = request.POST.get("email")
+    email = request.POST.get("email", "").strip()
     if not email:
         return JsonResponse({"error": "Correo requerido"}, status=400)
 
-    if not User.objects.filter(email=email).exists():
-        return JsonResponse({"error": "Correo no registrado"}, status=400)
-
-    codigo = random.randint(100000, 999999)
-    expira = timezone.now() + datetime.timedelta(minutes=10)
-    codigos[email] = {"codigo": codigo, "expira": expira}
-
-    send_mail(
-        "Código de recuperación",
-        f"Tu código es: {codigo}. Expira en 10 minutos.",
-        "no-reply@gmail.com",
-        [email],
-        fail_silently=True,
-    )
-
-    return JsonResponse({"mensaje": "Código enviado al correo."})
-
-
-@csrf_exempt
-def verificar_codigo(request):
-    if request.method != "POST":
-        return JsonResponse({"error": "Método no permitido"}, status=405)
-
-    email = request.POST.get("email")
-    codigo_raw = request.POST.get("codigo")
-    if not email or not codigo_raw:
-        return JsonResponse({"error": "Datos incompletos"}, status=400)
-    try:
-        codigo = int(codigo_raw)
-    except ValueError:
-        return JsonResponse({"error": "Código inválido"}, status=400)
-
-    if email not in codigos:
-        return JsonResponse({"error": "No se solicitó código"}, status=400)
-
-    data = codigos[email]
-
-    if timezone.now() > data["expira"]:
-        return JsonResponse({"error": "Código expirado"}, status=400)
-
-    if codigo != data["codigo"]:
-        return JsonResponse({"error": "Código incorrecto"}, status=400)
-
-    return JsonResponse({"mensaje": "Código correcto"})
-
-
-@csrf_exempt
-def restablecer_password(request):
-    if request.method != "POST":
-        return JsonResponse({"error": "Método no permitido"}, status=405)
-
-    email = request.POST.get("email")
-    codigo = request.POST.get("codigo")
-    nueva = request.POST.get("password")
-
-    if not email or not codigo or not nueva:
-        return JsonResponse({"error": "Datos incompletos"}, status=400)
-
-    if email not in codigos:
-        return JsonResponse({"error": "No se solicitó código"}, status=400)
-
-    data = codigos[email]
-    try:
-        codigo = int(codigo)
-    except ValueError:
-        return JsonResponse({"error": "Código inválido"}, status=400)
-
-    if timezone.now() > data["expira"]:
-        return JsonResponse({"error": "Código expirado"}, status=400)
-
-    if codigo != data["codigo"]:
-        return JsonResponse({"error": "Código incorrecto"}, status=400)
-
     user = User.objects.filter(email=email).first()
     if not user:
-        return JsonResponse({"error": "Correo no registrado"}, status=400)
+        return JsonResponse({"error": "Si el correo existe, recibirás un mensaje"}, status=200)
 
-    user.set_password(nueva)
-    user.save()
+    token = default_token_generator.make_token(user)
+    
+    try:
+        send_mail(
+            "Restablecer contraseña",
+            f"Usa este link para restablecer tu contraseña (válido por 1 hora):\n"
+            f"http://localhost:8000/reset/{user.pk}-{token}/",
+            "no-reply@gesicom.com",
+            [email],
+            fail_silently=False,
+        )
+    except Exception as e:
+        return JsonResponse({"error": f"Error al enviar correo: {str(e)}"}, status=500)
 
-    # eliminar código usado
-    if email in codigos:
-        del codigos[email]
+    return JsonResponse({"mensaje": "Enlace de restablecimiento enviado al correo"}, status=200)
 
-    return JsonResponse({"mensaje": "Contraseña cambiada con éxito"})
+
+@require_http_methods(["GET"])
+def csrf_token_view(request):
+    token = get_token(request)
+    return JsonResponse({'csrfToken': token})
+

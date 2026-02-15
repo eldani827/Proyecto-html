@@ -1,17 +1,43 @@
-"""Modelos de la app `cuentas`.
+from django.db import models
+from django.contrib.auth import get_user_model
+from django.utils import timezone
+import datetime
 
-Recomendación: para almacenar códigos de recuperación usa un modelo con
-campo de expiración en lugar de mantenerlos en memoria. Esto permite
-persistencia, auditoría y escalabilidad.
+User = get_user_model()
 
-Ejemplo (comentado):
 
-# class RecoveryCode(models.Model):
-#     email = models.EmailField()
-#     code = models.IntegerField()
-#     expires_at = models.DateTimeField()
-#     used = models.BooleanField(default=False)
-#     created_at = models.DateTimeField(auto_now_add=True)
-"""
-
-# Define aquí los modelos de datos de la app (por ejemplo, códigos de recuperación o registros relacionados).
+class PasswordResetToken(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='password_reset_tokens')
+    token = models.CharField(max_length=255, unique=True, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField(db_index=True)
+    used = models.BooleanField(default=False)
+    
+    class Meta:
+        verbose_name = "Token de Restablecimiento"
+        verbose_name_plural = "Tokens de Restablecimiento"
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['token']),
+            models.Index(fields=['expires_at', 'used']),
+        ]
+    
+    def __str__(self):
+        return f"Token para {self.user.email}"
+    
+    def is_valid(self):
+        return not self.used and timezone.now() < self.expires_at
+    
+    @classmethod
+    def create_for_user(cls, user):
+        from django.contrib.auth.tokens import default_token_generator
+        token = default_token_generator.make_token(user)
+        expires_at = timezone.now() + datetime.timedelta(hours=1)
+        
+        cls.objects.filter(user=user, used=False).delete()
+        
+        return cls.objects.create(
+            user=user,
+            token=token,
+            expires_at=expires_at
+        )
