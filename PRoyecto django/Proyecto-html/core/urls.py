@@ -1,18 +1,14 @@
 """
-URL configuration for SENNOVA project.
+Rutas (URLconf) del proyecto SENNOVA.
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+`urlpatterns` asocia las rutas HTTP con las vistas correspondientes.
+Los comentarios y nombres están en español para facilitar la exposición:
+- Las rutas principales (`login`, `register`, `home`, etc.) apuntan a vistas
+    definidas en las apps `Usuarios` y `Gesicom`.
+- También hay rutas para el panel de administración y el flujo de
+    recuperación de contraseña (password reset) usando las vistas de Django.
+
+En desarrollo se añaden también las rutas para servir archivos `media`.
 """
 from django.contrib import admin
 from django.urls import path
@@ -49,6 +45,7 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='Registro/password_reset_complete.html'), name='password_reset_complete'),
 ]
 
-# Servir archivos media en desarrollo
+# Servir archivos `media` (subidos por usuarios) únicamente en desarrollo.
+# En producción estos archivos deben servirse mediante el servidor web o CDN.
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
