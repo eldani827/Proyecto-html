@@ -98,6 +98,35 @@ def portal(request):
 def admin_menu(request):
     return render(request, 'admin/menu.html')
 
+def _parse_month(s):
+    try:
+        year, month = map(int, s.split('-'))
+        return datetime.date(year, month, 1)
+    except (ValueError, AttributeError):
+        return None
+
+
+def _get_end_date_of_month(date):
+    if not date:
+        return None
+    last_day = calendar.monthrange(date.year, date.month)[1]
+    return datetime.date(date.year, date.month, last_day)
+
+
+def _apply_date_filters(qs, start_str, end_str):
+    start_date = _parse_month(start_str) if start_str else None
+    end_date = _parse_month(end_str) if end_str else None
+    
+    if end_date:
+        end_date = _get_end_date_of_month(end_date)
+    
+    if start_date:
+        qs = qs.filter(fecha_envio__gte=start_date)
+    if end_date:
+        qs = qs.filter(fecha_envio__lte=end_date)
+    
+    return qs
+
 
 def proyecciones(request):
     categoria_stats = (
@@ -145,23 +174,8 @@ def reportes(request):
     qs = Envio.objects.all()
     if proyecto:
         qs = qs.filter(proyecto=proyecto)
-
-    def parse_month(s):
-        try:
-            year, month = map(int, s.split('-'))
-            return datetime.date(year, month, 1)
-        except Exception:
-            return None
-
-    start_date = parse_month(start) if start else None
-    end_date = parse_month(end) if end else None
-    if end_date:
-        last_day = calendar.monthrange(end_date.year, end_date.month)[1]
-        end_date = datetime.date(end_date.year, end_date.month, last_day)
-    if start_date:
-        qs = qs.filter(fecha_envio__gte=start_date)
-    if end_date:
-        qs = qs.filter(fecha_envio__lte=end_date)
+    
+    qs = _apply_date_filters(qs, start, end)
 
     total_envios = qs.count()
     categoria_stats_qs = (
@@ -214,23 +228,8 @@ def reportes_csv(request):
     qs = Envio.objects.all()
     if proyecto:
         qs = qs.filter(proyecto=proyecto)
-
-    def parse_month(s):
-        try:
-            year, month = map(int, s.split('-'))
-            return datetime.date(year, month, 1)
-        except Exception:
-            return None
-
-    start_date = parse_month(start) if start else None
-    end_date = parse_month(end) if end else None
-    if end_date:
-        last_day = calendar.monthrange(end_date.year, end_date.month)[1]
-        end_date = datetime.date(end_date.year, end_date.month, last_day)
-    if start_date:
-        qs = qs.filter(fecha_envio__gte=start_date)
-    if end_date:
-        qs = qs.filter(fecha_envio__lte=end_date)
+    
+    qs = _apply_date_filters(qs, start, end)
 
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="reportes.csv"'
@@ -249,8 +248,8 @@ def reportes_csv(request):
 
 
 @login_required
+@login_required
 def evidencia(request):
-    # Formulario de envío de evidencias: guarda archivo y link
     if request.method == 'POST':
         nombre = request.POST.get('nombre', '').strip()
         proyecto = (request.POST.get('opcion', '') or '').strip()
@@ -280,6 +279,7 @@ def evidencia(request):
             })
 
         envio = Envio(
+            usuario=request.user,
             nombre=nombre,
             proyecto=proyecto,
             tipo_evidencia=tipo_evidencia,

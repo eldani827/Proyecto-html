@@ -4,6 +4,42 @@ import re
 from django.contrib.auth.models import User, Group
 
 
+ROLE_ROUTES = {
+    'instructor': 'role_instructor',
+    'investigador': 'role_investigador',
+    'dinamizador': 'role_dinamizador',
+    'coordinador': 'role_coordinador',
+    'usuario': 'usuario',
+}
+
+
+def _validate_password(password1, password2=None):
+    errors = []
+    
+    if not password1:
+        errors.append('La contraseña es obligatoria.')
+        return errors
+    
+    if password2 and password1 != password2:
+        errors.append('Las contraseñas no coinciden.')
+        return errors
+    
+    if len(password1) < 8:
+        errors.append('La contraseña debe tener mínimo 8 caracteres.')
+    
+    has_upper = re.search(r'[A-Z]', password1) is not None
+    has_digit = re.search(r'\d', password1) is not None
+    has_special = re.search(r'[!@#$%^&*(),.?":{}|<>]', password1) is not None
+    
+    if not has_upper:
+        errors.append('Debe contener al menos una letra mayúscula.')
+    
+    if not (has_digit or has_special):
+        errors.append('Debe contener al menos un número o carácter especial.')
+    
+    return errors
+
+
 def login_view(request):
     role = request.GET.get('role') or request.POST.get('role') or ''
     if request.method == 'POST':
@@ -16,15 +52,9 @@ def login_view(request):
                 return redirect('admin:index')
             if user.groups.filter(name='administrador').exists():
                 return redirect('admin_menu')
-            role_routes = {
-                'instructor': 'role_instructor',
-                'investigador': 'role_investigador',
-                'dinamizador': 'role_dinamizador',
-                'coordinador': 'role_coordinador',
-                'usuario': 'usuario',
-            }
+            
             if role:
-                target = role_routes.get(role, 'home')
+                target = ROLE_ROUTES.get(role, 'home')
             else:
                 target = (
                     'usuario'
@@ -54,20 +84,14 @@ def register_view(request):
             errors.append('El usuario es obligatorio.')
         if not email:
             errors.append('El correo es obligatorio.')
-        if password1 != password2:
-            errors.append('Las contraseñas no coinciden.')
-
-        # Validar: 8 caracteres exactamente, 1+ mayúscula, 1+ dígito O carácter especial
-        # Pattern: ^(?=.*[A-Z])(?=.*[\d\W])[A-Za-z\d\W]{8}$
-        has_upper = re.search(r'[A-Z]', password1) is not None
-        has_digit_or_special = re.search(r'[\d\W]', password1) is not None
-        if not (len(password1) == 8 and has_upper and has_digit_or_special):
-            errors.append(
-                'La contraseña debe tener exactamente 8 caracteres, '
-                'al menos una letra mayúscula y un número o carácter especial.'
-            )
+        
+        errors.extend(_validate_password(password1, password2))
+        
         if User.objects.filter(username=username).exists():
             errors.append('Ese usuario ya existe. Prueba con otro.')
+        
+        if User.objects.filter(email=email).exists():
+            errors.append('Ese correo ya está registrado.')
 
         if errors:
             return render(request, 'register.html', {
@@ -81,14 +105,7 @@ def register_view(request):
         g, _ = Group.objects.get_or_create(name='usuario')
         user.groups.add(g)
         login(request, user)
-        role_routes = {
-            'instructor': 'role_instructor',
-            'investigador': 'role_investigador',
-            'dinamizador': 'role_dinamizador',
-            'coordinador': 'role_coordinador',
-            'usuario': 'usuario',
-        }
-        target = role_routes.get(role, 'usuario')
+        target = ROLE_ROUTES.get(role, 'usuario')
         return redirect(target)
 
     return render(request, 'register.html', {'role': role})
