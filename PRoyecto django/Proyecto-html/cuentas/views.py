@@ -59,10 +59,19 @@ def restablecer_password(request):
         return JsonResponse({'error': 'Usuario no encontrado'}, status=404)
 
     token_obj = PasswordResetToken.objects.filter(user=user, token=codigo).first()
-    if not token_obj or not token_obj.is_valid():
-        logger.warning(f"Intento de reset con código inválido para {email}: codigo={codigo[:10]}...")
-        logger.warning(f"Códigos en BD para {email}: {[t.token[:10] + '...' for t in PasswordResetToken.objects.filter(user=user)]}")
+    if not token_obj:
+        logger.warning(f"Código no existe en BD para {email}: codigo={codigo[:10]}...")
         return JsonResponse({'error': 'Código inválido o expirado'}, status=400)
+    
+    logger.info(f"Token encontrado para {email}: used={token_obj.used}, expires={token_obj.expires_at}, now={timezone.now()}")
+    
+    if token_obj.used:
+        logger.warning(f"Código ya fue usado para {email}")
+        return JsonResponse({'error': 'Código ya fue utilizado'}, status=400)
+    
+    if timezone.now() >= token_obj.expires_at:
+        logger.warning(f"Código expirado para {email}: expires={token_obj.expires_at}, now={timezone.now()}")
+        return JsonResponse({'error': 'Código expirado'}, status=400)
 
     try:
         user.set_password(password)
