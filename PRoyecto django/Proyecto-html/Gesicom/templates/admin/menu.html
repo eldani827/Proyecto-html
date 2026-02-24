@@ -74,18 +74,11 @@
           <span class="icon">🧭</span>
           <span>Menú</span>
         </a>
-        <a href="{% url 'proyecciones' %}" class="sidebar-link">
-          <span class="icon">📈</span>
-          <span>Proyecciones</span>
-        </a>
         <a href="{% url 'home' %}" class="sidebar-link">
           <span class="icon">🏠</span>
           <span>Inicio</span>
         </a>
-        <a href="/admin/" class="sidebar-link">
-          <span class="icon">⚙️</span>
-          <span>Admin Django</span>
-        </a>
+        <!-- Proyecciones y Admin Django eliminados por petición -->
       </nav>
     </aside>
 
@@ -102,22 +95,10 @@
       </div>
 
       <div class="admin-cards">
-        <a href="{% url 'proyecciones' %}" class="admin-card-item">
-          <div class="admin-card-icon">📈</div>
-          <h2 class="admin-card-title">Proyecciones</h2>
-          <p class="admin-card-desc">Visualiza estadísticas y tendencias de evidencias por proyecto y categoría</p>
-        </a>
-
         <a href="{% url 'home' %}" class="admin-card-item">
           <div class="admin-card-icon">🏠</div>
           <h2 class="admin-card-title">Inicio</h2>
           <p class="admin-card-desc">Volver a la página principal del sistema</p>
-        </a>
-
-        <a href="/admin/" class="admin-card-item">
-          <div class="admin-card-icon">⚙️</div>
-          <h2 class="admin-card-title">Admin Django</h2>
-          <p class="admin-card-desc">Accede al panel de administración de Django para configuraciones avanzadas</p>
         </a>
       </div>
     </main>
