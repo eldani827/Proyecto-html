@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'Gesicom',
     'Usuarios.apps.UsuariosConfig',
     'cuentas.apps.CuentasConfig',
+    'admin_personalizado.apps.AdminPersonalizadoConfig',
 ]
 
 MIDDLEWARE = [
