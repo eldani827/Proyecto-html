@@ -24,8 +24,8 @@ def _validate_password(password1, password2=None):
         errors.append('Las contraseñas no coinciden.')
         return errors
     
-    if len(password1) < 8:
-        errors.append('La contraseña debe tener mínimo 8 caracteres.')
+    if len(password1) != 8:
+        errors.append('La contraseña debe tener exactamente 8 caracteres.')
     
     has_upper = re.search(r'[A-Z]', password1) is not None
     has_digit = re.search(r'\d', password1) is not None
@@ -42,12 +42,19 @@ def _validate_password(password1, password2=None):
 
 def login_view(request):
     role = request.GET.get('role') or request.POST.get('role') or ''
+    if role not in ROLE_ROUTES:
+        role = ''
     if request.method == 'POST':
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
+        remember = request.POST.get('remember')
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            if remember:
+                request.session.set_expiry(60 * 60 * 24 * 14)
+            else:
+                request.session.set_expiry(0)
             if user.is_superuser:
                 return redirect('admin:index')
             

@@ -35,3 +35,6 @@ Thumbs.db
 
 # Ignore Python compiled and distribution files in site-packages or venv
 *.egg
+ 
+# Archivos de texto temporales
+/tado del commit anterior sin borrar historial. Muéstrame qué commit vas a revertir y ejecuta git revert.
