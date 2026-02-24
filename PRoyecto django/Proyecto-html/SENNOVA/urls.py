@@ -5,6 +5,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from Gesicom import views as gesicom_views
 from Usuarios import views as usuarios_views
+from cuentas import views as cuentas_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -39,6 +40,10 @@ urlpatterns = [
     path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='Registro/password_reset_done.html'), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='Registro/password_reset_confirm.html'), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='Registro/password_reset_complete.html'), name='password_reset_complete'),
+    # Endpoints AJAX/JSON para flujo de restablecimiento personalizado
+    path('api/olvide_password/', cuentas_views.olvide_password, name='olvide_password'),
+    path('api/restablecer_password/', cuentas_views.restablecer_password, name='restablecer_password'),
+    path('api/debug-tokens/', cuentas_views.debug_tokens, name='debug_tokens'),  # Solo en DEBUG=True
 ]
 
 if settings.DEBUG:
