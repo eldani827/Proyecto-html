@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 260" role="img" aria-label="Logo SENA">
-  <rect width="220" height="260" fill="none"/>
-  <circle cx="110" cy="32" r="18" fill="#0c6b2c"/>
-  <text x="110" y="78" text-anchor="middle" font-family="Segoe UI, Roboto, Arial, sans-serif" font-weight="800" font-size="34" fill="#0c6b2c">SENA</text>
-  <g fill="#0c6b2c">
-    <path d="M110 92 L40 180 Q36 186 44 190 L76 170 L110 128 L144 170 L176 190 Q184 186 180 180 L110 92 Z"/>
-    <path d="M64 220 L110 160 L156 220 L140 232 L110 194 L80 232 Z"/>
-  </g>
-</svg>
