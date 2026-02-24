@@ -360,7 +360,7 @@ def register_view(request):
         return redirect(target)
 
     return render(request, 'register.html', {'role': role})
-neToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='instructor_profile')
+    OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='instructor_profile')
     especialidad = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
