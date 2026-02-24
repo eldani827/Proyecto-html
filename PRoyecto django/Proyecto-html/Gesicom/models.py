@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils import timezone
 
 class Rol(models.Model):
     nombre = models.CharField(max_length=50, unique=True)
@@ -23,6 +22,7 @@ class Envio(models.Model):
         ("IFPI", "IFPI"),
         ("TUGA", "TUGA"),
     ]
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='envios')
     nombre = models.CharField(max_length=80, blank=True)
     proyecto = models.CharField(max_length=20, choices=PROYECTO_CHOICES, blank=True)
     tipo_evidencia = models.CharField(max_length=50)
@@ -30,5 +30,7 @@ class Envio(models.Model):
     archivo_evidencia = models.FileField(upload_to='evidencias/', blank=True, null=True)
     observaciones = models.TextField(blank=True, null=True)
     fecha_envio = models.DateField(auto_now_add=True)
+    class Meta:
+        ordering = ['-fecha_envio']
     def __str__(self):
         return self.tipo_evidencia

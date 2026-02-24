@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'Gesicom',
     'Usuarios.apps.UsuariosConfig',
     'cuentas.apps.CuentasConfig',
+    'admin_personalizado.apps.AdminPersonalizadoConfig',
 ]
 
 MIDDLEWARE = [
@@ -185,6 +186,14 @@ LOGOUT_REDIRECT_URL = '/login/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'auth.User'
+
+# Ensure log directory exists so FileHandler can open the file
+LOG_DIR = BASE_DIR / 'logs'
+try:
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
+except Exception:
+    # If directory creation fails, let FileHandler raise a clear error later
+    pass
 
 LOGGING = {
     'version': 1,

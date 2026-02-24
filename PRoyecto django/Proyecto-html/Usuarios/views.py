@@ -50,17 +50,16 @@ def login_view(request):
             login(request, user)
             if user.is_superuser:
                 return redirect('admin:index')
-            if user.groups.filter(name='administrador').exists():
+            
+            user_groups = set(user.groups.values_list('name', flat=True))
+            
+            if 'administrador' in user_groups:
                 return redirect('admin_menu')
             
-            if role:
-                target = ROLE_ROUTES.get(role, 'home')
-            else:
-                target = (
-                    'usuario'
-                    if user.groups.filter(name='usuario').exists()
-                    else 'home'
-                )
+            if role and role in ROLE_ROUTES:
+                return redirect(ROLE_ROUTES[role])
+            
+            target = 'usuario' if 'usuario' in user_groups else 'home'
             return redirect(target)
         else:
             return render(request, 'login.html', {

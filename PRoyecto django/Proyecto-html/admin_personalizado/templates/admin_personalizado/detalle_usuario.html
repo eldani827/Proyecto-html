@@ -1,0 +1,314 @@
+{% extends "base.html" %}
+
+{% block title %}Detalles del Usuario - {{ usuario.username }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">{{ usuario.username }}</h4>
+                        <a href="{% url 'admin_personalizado:gestionar_usuarios' %}" class="btn btn-secondary btn-sm">
+                            <i class="fas fa-arrow-left"></i> Volver
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Información básica -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p><strong>Nombre:</strong> {{ usuario.first_name }} {{ usuario.last_name }}</p>
+                            <p><strong>Email:</strong> {{ usuario.email }}</p>
+                            <p><strong>Usuario:</strong> {{ usuario.username }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Estado:</strong>
+                                {% if usuario.is_active %}
+                                    <span class="badge badge-success">Activo</span>
+                                {% else %}
+                                    <span class="badge badge-danger">Inactivo</span>
+                                {% endif %}
+                            </p>
+                            <p><strong>Registrado:</strong> {{ usuario.date_joined|date:"d/m/Y H:i" }}</p>
+                            <p><strong>Último acceso:</strong> 
+                                {% if usuario.last_login %}
+                                    {{ usuario.last_login|date:"d/m/Y H:i" }}
+                                {% else %}
+                                    <em>Nunca</em>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Asignación de roles -->
+                    <h5>Roles Asignados</h5>
+                    <div class="mb-4">
+                        <div id="roles-list" class="mb-3">
+                            {% for grupo in grupos_usuario %}
+                            <div class="role-item d-flex justify-content-between align-items-center p-2 bg-light mb-2 rounded">
+                                <span>
+                                    <i class="fas fa-user-tag"></i> <strong>{{ grupo.name|title }}</strong>
+                                </span>
+                                <button type="button" class="btn btn-sm btn-danger btn-quitar" data-grupo-id="{{ grupo.id }}">
+                                    <i class="fas fa-times"></i> Quitar
+                                </button>
+                            </div>
+                            {% empty %}
+                            <p class="text-muted">No tiene roles asignados</p>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Agregar nuevo rol -->
+                        <div class="card-body bg-light rounded">
+                            <p class="mb-2"><strong>Agregar Nuevo Rol:</strong></p>
+                            <div class="form-group">
+                                <select id="grupo-select" class="form-control">
+                                    <option value="">-- Selecciona un rol --</option>
+                                    {% for grupo in grupos_disponibles %}
+                                        {% if grupo not in grupos_usuario %}
+                                        <option value="{{ grupo.id }}">{{ grupo.name|title }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="button" id="btn-agregar-grupo" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Agregar Rol
+                            </button>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Estado del usuario -->
+                    <h5>Estado del Usuario</h5>
+                    <div class="mb-4">
+                        {% if usuario.is_active %}
+                            <button type="button" id="btn-desactivar" class="btn btn-warning">
+                                <i class="fas fa-ban"></i> Desactivar Usuario
+                            </button>
+                            <small class="text-muted d-block mt-2">
+                                El usuario podrá acceder normalmente a la plataforma
+                            </small>
+                        {% else %}
+                            <button type="button" id="btn-activar" class="btn btn-success">
+                                <i class="fas fa-check"></i> Activar Usuario
+                            </button>
+                            <small class="text-muted d-block mt-2">
+                                El usuario NO podrá acceder a la plataforma
+                            </small>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar de información -->
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Resumen de Permisos</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        {% for grupo in grupos_usuario %}
+                        <div class="list-group-item">
+                            <h6 class="mb-1">{{ grupo.name|title }}</h6>
+                            <small class="text-muted">
+                                {{ grupo.permissions.count }} permisos
+                            </small>
+                        </div>
+                        {% empty %}
+                        <p class="text-muted">Sin permisos específicos</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alertas -->
+            <div id="alert-container"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .role-item {
+        transition: all 0.3s ease;
+    }
+
+    .role-item:hover {
+        background-color: #fff3cd !important;
+    }
+
+    .btn-group-vertical {
+        width: 100%;
+    }
+
+    .list-group-item {
+        border: 1px solid #e0e0e0;
+        margin-bottom: 0.5rem;
+    }
+</style>
+
+<script>
+// CSRF Token
+function getCsrf() {
+    const tokenInput = document.querySelector('input[name="csrfmiddlewaretoken"]');
+    if (tokenInput) return tokenInput.value;
+    const match = document.cookie.match(/(?:^|; )csrftoken=([^;]*)/);
+    return match ? match[1] : '';
+}
+
+// Función para mostrar alertas
+function mostrarAlerta(mensaje, tipo = 'success') {
+    const alertContainer = document.getElementById('alert-container');
+    const alertClass = `alert alert-${tipo === 'error' ? 'danger' : 'success'}`;
+    const html = `
+        <div class="${alertClass} alert-dismissible fade show" role="alert">
+            <strong>${tipo === 'error' ? 'Error' : 'Éxito'}:</strong> ${mensaje}
+            <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    `;
+    alertContainer.innerHTML = html;
+    setTimeout(() => {
+        alertContainer.innerHTML = '';
+    }, 5000);
+}
+
+// Agregar grupo
+document.getElementById('btn-agregar-grupo').addEventListener('click', () => {
+    const grupoId = document.getElementById('grupo-select').value;
+    
+    if (!grupoId) {
+        mostrarAlerta('Selecciona un rol primero', 'error');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('grupo_id', grupoId);
+    formData.append('accion', 'agregar');
+    formData.append('csrfmiddlewaretoken', getCsrf());
+
+    fetch('{% url "admin_personalizado:asignar_grupo" usuario.id %}', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            mostrarAlerta(data.mensaje, 'success');
+            location.reload();
+        } else {
+            mostrarAlerta(data.error, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        mostrarAlerta('Error al asignar el rol', 'error');
+    });
+});
+
+// Quitar grupos
+document.querySelectorAll('.btn-quitar').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const grupoId = this.dataset.grupoId;
+        
+        if (!confirm('¿Estás seguro de que quieres quitar este rol?')) {
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('grupo_id', grupoId);
+        formData.append('accion', 'quitar');
+        formData.append('csrfmiddlewaretoken', getCsrf());
+
+        fetch('{% url "admin_personalizado:asignar_grupo" usuario.id %}', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                mostrarAlerta(data.mensaje, 'success');
+                location.reload();
+            } else {
+                mostrarAlerta(data.error, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            mostrarAlerta('Error al quitar el rol', 'error');
+        });
+    });
+});
+
+// Activar/Desactivar usuario
+const btnActivar = document.getElementById('btn-activar');
+const btnDesactivar = document.getElementById('btn-desactivar');
+
+if (btnActivar) {
+    btnActivar.addEventListener('click', () => {
+        if (!confirm('¿Estás seguro de que quieres activar este usuario?')) {
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('accion', 'activar');
+        formData.append('csrfmiddlewaretoken', getCsrf());
+
+        fetch('{% url "admin_personalizado:activar_desactivar" usuario.id %}', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                mostrarAlerta(data.mensaje, 'success');
+                setTimeout(() => location.reload(), 1500);
+            } else {
+                mostrarAlerta(data.error, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            mostrarAlerta('Error al activar el usuario', 'error');
+        });
+    });
+}
+
+if (btnDesactivar) {
+    btnDesactivar.addEventListener('click', () => {
+        if (!confirm('¿Estás seguro de que quieres desactivar este usuario? No podrá acceder a la plataforma.')) {
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('accion', 'desactivar');
+        formData.append('csrfmiddlewaretoken', getCsrf());
+
+        fetch('{% url "admin_personalizado:activar_desactivar" usuario.id %}', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                mostrarAlerta(data.mensaje, 'success');
+                setTimeout(() => location.reload(), 1500);
+            } else {
+                mostrarAlerta(data.error, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            mostrarAlerta('Error al desactivar el usuario', 'error');
+        });
+    });
+}
+</script>
+{% endblock %}
