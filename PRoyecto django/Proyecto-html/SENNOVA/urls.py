@@ -36,6 +36,12 @@ urlpatterns = [
     path('proyecciones/', gesicom_views.proyecciones, name='proyecciones'),
     path('reportes/', gesicom_views.reportes, name='reportes'),
     path('reportes.csv', gesicom_views.reportes_csv, name='reportes_csv'),
+
+    # Panel de administración personalizado
+    path('administrador/', include('admin_personalizado.urls')),
+
+    # Logout
+    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
     
     path('password-reset/', auth_views.PasswordResetView.as_view(template_name='Registro/password_reset_form.html'), name='password_reset'),
     path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='Registro/password_reset_done.html'), name='password_reset_done'),

@@ -44,7 +44,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Gesicom',
     'Usuarios.apps.UsuariosConfig',
+<<<<<<< HEAD
     'cuentas.apps.CuentasConfig',
+=======
+    'cuentas',
+>>>>>>> Falcaoperez
     'admin_personalizado.apps.AdminPersonalizadoConfig',
 ]
 
