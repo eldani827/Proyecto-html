@@ -1,157 +1,133 @@
-{% extends "base.html" %}
+{% extends "admin_personalizado/base_admin.html" %}
 
 {% block title %}Detalles del Usuario - {{ usuario.username }}{% endblock %}
 
+{% block page_title %}{{ usuario.username }}{% endblock %}
+
 {% block content %}
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0">{{ usuario.username }}</h4>
-                        <a href="{% url 'admin_personalizado:gestionar_usuarios' %}" class="btn btn-secondary btn-sm">
-                            <i class="fas fa-arrow-left"></i> Volver
-                        </a>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <!-- Información básica -->
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <p><strong>Nombre:</strong> {{ usuario.first_name }} {{ usuario.last_name }}</p>
-                            <p><strong>Email:</strong> {{ usuario.email }}</p>
-                            <p><strong>Usuario:</strong> {{ usuario.username }}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p><strong>Estado:</strong>
-                                {% if usuario.is_active %}
-                                    <span class="badge badge-success">Activo</span>
-                                {% else %}
-                                    <span class="badge badge-danger">Inactivo</span>
-                                {% endif %}
-                            </p>
-                            <p><strong>Registrado:</strong> {{ usuario.date_joined|date:"d/m/Y H:i" }}</p>
-                            <p><strong>Último acceso:</strong> 
-                                {% if usuario.last_login %}
-                                    {{ usuario.last_login|date:"d/m/Y H:i" }}
-                                {% else %}
-                                    <em>Nunca</em>
-                                {% endif %}
-                            </p>
-                        </div>
-                    </div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+    <!-- Columna principal -->
+    <div>
+        <div class="content-section">
+            <h2 class="section-title" style="margin-bottom: 2rem;">{{ usuario.username }}</h2>
 
-                    <hr>
-
-                    <!-- Asignación de roles -->
-                    <h5>Roles Asignados</h5>
-                    <div class="mb-4">
-                        <div id="roles-list" class="mb-3">
-                            {% for grupo in grupos_usuario %}
-                            <div class="role-item d-flex justify-content-between align-items-center p-2 bg-light mb-2 rounded">
-                                <span>
-                                    <i class="fas fa-user-tag"></i> <strong>{{ grupo.name|title }}</strong>
-                                </span>
-                                <button type="button" class="btn btn-sm btn-danger btn-quitar" data-grupo-id="{{ grupo.id }}">
-                                    <i class="fas fa-times"></i> Quitar
-                                </button>
-                            </div>
-                            {% empty %}
-                            <p class="text-muted">No tiene roles asignados</p>
-                            {% endfor %}
-                        </div>
-
-                        <!-- Agregar nuevo rol -->
-                        <div class="card-body bg-light rounded">
-                            <p class="mb-2"><strong>Agregar Nuevo Rol:</strong></p>
-                            <div class="form-group">
-                                <select id="grupo-select" class="form-control">
-                                    <option value="">-- Selecciona un rol --</option>
-                                    {% for grupo in grupos_disponibles %}
-                                        {% if grupo not in grupos_usuario %}
-                                        <option value="{{ grupo.id }}">{{ grupo.name|title }}</option>
-                                        {% endif %}
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <button type="button" id="btn-agregar-grupo" class="btn btn-primary">
-                                <i class="fas fa-plus"></i> Agregar Rol
-                            </button>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <!-- Estado del usuario -->
-                    <h5>Estado del Usuario</h5>
-                    <div class="mb-4">
-                        {% if usuario.is_active %}
-                            <button type="button" id="btn-desactivar" class="btn btn-warning">
-                                <i class="fas fa-ban"></i> Desactivar Usuario
-                            </button>
-                            <small class="text-muted d-block mt-2">
-                                El usuario podrá acceder normalmente a la plataforma
-                            </small>
-                        {% else %}
-                            <button type="button" id="btn-activar" class="btn btn-success">
-                                <i class="fas fa-check"></i> Activar Usuario
-                            </button>
-                            <small class="text-muted d-block mt-2">
-                                El usuario NO podrá acceder a la plataforma
-                            </small>
-                        {% endif %}
-                    </div>
+            <!-- Información básica -->
+            <div class="form-group">
+                <label class="form-label">Nombre Completo</label>
+                <div style="padding: 0.75rem; background: #f5f5f5; border-radius: 4px;">
+                    {{ usuario.first_name }} {{ usuario.last_name|default:"—" }}
                 </div>
             </div>
+
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <div style="padding: 0.75rem; background: #f5f5f5; border-radius: 4px;">
+                    {{ usuario.email|default:"—" }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Usuario</label>
+                <div style="padding: 0.75rem; background: #f5f5f5; border-radius: 4px;">
+                    {{ usuario.username }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Estado</label>
+                <div style="padding: 0.75rem; background: #f5f5f5; border-radius: 4px;">
+                    {% if usuario.is_active %}
+                        <span class="badge badge-success">✓ Activo</span>
+                    {% else %}
+                        <span class="badge badge-danger">✗ Inactivo</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Registrado</label>
+                <div style="padding: 0.75rem; background: #f5f5f5; border-radius: 4px;">
+                    {{ usuario.date_joined|date:"d/m/Y H:i" }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Último Acceso</label>
+                <div style="padding: 0.75rem; background: #f5f5f5; border-radius: 4px;">
+                    {% if usuario.last_login %}
+                        {{ usuario.last_login|date:"d/m/Y H:i" }}
+                    {% else %}
+                        <em>Nunca</em>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Estado del usuario -->
+            <h3 style="font-size: 1.1rem; font-weight: 600; margin: 2rem 0 1rem 0;">Cambiar Estado</h3>
+            {% if usuario.is_active %}
+                <button type="button" id="btn-desactivar" class="btn btn-danger">
+                    <span>🔒</span>
+                    <span>Desactivar Usuario</span>
+                </button>
+            {% else %}
+                <button type="button" id="btn-activar" class="btn btn-primary">
+                    <span>🔓</span>
+                    <span>Activar Usuario</span>
+                </button>
+            {% endif %}
         </div>
+    </div>
 
-        <!-- Sidebar de información -->
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5 class="mb-0">Resumen de Permisos</h5>
+    <!-- Columna de roles -->
+    <div>
+        <div class="content-section">
+            <h2 class="section-title" style="margin-bottom: 2rem;">Gestión de Roles</h2>
+
+            <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem;">Roles Asignados</h3>
+            <div id="roles-list" style="margin-bottom: 1.5rem;">
+                {% for grupo in grupos_usuario %}
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: #f5f5f5; border-left: 4px solid #66bb6a; margin-bottom: 0.5rem; border-radius: 4px;">
+                    <span style="font-weight: 500;">👤 {{ grupo.name|title }}</span>
+                    <button type="button" class="btn btn-danger btn-quitar" data-grupo-id="{{ grupo.id }}" style="padding: 0.5rem 0.75rem; font-size: 0.8rem;">
+                        Quitar
+                    </button>
                 </div>
-                <div class="card-body">
-                    <div class="list-group">
-                        {% for grupo in grupos_usuario %}
-                        <div class="list-group-item">
-                            <h6 class="mb-1">{{ grupo.name|title }}</h6>
-                            <small class="text-muted">
-                                {{ grupo.permissions.count }} permisos
-                            </small>
-                        </div>
-                        {% empty %}
-                        <p class="text-muted">Sin permisos específicos</p>
-                        {% endfor %}
-                    </div>
-                </div>
+                {% empty %}
+                <p style="color: #999; text-align: center; padding: 1rem; background: #f5f5f5; border-radius: 4px;">
+                    No tiene roles asignados
+                </p>
+                {% endfor %}
             </div>
 
-            <!-- Alertas -->
-            <div id="alert-container"></div>
+            <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem;">Agregar Nuevo Rol</h3>
+            <div class="form-group">
+                <select id="grupo-select" class="form-control" style="width: 100%;">
+                    <option value="">-- Selecciona un rol --</option>
+                    {% for grupo in grupos_disponibles %}
+                        {% if grupo not in grupos_usuario %}
+                        <option value="{{ grupo.id }}">{{ grupo.name|title }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="button" id="btn-agregar-grupo" class="btn btn-primary" style="width: 100%;">
+                <span>➕</span>
+                <span>Agregar Rol</span>
+            </button>
+
+            <div id="alert-container" style="margin-top: 1rem;"></div>
         </div>
     </div>
 </div>
 
 <style>
-    .role-item {
-        transition: all 0.3s ease;
+    @media (max-width: 768px) {
+        div[style*="grid-template-columns: 1fr 1fr"] {
+            grid-template-columns: 1fr !important;
+        }
     }
-
-    .role-item:hover {
-        background-color: #fff3cd !important;
-    }
-
-    .btn-group-vertical {
-        width: 100%;
-    }
-
-    .list-group-item {
-        border: 1px solid #e0e0e0;
-        margin-bottom: 0.5rem;
-    }
-</style>
+{% endblock %}
 
 <script>
 // CSRF Token
@@ -165,13 +141,10 @@ function getCsrf() {
 // Función para mostrar alertas
 function mostrarAlerta(mensaje, tipo = 'success') {
     const alertContainer = document.getElementById('alert-container');
-    const alertClass = `alert alert-${tipo === 'error' ? 'danger' : 'success'}`;
+    const alertClass = tipo === 'error' ? 'alert alert-error' : 'alert alert-success';
     const html = `
-        <div class="${alertClass} alert-dismissible fade show" role="alert">
+        <div class="${alertClass} show" role="alert">
             <strong>${tipo === 'error' ? 'Error' : 'Éxito'}:</strong> ${mensaje}
-            <button type="button" class="close" data-dismiss="alert">
-                <span aria-hidden="true">&times;</span>
-            </button>
         </div>
     `;
     alertContainer.innerHTML = html;
