@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GESICOM - Inicio</title>
+    <link rel="stylesheet" href="{% static 'usuarios/panel_usuario.css' %}">
+    <!-- Reutilizamos estilos existentes para mantener coherencia y responsividad -->
+</head>
+<body>
+    <header>
+        <div>
+            <h1>GESICOM</h1>
+            <small>Inicio</small>
+        </div>
+        <nav>
+            <a href="{% url 'home' %}">Inicio</a>
+            {% if user.is_authenticated %}
+                {% if user.groups.filter(name='usuario').exists %}
+                    <a href="{% url 'usuario' %}">Mi panel</a>
+                {% endif %}
+                <a href="{% url 'logout' %}">Cerrar sesión</a>
+            {% else %}
+                <a href="{% url 'login' %}">Ingresar</a>
+                <a href="{% url 'register' %}">Registrarse</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main>
+        <section class="welcome-section">
+            {% if user.is_authenticated %}
+                <div class="welcome-avatar"></div>
+                <div>
+                    <h2>Bienvenid{{ user.get_short_name|default:user.username }}</h2>
+                    <p>Utiliza el menú para navegar por el sistema.</p>
+                </div>
+            {% else %}
+                <div class="welcome-avatar"></div>
+                <div>
+                    <h2>Bienvenido a GESICOM</h2>
+                    <p>Por favor inicia sesión o regístrate para continuar.</p>
+                    <a class="btn btn-primary" href="{% url 'login' %}">Ingresar</a>
+                    <a class="btn btn-secondary" href="{% url 'register' %}">Registrarse</a>
+                </div>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>
