@@ -28,6 +28,11 @@
     {% if error %}
     <div class="error" role="alert">{{ error }}</div>
     {% endif %}
+    {% if success %}
+    <div class="status" role="status" style="background:#e6ffed;color:#145a32;padding:8px;border-radius:6px;margin-bottom:12px;">
+      {{ success }}
+    </div>
+    {% endif %}
 
     <form action="" method="post" novalidate>
       {% csrf_token %}

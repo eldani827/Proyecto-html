@@ -132,9 +132,8 @@ def register_view(request):
                 g, _ = Group.objects.get_or_create(name='usuario')
                 user.groups.add(g)
                 user.save()
-            login(request, user)
-            target = ROLE_ROUTES.get(role, 'usuario')
-            return redirect(target)
+            # no iniciamos sesión automáticamente: redirigir al login para que el usuario entre
+            return redirect('login')
         except IntegrityError:
             errors.append('El usuario o correo ya existe.')
             return render(request, 'register.html', {
