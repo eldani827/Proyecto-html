@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -47,6 +47,12 @@ urlpatterns = [
     path('proyecciones/', gesicom_views.proyecciones, name='proyecciones'),
     path('reportes/', gesicom_views.reportes, name='reportes'),
     path('reportes.csv', gesicom_views.reportes_csv, name='reportes_csv'),
+
+    # Panel de administración personalizado
+    path('administrador/', include('admin_personalizado.urls')),
+
+    # Logout
+    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
     
     # Password reset
     path('password-reset/', auth_views.PasswordResetView.as_view(template_name='Registro/password_reset_form.html'), name='password_reset'),
