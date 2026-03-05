@@ -27,13 +27,13 @@
                 </tr>
             </thead>
             <tbody>
-                {% for user_data in users %}
+                {% for usuario in usuarios %}
                 <tr class="user-row">
-                    <td>{{ user_data.username }}</td>
-                    <td>{{ user_data.get_full_name|default:"-" }}</td>
-                    <td>{{ user_data.email|default:"-" }}</td>
+                    <td>{{ usuario.username }}</td>
+                    <td>{{ usuario.get_full_name|default:"-" }}</td>
+                    <td>{{ usuario.email|default:"-" }}</td>
                     <td>
-                        {% for group in user_data.groups.all %}
+                        {% for group in usuario.groups.all %}
                         <span style="display: inline-block; padding: 0.25rem 0.75rem; background: var(--color-primary-light); color: var(--color-text-dark); border-radius: 12px; font-size: 0.85rem; margin: 0.125rem;">
                             {{ group.name }}
                         </span>
@@ -42,7 +42,7 @@
                         {% endfor %}
                     </td>
                     <td>
-                        {% if user_data.is_active %}
+                        {% if usuario.is_active %}
                         <span style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.25rem 0.75rem; background: #d4edda; color: #155724; border-radius: 6px; font-size: 0.875rem;">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                                 <circle cx="12" cy="12" r="10"></circle>
@@ -86,18 +86,18 @@
         </table>
     </div>
 
-    {% if users.has_other_pages %}
+    {% if usuarios.has_other_pages %}
     <div style="margin-top: 2rem; display: flex; justify-content: center; gap: 0.5rem;">
-        {% if users.has_previous %}
-        <a href="?page={{ users.previous_page_number }}" class="btn btn-secondary">Anterior</a>
+        {% if usuarios.has_previous %}
+        <a href="?page={{ usuarios.previous_page_number }}" class="btn btn-secondary">Anterior</a>
         {% endif %}
 
         <span style="padding: 0.75rem 1.5rem; background: var(--color-bg-beige); border-radius: 8px;">
-            Página {{ users.number }} de {{ users.paginator.num_pages }}
+            Página {{ usuarios.number }} de {{ usuarios.paginator.num_pages }}
         </span>
 
-        {% if users.has_next %}
-        <a href="?page={{ users.next_page_number }}" class="btn btn-secondary">Siguiente</a>
+        {% if usuarios.has_next %}
+        <a href="?page={{ usuarios.next_page_number }}" class="btn btn-secondary">Siguiente</a>
         {% endif %}
     </div>
     {% endif %}

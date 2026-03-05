@@ -19,143 +19,141 @@ ROLE_ROUTES = {
 }
 
 
-def _validate_password(password1, password2=None):
-    errors = []
+def _validar_contraseña(contraseña1, contraseña2=None):
+	errores = []
 
-    if not password1:
-        errors.append('La contraseña es obligatoria.')
-        return errors
+	if not contraseña1:
+		errores.append('La contraseña es obligatoria.')
+		return errores
 
-    if password2 and password1 != password2:
-        errors.append('Las contraseñas no coinciden.')
-        return errors
+	if contraseña2 and contraseña1 != contraseña2:
+		errores.append('Las contraseñas no coinciden.')
+		return errores
 
-    if len(password1) != 8:
-        errors.append('La contraseña debe tener exactamente 8 caracteres.')
+	if len(contraseña1) != 8:
+		errores.append('La contraseña debe tener exactamente 8 caracteres.')
 
-    has_upper = re.search(r'[A-Z]', password1) is not None
-    has_digit = re.search(r'\d', password1) is not None
-    has_special = re.search(r'[!@#$%^&*(),.?":{}|<>]', password1) is not None
+	tiene_mayuscula = re.search(r'[A-Z]', contraseña1) is not None
+	tiene_digito = re.search(r'\d', contraseña1) is not None
+	tiene_especial = re.search(r'[!@#$%^&*(),.?":{}|<>]', contraseña1) is not None
 
-    if not has_upper:
-        errors.append('Debe contener al menos una letra mayúscula.')
+	if not tiene_mayuscula:
+		errores.append('Debe contener al menos una letra mayúscula.')
 
-    if not (has_digit or has_special):
-        errors.append('Debe contener al menos un número o carácter especial.')
+	if not (tiene_digito or tiene_especial):
+		errores.append('Debe contener al menos un número o carácter especial.')
 
-    return errors
+	return errores
 
 
 def login_view(request):
-    role = request.GET.get('role') or request.POST.get('role') or ''
-    if role not in ROLE_ROUTES:
-        role = ''
+	rol = request.GET.get('role') or request.POST.get('role') or ''
+	if rol not in ROLE_ROUTES:
+		rol = ''
 
-    if request.method == 'POST':
-        username_input = (request.POST.get('username', '') or '').strip()
-        password = request.POST.get('password', '')
-        remember = request.POST.get('remember')
+	if request.method == 'POST':
+		entrada_usuario = (request.POST.get('username', '') or '').strip()
+		contraseña = request.POST.get('password', '')
+		recordar = request.POST.get('remember')
 
-        # Si el usuario escribió un correo, intentar resolver su username
-        username_for_auth = username_input
-        if '@' in username_input and not User.objects.filter(username=username_input).exists():
-            try:
-                u = User.objects.get(email__iexact=username_input)
-                username_for_auth = u.username
-            except User.DoesNotExist:
-                # no existe un usuario con ese email
-                pass
+		# Si el usuario escribió un correo, intentar resolver su nombre de usuario
+		usuario_para_auth = entrada_usuario
+		if '@' in entrada_usuario and not User.objects.filter(username=entrada_usuario).exists():
+			try:
+				u = User.objects.get(email__iexact=entrada_usuario)
+				usuario_para_auth = u.username
+			except User.DoesNotExist:
+				# no existe un usuario con ese correo
+				pass
 
-        user = authenticate(request, username=username_for_auth, password=password)
-        if user is not None:
-            login(request, user)
-            if remember:
-                request.session.set_expiry(60 * 60 * 24 * 14)
-            else:
-                request.session.set_expiry(0)
-            if user.is_superuser:
-                return redirect('admin:index')
+		usuario = authenticate(request, username=usuario_para_auth, password=contraseña)
+		if usuario is not None:
+			login(request, usuario)
+			if recordar:
+				request.session.set_expiry(60 * 60 * 24 * 14)
+			else:
+				request.session.set_expiry(0)
+			if usuario.is_superuser:
+				return redirect('admin:index')
 
-            user_groups = set(user.groups.values_list('name', flat=True))
+			grupos_usuario = set(usuario.groups.values_list('name', flat=True))
 
-            if 'administrador' in user_groups:
-                return redirect('admin_menu')
+			if 'administrador' in grupos_usuario:
+				return redirect('admin_menu')
 
-            if role and role in ROLE_ROUTES:
-                return redirect(ROLE_ROUTES[role])
+			if rol and rol in ROLE_ROUTES:
+				return redirect(ROLE_ROUTES[rol])
 
-            target = 'usuario' if 'usuario' in user_groups else 'home'
-            return redirect(target)
+			destino = 'usuario' if 'usuario' in grupos_usuario else 'home'
+			return redirect(destino)
 
-        return render(request, 'login.html', {
-            'error': 'Usuario o contraseña incorrectos',
-            'role': role,
-            'username': username_input,
-        })
+		return render(request, 'login.html', {
+			'error': 'Usuario o contraseña incorrectos',
+			'role': rol,
+			'username': entrada_usuario,
+		})
 
-    return render(request, 'login.html', {'role': role})
-
+	return render(request, 'login.html', {'role': rol})
 
 def register_view(request):
-    role = request.GET.get('role') or request.POST.get('role') or ''
-    if request.method == 'POST':
-        username = (request.POST.get('username', '') or '').strip()
-        email = (request.POST.get('email', '') or '').strip().lower()
-        password1 = request.POST.get('password1', '')
-        password2 = request.POST.get('password2', '')
+	rol = request.GET.get('role') or request.POST.get('role') or ''
+	if request.method == 'POST':
+		nombre_usuario = (request.POST.get('username', '') or '').strip()
+		correo = (request.POST.get('email', '') or '').strip().lower()
+		contraseña1 = request.POST.get('password1', '')
+		contraseña2 = request.POST.get('password2', '')
 
-        errors = []
-        if not username:
-            errors.append('El usuario es obligatorio.')
-        if not email:
-            errors.append('El correo es obligatorio.')
+		errores = []
+		if not nombre_usuario:
+			errores.append('El usuario es obligatorio.')
+		if not correo:
+			errores.append('El correo es obligatorio.')
 
-        errors.extend(_validate_password(password1, password2))
+		errores.extend(_validar_contraseña(contraseña1, contraseña2))
 
-        if User.objects.filter(username=username).exists():
-            errors.append('Ese usuario ya existe. Prueba con otro.')
+		if User.objects.filter(username=nombre_usuario).exists():
+			errores.append('Ese usuario ya existe. Prueba con otro.')
 
-        if User.objects.filter(email=email).exists():
-            errors.append('Ese correo ya está registrado.')
+		if User.objects.filter(email=correo).exists():
+			errores.append('Ese correo ya está registrado.')
 
-        if errors:
-            return render(request, 'register.html', {
-                'errors': errors,
-                'role': role,
-                'username': username,
-                'email': email,
-            })
+		if errores:
+			return render(request, 'register.html', {
+				'errores': errores,
+				'rol': rol,
+				'nombre_usuario': nombre_usuario,
+				'correo': correo,
+			})
 
-        try:
-            with transaction.atomic():
-                user = User.objects.create_user(username=username, email=email, password=password1)
-                g, _ = Group.objects.get_or_create(name='usuario')
-                user.groups.add(g)
-                user.save()
-            # no iniciamos sesión automáticamente: redirigir al login para que el usuario entre
-            return redirect('login')
-        except IntegrityError:
-            errors.append('El usuario o correo ya existe.')
-            return render(request, 'register.html', {
-                'errors': errors,
-                'role': role,
-                'username': username,
-                'email': email,
-            })
-        except Exception:
-            tb = traceback.format_exc()
-            logger.exception('Error creando usuario')
-            errors.append('Error interno al crear la cuenta. Contacta al administrador.')
-            return render(request, 'register.html', {
-                'errors': errors,
-                'role': role,
-                'username': username,
-                'email': email,
-                'debug_trace': tb,
-            })
+		try:
+			with transaction.atomic():
+				usuario = User.objects.create_user(username=nombre_usuario, email=correo, password=contraseña1)
+				g, _ = Group.objects.get_or_create(name='usuario')
+				usuario.groups.add(g)
+				usuario.save()
+			# No iniciamos sesión automáticamente: redirigir al inicio de sesión para que el usuario entre
+			return redirect('login')
+		except IntegrityError:
+			errores.append('El usuario o correo ya existe.')
+			return render(request, 'register.html', {
+				'errores': errores,
+				'rol': rol,
+				'nombre_usuario': nombre_usuario,
+				'correo': correo,
+			})
+		except Exception:
+			tb = traceback.format_exc()
+			logger.exception('Error creando usuario')
+			errores.append('Error interno al crear la cuenta. Contacta al administrador.')
+			return render(request, 'register.html', {
+				'errores': errores,
+				'rol': rol,
+				'nombre_usuario': nombre_usuario,
+				'correo': correo,
+				'rastreo_debug': tb,
+			})
 
-    return render(request, 'register.html', {'role': role})
-
+	return render(request, 'register.html', {'rol': rol})
 
 @login_required(login_url='login')
 def panel_usuario(request):

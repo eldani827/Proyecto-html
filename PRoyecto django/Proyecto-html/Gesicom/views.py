@@ -84,28 +84,28 @@ def admin_menu(request):
 
 def proyecciones(request):
     """Muestra estadísticas generales de envíos."""
-    qs = Envio.objects.all()
+    consulta = Envio.objects.all()
     
     # Calcular estadísticas por tipo de evidencia
-    categoria_stats, total_envios = calculate_stats(qs, 'tipo_evidencia')
+    estadisticas_categoria, total_envios = calculate_stats(consulta, 'tipo_evidencia')
     
     # Calcular estadísticas por proyecto
-    proyecto_stats, _ = calculate_stats(qs, 'proyecto')
+    estadisticas_proyecto, _ = calculate_stats(consulta, 'proyecto')
     
     # Reemplazar claves para coherencia con template
-    categoria_stats = [
+    estadisticas_categoria = [
         {'tipo_evidencia': s['field_value'], 'total': s['total'], 'porcentaje': s['porcentaje']}
-        for s in categoria_stats
+        for s in estadisticas_categoria
     ]
-    proyecto_stats = [
+    estadisticas_proyecto = [
         {'proyecto': s['field_value'], 'total': s['total'], 'porcentaje': s['porcentaje']}
-        for s in proyecto_stats
+        for s in estadisticas_proyecto
     ]
 
     context = {
         'total_envios': total_envios,
-        'categoria_stats': categoria_stats,
-        'proyecto_stats': proyecto_stats,
+        'estadisticas_categoria': estadisticas_categoria,
+        'estadisticas_proyecto': estadisticas_proyecto,
     }
     return render(request, 'admin/proyecciones.html', context)
 
@@ -113,34 +113,34 @@ def proyecciones(request):
 def reportes(request):
     """Genera reportes filtrados de envíos."""
     proyecto = request.GET.get('proyecto', '')
-    start = request.GET.get('start', '')
-    end = request.GET.get('end', '')
+    inicio = request.GET.get('start', '')
+    fin = request.GET.get('end', '')
 
-    qs = Envio.objects.all()
+    consulta = Envio.objects.all()
     if proyecto:
-        qs = qs.filter(proyecto=proyecto)
+        consulta = consulta.filter(proyecto=proyecto)
     
-    qs = apply_date_filters(qs, start, end)
+    consulta = apply_date_filters(consulta, inicio, fin)
 
     # Calcular estadísticas por categoría
-    categoria_stats, total_envios = calculate_stats(qs, 'tipo_evidencia')
-    categoria_stats = [
+    estadisticas_categoria, total_envios = calculate_stats(consulta, 'tipo_evidencia')
+    estadisticas_categoria = [
         {'tipo_evidencia': s['field_value'], 'total': s['total'], 'porcentaje': s['porcentaje']}
-        for s in categoria_stats
+        for s in estadisticas_categoria
     ]
     
     # Calcular estadísticas mensuales
-    monthly_stats, _ = calculate_monthly_stats(qs)
+    estadisticas_mensuales, _ = calculate_monthly_stats(consulta)
 
-    proyecto_choices = [p for p, _ in Envio.PROYECTO_CHOICES]
+    opcion_proyectos = [p for p, _ in Envio.PROYECTO_CHOICES]
 
     context = {
         'proyecto': proyecto,
-        'start': start,
-        'end': end,
-        'proyecto_choices': proyecto_choices,
-        'monthly_stats': monthly_stats,
-        'categoria_stats': categoria_stats,
+        'start': inicio,
+        'end': fin,
+        'opciones_proyectos': opcion_proyectos,
+        'estadisticas_categoria': estadisticas_categoria,
+        'estadisticas_mensuales': estadisticas_mensuales,
     }
     return render(request, 'admin/reportes.html', context)
 
@@ -148,29 +148,29 @@ def reportes(request):
 def reportes_csv(request):
     """Exporta reportes filtrados en formato CSV."""
     proyecto = request.GET.get('proyecto', '')
-    start = request.GET.get('start', '')
-    end = request.GET.get('end', '')
+    inicio = request.GET.get('start', '')
+    fin = request.GET.get('end', '')
 
-    qs = Envio.objects.all()
+    consulta = Envio.objects.all()
     if proyecto:
-        qs = qs.filter(proyecto=proyecto)
+        consulta = consulta.filter(proyecto=proyecto)
     
-    qs = apply_date_filters(qs, start, end)
+    consulta = apply_date_filters(consulta, inicio, fin)
 
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="reportes.csv"'
-    writer = csv.writer(response)
-    writer.writerow(['fecha_envio', 'nombre', 'proyecto', 'tipo_evidencia', 'link_evidencia', 'observaciones'])
-    for e in qs.order_by('fecha_envio'):
-        writer.writerow([
-            e.fecha_envio.isoformat() if e.fecha_envio else '',
-            e.nombre,
-            e.proyecto,
-            e.tipo_evidencia,
-            e.link_evidencia or '',
-            (e.observaciones or '').replace('\r\n', ' ').replace('\n', ' '),
+    respuesta = HttpResponse(content_type='text/csv')
+    respuesta['Content-Disposition'] = 'attachment; filename="reportes.csv"'
+    escritor = csv.writer(respuesta)
+    escritor.writerow(['fecha_envio', 'nombre', 'proyecto', 'tipo_evidencia', 'link_evidencia', 'observaciones'])
+    for envio in consulta.order_by('fecha_envio'):
+        escritor.writerow([
+            envio.fecha_envio.isoformat() if envio.fecha_envio else '',
+            envio.nombre,
+            envio.proyecto,
+            envio.tipo_evidencia,
+            envio.link_evidencia or '',
+            (envio.observaciones or '').replace('\r\n', ' ').replace('\n', ' '),
         ])
-    return response
+    return respuesta
 
 
 @login_required
@@ -180,26 +180,26 @@ def evidencia(request):
         proyecto = (request.POST.get('opcion', '') or '').strip()
         tipos = request.POST.getlist('evidencias')
         tipo_evidencia = ', '.join(tipos) if tipos else 'Sin especificar'
-        link = request.POST.get('linkArchivo', '').strip()
+        enlace = request.POST.get('linkArchivo', '').strip()
         archivo = request.FILES.get('archivo')
         observaciones = request.POST.get('observaciones', '').strip()
 
-        errors = []
-        if not (link or archivo):
-            errors.append('Debe proporcionar un enlace o adjuntar un archivo (al menos uno).')
+        errores = []
+        if not (enlace or archivo):
+            errores.append('Debe proporcionar un enlace o adjuntar un archivo (al menos uno).')
         if not nombre:
-            errors.append('El nombre es obligatorio.')
+            errores.append('El nombre es obligatorio.')
         if not proyecto:
-            errors.append('Debe seleccionar el proyecto.')
+            errores.append('Debe seleccionar el proyecto.')
 
-        if errors:
+        if errores:
             return render(request, 'formulario.html', {
-                'errors': errors,
-                'success': False,
+                'errores': errores,
+                'exito': False,
                 'nombre': nombre,
                 'proyecto': proyecto,
                 'tipos': tipos,
-                'linkArchivo': link,
+                'enlace_archivo': enlace,
                 'observaciones': observaciones,
             })
 
@@ -208,12 +208,12 @@ def evidencia(request):
             nombre=nombre,
             proyecto=proyecto,
             tipo_evidencia=tipo_evidencia,
-            link_evidencia=link,
+            link_evidencia=enlace,
             archivo_evidencia=archivo,
             observaciones=observaciones,
         )
         envio.save()
-        return render(request, 'formulario.html', {'success': True})
+        return render(request, 'formulario.html', {'exito': True})
 
     return render(request, 'formulario.html')
 
@@ -221,53 +221,39 @@ def evidencia(request):
 @login_required
 def evidencias_list(request):
     """Lista de envíos con filtros, búsqueda y paginación."""
-    qs = Envio.objects.select_related('usuario').all()
+    consulta = Envio.objects.select_related('usuario').all()
 
     # Filtro por proyecto
     proyecto = request.GET.get('proyecto', '')
     if proyecto:
-        qs = qs.filter(proyecto=proyecto)
+        consulta = consulta.filter(proyecto=proyecto)
 
     # Búsqueda por nombre, tipo y observaciones
-    q = (request.GET.get('q') or '').strip()
-    if q:
-        qs = qs.filter(
-            Q(nombre__icontains=q) |
-            Q(tipo_evidencia__icontains=q) |
-            Q(observaciones__icontains=q)
+    termino_busqueda = (request.GET.get('q') or '').strip()
+    if termino_busqueda:
+        consulta = consulta.filter(
+            Q(nombre__icontains=termino_busqueda) |
+            Q(tipo_evidencia__icontains=termino_busqueda) |
+            Q(observaciones__icontains=termino_busqueda)
         )
 
     # Ordenamiento
-    order = request.GET.get('order', 'fecha_envio')
-    direction = request.GET.get('dir', 'desc')
-    allowed = {'fecha_envio', 'nombre', 'proyecto', 'tipo_evidencia'}
-    if order in allowed:
-        sort = order if direction == 'asc' else f'-{order}'
-        qs = qs.order_by(sort)
+    orden = request.GET.get('order', 'fecha_envio')
+    direccion = request.GET.get('dir', 'desc')
+    permitidos = {'fecha_envio', 'nombre', 'proyecto', 'tipo_evidencia'}
+    if orden in permitidos:
+        criterio_orden = orden if direccion == 'asc' else f'-{orden}'
+        consulta = consulta.order_by(criterio_orden)
     else:
-        qs = qs.order_by('-fecha_envio')
+        consulta = consulta.order_by('-fecha_envio')
 
     # Paginación (tamaño fijo)
-    paginator = Paginator(qs, 10)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    paginador = Paginator(consulta, 10)
+    numero_pagina = request.GET.get('page')
+    objeto_pagina = paginador.get_page(numero_pagina)
 
     context = {
-        'envios': page_obj,
+        'envios': objeto_pagina,
         'proyecto': proyecto,
-        'order': order,
-        'dir': direction,
-        'q': q,
-    }
-    return render(request, 'evidencias_list.html', context)
-
-
-def access_denied(request):
-    return render(request, 'access_denied.html')
-
-
-@require_group('coordinador', 'dinamizador')
-def instructor_table(request):
-    """Muestra tabla de envíos para coordinadores y dinamizadores."""
-    qs = Envio.objects.select_related('usuario').order_by('-fecha_envio')
-    return render(request, 'roles/instructor_table.html', {'envios': qs})
+        'order': orden,
+        'dir': direccion,

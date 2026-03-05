@@ -18,26 +18,26 @@
     </div>
     <h2 class="auth-title">Crear cuenta</h2>
 
-    {% if errors %}
+    {% if errores %}
       <div class="error" role="alert">
         <ul>
-          {% for e in errors %}
+          {% for e in errores %}
             <li>{{ e }}</li>
           {% endfor %}
         </ul>
       </div>
     {% endif %}
 
-    {% if debug_trace %}
+    {% if rastreo_debug %}
       <div style="margin-top:12px; background:#f8f8f8; padding:8px; border-radius:6px; font-size:12px; overflow:auto; max-height:240px;">
         <strong>Detalle técnico (solo para diagnóstico):</strong>
-        <pre style="white-space:pre-wrap;">{{ debug_trace }}</pre>
+        <pre style="white-space:pre-wrap;">{{ rastreo_debug }}</pre>
       </div>
     {% endif %}
 
     <form action="" method="post" novalidate>
       {% csrf_token %}
-      <input type="hidden" name="role" value="{{ role|default:'' }}" />
+      <input type="hidden" name="role" value="{{ rol|default:'' }}" />
 
       <div class="username-field">
         <label for="username">Usuario</label>
@@ -48,14 +48,14 @@
               <path d="M6 20c0-3 3.5-5 6-5s6 2 6 5" stroke="#00304D" stroke-width="2" fill="none" stroke-linecap="round" />
             </svg>
           </div>
-          <input id="username" name="username" type="text" class="input username-with-icon" placeholder="tu usuario" value="{{ username|default:'' }}" required />
+          <input id="username" name="username" type="text" class="input username-with-icon" placeholder="tu usuario" value="{{ nombre_usuario|default:'' }}" required />
         </div>
       </div>
 
       <div class="username-field">
         <label for="email">Correo electrónico</label>
         <div class="input-row">
-          <input id="email" name="email" type="email" class="input" placeholder="tu@correo.com" value="{{ email|default:'' }}" required />
+          <input id="email" name="email" type="email" class="input" placeholder="tu@correo.com" value="{{ correo|default:'' }}" required />
         </div>
       </div>
 
@@ -75,7 +75,7 @@
 
       <div class="actions">
         <button type="submit" class="btn">Crear cuenta</button>
-        <a href="{% url 'login' %}?role={{ role|default:'' }}" class="helper">¿Ya tienes cuenta? Inicia sesión</a>
+        <a href="{% url 'login' %}?role={{ rol|default:'' }}" class="helper">¿Ya tienes cuenta? Inicia sesión</a>
       </div>
     </form>
   </main>
