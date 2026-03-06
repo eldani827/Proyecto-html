@@ -17,8 +17,12 @@
         <nav>
             <a href="{% url 'home' %}">Inicio</a>
             {% if user.is_authenticated %}
-                {% if user.groups.filter(name='usuario').exists %}
-                    <a href="{% url 'usuario' %}">Mi panel</a>
+                {% if user.groups.all %}
+                    {% for group in user.groups.all %}
+                        {% if group.name == 'usuario' %}
+                            <a href="{% url 'usuario' %}">Mi panel</a>
+                        {% endif %}
+                    {% endfor %}
                 {% endif %}
                 <a href="{% url 'logout' %}">Cerrar sesión</a>
             {% else %}
