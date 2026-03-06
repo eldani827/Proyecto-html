@@ -87,17 +87,17 @@ def permisos(request):
 
 				# Procesar cada permiso enviado
 				for clave, valor in request.POST.items():
-					if key.startswith('perm_') and '_1' in key:
+					if clave.startswith('perm_') and '_1' in clave:
 						# Extraer el codename del permiso
-						codename = key.replace('perm_', '').replace('_1', '')
-						permission_value = value
+						codename = clave.replace('perm_', '').replace('_1', '')
+						permission_value = valor
 
 						# Buscar el permiso en la base de datos
 						try:
-							permiso = Permission.objects.get(codename=nombre_permiso)
+							permiso = Permission.objects.get(codename=codename)
 
 							# Si es "permitido", agregar el permiso al grupo
-							if valor_permiso == 'allowed':
+							if permission_value == 'allowed':
 								grupo_seleccionado.permissions.add(permiso)
 							# Si es "denegado" o "heredado", remover el permiso del grupo
 							else:
@@ -106,8 +106,8 @@ def permisos(request):
 							# El permiso no existe, ignorar
 							pass
 
-			messages.success(request, f'Permisos del grupo {grupo_seleccionado.name} actualizados correctamente.')
-			return redirect(f"{request.path}?group={id_grupo}")
+				messages.success(request, f'Permisos del grupo {grupo_seleccionado.name} actualizados correctamente.')
+				return redirect(f"{request.path}?group={id_grupo}")
 			except Group.DoesNotExist:
 				messages.error(request, 'El grupo seleccionado no existe.')
 

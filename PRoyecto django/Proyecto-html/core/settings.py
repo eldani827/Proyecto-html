@@ -47,6 +47,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Gesicom',
     'Usuarios.apps.UsuariosConfig',
+    'cuentas',
+    'admin_personalizado',
+    'SENNOVA',
 ]
 
 # Middleware: capas que procesan la petición/respuesta.

@@ -257,3 +257,15 @@ def evidencias_list(request):
         'proyecto': proyecto,
         'order': orden,
         'dir': direccion,
+    }
+    return render(request, 'evidencias_list.html', context)
+
+
+def instructor_table(request):
+    """Vista para mostrar tabla de instructores."""
+    return render(request, 'instructor_table.html')
+
+
+def access_denied(request):
+    """Vista para mostrar página de acceso denegado."""
+    return render(request, 'access_denied.html')

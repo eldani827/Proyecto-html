@@ -1,5 +1,20 @@
 from django.contrib import admin
+from django.contrib.auth.models import User
 from .models import PasswordResetToken
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser', 'date_joined')
+    list_filter = ('is_staff', 'is_superuser', 'is_active', 'date_joined')
+    search_fields = ('username', 'email', 'first_name', 'last_name')
+    readonly_fields = ('date_joined', 'last_login')
+    fieldsets = (
+        ('Información de Cuenta', {'fields': ('username', 'email')}),
+        ('Información Personal', {'fields': ('first_name', 'last_name')}),
+        ('Permisos', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        ('Fechas Importantes', {'fields': ('date_joined', 'last_login'), 'classes': ('collapse',)}),
+    )
 
 
 @admin.register(PasswordResetToken)
