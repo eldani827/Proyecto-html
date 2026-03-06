@@ -3,6 +3,10 @@ from django.contrib.auth.models import User
 from .models import PasswordResetToken
 
 
+# Desregistrar el UserAdmin por defecto de Django para usar nuestro personalizado
+admin.site.unregister(User)
+
+
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser', 'date_joined')
