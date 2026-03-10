@@ -334,5 +334,42 @@ def enviar_evidencia(request):
         return render(request, 'formulario.html', {'exito': True})
     return render(request, 'formulario.html')
 
-    
+def envios_list(request):
+    """Vista para mostrar lista de envíos con filtros y paginación."""
+    consulta = Envio.objects.select_related('usuario').all()
+
+    proyecto = request.GET.get('proyecto', '')
+    if proyecto:
+        consulta = consulta.filter(proyecto=proyecto)
+
+    termino_busqueda = (request.GET.get('q') or '').strip()
+    if termino_busqueda:
+        consulta = consulta.filter(
+            Q(nombre__icontains=termino_busqueda) |
+            Q(tipo_evidencia__icontains=termino_busqueda) |
+            Q(observaciones__icontains=termino_busqueda)
+        )
+
+    orden = request.GET.get('order', 'fecha_envio')
+    direccion = request.GET.get('dir', 'desc')
+    permitidos = {'fecha_envio', 'nombre', 'proyecto', 'tipo_evidencia'}
+    if orden in permitidos:
+        criterio_orden = orden if direccion == 'asc' else f'-{orden}'
+        consulta = consulta.order_by(criterio_orden)
+    else:
+        consulta = consulta.order_by('-fecha_envio')
+
+    paginador = Paginator(consulta, 10)
+    numero_pagina = request.GET.get('page')
+    objeto_pagina = paginador.get_page(numero_pagina)
+
+    context = {
+        'envios': objeto_pagina,
+        'proyecto': proyecto,
+        'order': orden,
+        'dir': direccion,
+    }
+    return render(request, 'evidencias_list.html', context)
+
+
 
