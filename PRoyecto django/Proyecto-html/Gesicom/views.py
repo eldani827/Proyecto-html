@@ -269,3 +269,68 @@ def instructor_table(request):
 def access_denied(request):
     """Vista para mostrar página de acceso denegado."""
     return render(request, 'access_denied.html')
+
+def exportar_csv(request):
+    """Exportar envíos a CSV."""
+    consulta = Envio.objects.select_related('usuario').all().order_by('-fecha_envio')
+
+    respuesta = HttpResponse(content_type='text/csv')
+    respuesta['Content-Disposition'] = 'attachment; filename="envios.csv"'
+    escritor = csv.writer(respuesta)
+    escritor.writerow(['fecha_envio', 'nombre', 'proyecto', 'tipo_evidencia', 'link_evidencia', 'observaciones'])
+    for envio in consulta:
+        escritor.writerow([
+            envio.fecha_envio.isoformat() if envio.fecha_envio else '',
+            envio.nombre,
+            envio.proyecto,
+            envio.tipo_evidencia,
+            envio.link_evidencia or '',
+            (envio.observaciones or '').replace('\r\n', ' ').replace('\n', ' '),
+        ])
+    return respuesta
+
+def formulario(request):
+    """Vista para mostrar formulario de envío."""
+    return render(request, 'formulario.html')
+
+def enviar_evidencia(request):
+    """Vista para enviar evidencia."""
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre', '').strip()
+        proyecto = request.POST.get('proyecto', '')
+        tipos = request.POST.getlist('evidencias')
+        tipo_evidencia = ', '.join(tipos) if tipos else 'Sin especificar'
+        enlace = request.POST.get('linkArchivo', '').strip()
+        archivo = request.FILES.get('archivo')
+        observaciones = request.POST.get('observaciones', '').strip()
+        errores = []
+        if not (enlace or archivo):
+            errores.append('Debe proporcionar un enlace o adjuntar un archivo (al menos uno).')
+        if not nombre:
+            errores.append('El nombre es obligatorio.')
+        if not proyecto:   
+            errores.append('Debe seleccionar el proyecto.')
+        if errores:
+            return render(request, 'formulario.html', {
+                'errores': errores,
+                'exito': False,
+                'nombre': nombre,
+                'proyecto': proyecto,
+                'tipos': tipos,
+                'enlace_archivo': enlace,
+                'observaciones': observaciones,
+            })
+
+        envio = Envio(
+            usuario=request.user,
+            nombre=nombre,
+            proyecto=proyecto,
+            tipo_evidencia=tipo_evidencia,
+            link_evidencia=enlace,
+            archivo=archivo,
+            observaciones=observaciones,
+        )
+        envio.save()
+        return render(request, 'formulario.html', {'exito': True})
+    return render(request, 'formulario.html')
+

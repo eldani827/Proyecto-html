@@ -168,3 +168,5 @@ def calculate_monthly_stats(queryset, date_field='fecha_envio'):
     ]
     
     return stats, total_count
+
+
