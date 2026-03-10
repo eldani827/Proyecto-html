@@ -9,47 +9,88 @@
     <!-- Reutilizamos estilos existentes para mantener coherencia y responsividad -->
 </head>
 <body>
-    <header>
-        <div>
-            <h1>GESICOM</h1>
-            <small>Inicio</small>
-        </div>
-        <nav>
-            <a href="{% url 'home' %}">Inicio</a>
-            {% if user.is_authenticated %}
-                {% if user.groups.all %}
-                    {% for group in user.groups.all %}
-                        {% if group.name == 'usuario' %}
-                            <a href="{% url 'usuario' %}">Mi panel</a>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-                <a href="{% url 'logout' %}">Cerrar sesión</a>
-            {% else %}
-                <a href="{% url 'login' %}">Ingresar</a>
-                <a href="{% url 'register' %}">Registrarse</a>
-            {% endif %}
-        </nav>
-    </header>
 
-    <main>
-        <section class="welcome-section">
-            {% if user.is_authenticated %}
-                <div class="welcome-avatar"></div>
+<header>
+    <div>
+        <h1>GESICOM</h1>
+        <small>Panel del Usuario</small>
+    </div>
+
+    <nav>
+        <a href="{% url 'home' %}">Inicio</a>
+        <a href="#evidencia">Evidencia</a>
+        <a href="#reportes">Reportes</a>
+        <a href="#perfil">Perfil</a>
+    </nav>
+
+    <div class="user-menu-container">
+        <div class="user-menu-toggle">
+            <img src="{% static 'usuarios/usuario.png' %}" alt="Avatar" class="avatar">
+            <span>{{ user.first_name|default:user.username }}</span>
+            <ul class="user-dropdown">
+                <li><a href="#perfil">Perfil</a></li>
+                <li><a href="#configuracion">Configuración</a></li>
+                <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<main>
+
+    <section class="breadcrumb">
+        <button class="btn-inicio">inicio</button>
+        <h2>Panel del Usuario</h2>
+    </section>
+
+    <section class="welcome-section">
+        <div>
+            <img src="{% static 'usuarios/usuario.png' %}" alt="avatar" class="welcome-avatar">
+        </div>
+        <div>
+            <h2>Bienvenido, {{ user.first_name|default:user.username }}</h2>
+            <p>Resumen general de actividades</p>
+        </div>
+    </section>
+
+    <section class="cards-grid">
+
+        <div class="card">
+            <h3>Enviar Evidencia</h3>
+            <p>Subir nuevos archivos</p>
+              <button class="btn-primary">Enviar</button>
+        </div>
+
+        <div class="card">
+            <h3>Evidencias</h3>
+            <div class="status-box">
                 <div>
-                    <h2>Bienvenid{{ user.get_short_name|default:user.username }}</h2>
-                    <p>Utiliza el menú para navegar por el sistema.</p>
+                    <p>En revisión <span class="badge badge-review">0</span></p>
                 </div>
-            {% else %}
-                <div class="welcome-avatar"></div>
                 <div>
-                    <h2>Bienvenido a GESICOM</h2>
-                    <p>Por favor inicia sesión o regístrate para continuar.</p>
-                    <a class="btn btn-primary" href="{% url 'login' %}">Ingresar</a>
-                    <a class="btn btn-secondary" href="{% url 'register' %}">Registrarse</a>
+                    <p>Aprobadas <span class="badge badge-approved">0</span></p>
                 </div>
-            {% endif %}
-        </section>
-    </main>
+            </div>
+            <button class="btn-secondary">Ver estado</button>
+        </div>
+
+        <div class="card">
+            <h3>Perfil</h3>
+            <p>Editar información</p>
+            <button class="btn-secondary">Editar Perfil</button>
+        </div>
+
+        <div class="card">
+            <h3>Reportes</h3>
+            <p>Ver estadísticas</p>
+            <button class="btn-warning">Ver Reportes</button>
+        </div>
+
+    </section>
+
+    
+
+</main>
+
 </body>
 </html>
