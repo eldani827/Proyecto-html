@@ -334,3 +334,5 @@ def enviar_evidencia(request):
         return render(request, 'formulario.html', {'exito': True})
     return render(request, 'formulario.html')
 
+    
+

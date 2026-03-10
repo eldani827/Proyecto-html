@@ -169,4 +169,14 @@ def calculate_monthly_stats(queryset, date_field='fecha_envio'):
     
     return stats, total_count
 
+def is_admin_or_group(user, group_names):
+    """Devuelve True si el usuario es administrador o pertenece a un grupo.
 
+    Args:
+        user: Django User
+        group_names: Lista de nombres de grupos
+
+    Returns:
+        True si el usuario es administrador o pertenece a uno de los grupos.
+    """
+    return user.is_superuser or user.groups.filter(name__in=group_names).exists()
