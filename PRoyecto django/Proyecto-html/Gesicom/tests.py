@@ -20,7 +20,7 @@ class EnvioViewsTests(TestCase):
         # Falta enlace y archivo
         resp = self.client.post(reverse('evidencia'), {
             'nombre': 'Prueba',
-            'opcion': 'LEM',
+            'proyecto': 'LEM',
             'evidencias': ['Documento'],
             'observaciones': 'Test',
         })
@@ -31,13 +31,14 @@ class EnvioViewsTests(TestCase):
         self.client.login(username='u', password='Abcdef1!')
         resp = self.client.post(reverse('evidencia'), {
             'nombre': 'Prueba',
-            'opcion': 'LEM',
+            'proyecto': 'LEM',
             'evidencias': ['Documento'],
             'linkArchivo': 'https://example.com/file',
             'observaciones': 'Test',
         })
         self.assertEqual(resp.status_code, 200)
-        self.assertContains(resp, 'success')
+        # el texto de éxito se muestra en el template
+        self.assertContains(resp, 'Evidencia enviada correctamente')
         self.assertEqual(Envio.objects.count(), 1)
 
     def test_evidencias_list(self):

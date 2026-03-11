@@ -177,7 +177,7 @@ def reportes_csv(request):
 def evidencia(request):
     if request.method == 'POST':
         nombre = request.POST.get('nombre', '').strip()
-        proyecto = (request.POST.get('opcion', '') or '').strip()
+        proyecto = request.POST.get('proyecto', '').strip()
         tipos = request.POST.getlist('evidencias')
         tipo_evidencia = ', '.join(tipos) if tipos else 'Sin especificar'
         enlace = request.POST.get('linkArchivo', '').strip()
@@ -288,88 +288,6 @@ def exportar_csv(request):
             (envio.observaciones or '').replace('\r\n', ' ').replace('\n', ' '),
         ])
     return respuesta
-
-def formulario(request):
-    """Vista para mostrar formulario de envío."""
-    return render(request, 'formulario.html')
-
-def enviar_evidencia(request):
-    """Vista para enviar evidencia."""
-    if request.method == 'POST':
-        nombre = request.POST.get('nombre', '').strip()
-        proyecto = request.POST.get('proyecto', '')
-        tipos = request.POST.getlist('evidencias')
-        tipo_evidencia = ', '.join(tipos) if tipos else 'Sin especificar'
-        enlace = request.POST.get('linkArchivo', '').strip()
-        archivo = request.FILES.get('archivo')
-        observaciones = request.POST.get('observaciones', '').strip()
-        errores = []
-        if not (enlace or archivo):
-            errores.append('Debe proporcionar un enlace o adjuntar un archivo (al menos uno).')
-        if not nombre:
-            errores.append('El nombre es obligatorio.')
-        if not proyecto:   
-            errores.append('Debe seleccionar el proyecto.')
-        if errores:
-            return render(request, 'formulario.html', {
-                'errores': errores,
-                'exito': False,
-                'nombre': nombre,
-                'proyecto': proyecto,
-                'tipos': tipos,
-                'enlace_archivo': enlace,
-                'observaciones': observaciones,
-            })
-
-        envio = Envio(
-            usuario=request.user,
-            nombre=nombre,
-            proyecto=proyecto,
-            tipo_evidencia=tipo_evidencia,
-            link_evidencia=enlace,
-            archivo=archivo,
-            observaciones=observaciones,
-        )
-        envio.save()
-        return render(request, 'formulario.html', {'exito': True})
-    return render(request, 'formulario.html')
-
-def envios_list(request):
-    """Vista para mostrar lista de envíos con filtros y paginación."""
-    consulta = Envio.objects.select_related('usuario').all()
-
-    proyecto = request.GET.get('proyecto', '')
-    if proyecto:
-        consulta = consulta.filter(proyecto=proyecto)
-
-    termino_busqueda = (request.GET.get('q') or '').strip()
-    if termino_busqueda:
-        consulta = consulta.filter(
-            Q(nombre__icontains=termino_busqueda) |
-            Q(tipo_evidencia__icontains=termino_busqueda) |
-            Q(observaciones__icontains=termino_busqueda)
-        )
-
-    orden = request.GET.get('order', 'fecha_envio')
-    direccion = request.GET.get('dir', 'desc')
-    permitidos = {'fecha_envio', 'nombre', 'proyecto', 'tipo_evidencia'}
-    if orden in permitidos:
-        criterio_orden = orden if direccion == 'asc' else f'-{orden}'
-        consulta = consulta.order_by(criterio_orden)
-    else:
-        consulta = consulta.order_by('-fecha_envio')
-
-    paginador = Paginator(consulta, 10)
-    numero_pagina = request.GET.get('page')
-    objeto_pagina = paginador.get_page(numero_pagina)
-
-    context = {
-        'envios': objeto_pagina,
-        'proyecto': proyecto,
-        'order': orden,
-        'dir': direccion,
-    }
-    return render(request, 'evidencias_list.html', context)
 
 
 

@@ -125,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internacionalización y zona horaria
 # ---------------------------------------------------------
 # Idioma por defecto del proyecto. Cambiar a 'es-co' o similar si lo desea.
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'  # idioma principal cambiado a español
 
 # Zona horaria del proyecto. Ajustar según ubicación del servidor/usuarios.
 TIME_ZONE = 'UTC'

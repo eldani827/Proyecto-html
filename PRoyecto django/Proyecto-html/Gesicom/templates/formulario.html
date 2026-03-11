@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Envío de Evidencias GESICOM</title>
+  {% load static %}
+  <!-- ENLACE AL CSS -->
+  <link rel="stylesheet" href="{% static 'CSS/formulario.css' %}">
+
+</head>
+
+<body>
+
+  <!-- ENCABEZADO -->
+  <div class="inicio">
+    <img src="logo.png" alt="Logo">
+    <h2>ENVÍO DE EVIDENCIAS GESICOM</h2>
+  </div>
+
+  <div class="cuadro">
+    {% load static %}
+    <form method="post" action="{% url 'evidencia' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      {% if errores %}
+        <div class="errores">
+          <ul>
+            {% for error in errores %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {% if exito %}
+        <div class="exito">¡Evidencia enviada correctamente!</div>
+      {% endif %}
+
+      <label for="nombre"><b>Nombre:</b></label>
+      <input type="text" id="nombre" name="nombre" value="{{ nombre|default:'' }}">
+
+      <label for="opcion"><b>Proyecto</b></label>
+      <select id="opcion" name="proyecto">
+        <option value="">Seleccione</option>
+        <option value="Proyecto 1" {% if proyecto == 'Proyecto 1' %}selected{% endif %}>Proyecto 1</option>
+        <option value="Proyecto 2" {% if proyecto == 'Proyecto 2' %}selected{% endif %}>Proyecto 2</option>
+        <option value="Proyecto 3" {% if proyecto == 'Proyecto 3' %}selected{% endif %}>Proyecto 3</option>
+      </select>
+
+      <label><b>Tipo de Evidencia</b></label><br>
+
+      <input type="checkbox" id="planeacion" name="evidencias" value="Planeación" {% if tipos and 'Planeación' in tipos %}checked{% endif %}>
+      <label for="planeacion">Planeación</label><br>
+
+      <input type="checkbox" id="ejecucion" name="evidencias" value="Ejecución" {% if tipos and 'Ejecución' in tipos %}checked{% endif %}>
+      <label for="ejecucion">Ejecución</label><br>
+
+      <input type="checkbox" id="evaluacion" name="evidencias" value="Evaluación" {% if tipos and 'Evaluación' in tipos %}checked{% endif %}>
+      <label for="evaluacion">Evaluación</label><br>
+
+      <input type="checkbox" id="informe" name="evidencias" value="Informe Final" {% if tipos and 'Informe Final' in tipos %}checked{% endif %}>
+      <label for="informe">Informe Final</label><br><br>
+
+      <label for="fecha"><b>Fecha</b></label>
+      <input type="date" id="fecha" name="fecha" value="{{ fecha|default:'' }}">
+
+      <label for="archivo"><b>Subir Archivo</b></label>
+      
+      <input type="file" id="archivo" name="archivo">
+
+      <label for="linkArchivo"><b>Link de archivo</b></label>
+      <input type="url" id="linkArchivo" name="linkArchivo" value="{{ enlace_archivo|default:'' }}">
+
+      <label for="observaciones"><b>Observaciones</b></label>
+      <textarea id="observaciones" name="observaciones" rows="4">{{ observaciones|default:'' }}</textarea>
+
+      <input type="submit" value="ENVIAR">
+    </form>
+  </div>
+</body>
+</html>
