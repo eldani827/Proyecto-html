@@ -4,10 +4,14 @@ from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
 from Gesicom import views as gesicom_views
-from Usuarios import views as usuarios_views
+from usuarios import views as usuarios_views
 from cuentas import views as cuentas_views
 
+from django.urls import path 
+from . import views
+
 urlpatterns = [
+
     path('admin/', admin.site.urls),
     path('administrador/', include('admin_personalizado.urls')),
     path('', usuarios_views.login_view, name='login_root'),
@@ -46,6 +50,7 @@ urlpatterns = [
     path('api/olvide_password/', cuentas_views.olvide_password, name='olvide_password'),
     path('api/restablecer_password/', cuentas_views.restablecer_password, name='restablecer_password'),
     path('api/debug-tokens/', cuentas_views.debug_tokens, name='debug_tokens'),  # Solo en DEBUG=True
+ path('editar_perfil/', views.editar_perfil, name='editar_perfil'),
 ]
 
 if settings.DEBUG:

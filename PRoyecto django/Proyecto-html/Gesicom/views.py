@@ -19,6 +19,10 @@ from .utils import (
 from django.http import HttpResponse
 import csv
 
+from django.shortcuts import render
+
+def editar_perfil(request):
+    return render(request, 'editar_perfil/editar.html')
 
 def index(request):
     # Mantener compatibilidad; usar home como contenido principal
