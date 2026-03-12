@@ -19,7 +19,7 @@
             <img src="{% static 'CSS/img/gesicom.jpeg' %}" alt="GESICOM" class="logo">
 
             <nav>
-                <a href="{% url 'inicio' %}">Inicio</a>
+                <a href="{% url 'home' %}">Inicio</a>
                 <a href="{% url 'evidencia' %}">Evidencia</a>
                 <a href="{% url 'logout' %}">Cerrar sesión</a>
             </nav>
@@ -28,7 +28,7 @@
         <main>
             <h1>Editar Perfil</h1>
 
-            <form method="post">
+            <form method="POST">
                 {% csrf_token %}
 
                 <label for="nombre">Nombre</label>
@@ -81,7 +81,7 @@
                            name="contrasena"
                            minlength="8"
                            maxlength="8"
-                           pattern="^(?=.*[A-Z])(?=.*[0-9\W]).{8}$"
+                           pattern="^(?=.*[A-Z])(?=.*[0-9\\W]).{8}$"
                            title="Debe tener exactamente 8 caracteres, una mayúscula y un número o símbolo">
                 </div>
 
