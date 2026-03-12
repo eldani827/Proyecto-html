@@ -83,6 +83,15 @@ body.login-body {
 .username-field { display: grid; gap: .3rem; }
 .login-card .input.username-with-icon { padding-left: 0; }
 
+/* Admin Layout */
+.admin-layout{display:grid;grid-template-columns:260px 1fr;min-height:100vh;background:#f6f8f9}
+.admin-sidebar{background:#e8efe8;border-right:1px solid #d7e1d7;padding:1rem}
+.sidebar-nav{display:grid;gap:.35rem}
+.sidebar-link{display:flex;align-items:center;gap:.5rem;padding:.6rem .8rem;border-radius:10px;color:#102a12;text-decoration:none}
+.sidebar-link:hover{background:#dfeadd}
+.sidebar-link.active{background:#cfe6cc;font-weight:600}
+.admin-content{padding:1.25rem 1.5rem}
+
 /* Fila con icono externo a la izquierda */
 .input-row { display: flex; align-items: center; gap: .6rem; min-width: 0; }
 .input-row .input-icon.left,
