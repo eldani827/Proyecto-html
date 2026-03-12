@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Panel de Administración{% endblock %} - GESICOM</title>
+    <link rel="stylesheet" href="{% static 'CSS/main.css' %}">
+    {% block extra_css %}{% endblock %}
+    <style>
+      .admin-layout{display:grid;grid-template-columns:260px 1fr;min-height:100vh;background:#f6f8f9}
+      .admin-sidebar{background:#e8efe8;border-right:1px solid #d7e1d7;padding:1rem}
+      .sidebar-nav{display:grid;gap:.35rem}
+      .sidebar-link{display:flex;align-items:center;gap:.5rem;padding:.6rem .8rem;border-radius:10px;color:#102a12;text-decoration:none}
+      .sidebar-link:hover{background:#dfeadd}
+      .sidebar-link.active{background:#cfe6cc;font-weight:600}
+      .admin-main{display:flex;flex-direction:column}
+      .admin-header{display:flex;align-items:center;justify-content:space-between;padding:1rem;border-bottom:1px solid #e5e7eb;background:#fff}
+      .admin-title{margin:0}
+      .admin-content{padding:1.25rem 1.5rem}
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <nav class="sidebar-nav">
+                <a href="{% url 'admin_personalizado:dashboard' %}" class="sidebar-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Inicio</a>
+                <a href="{% url 'admin_personalizado:usuarios' %}" class="sidebar-link {% if request.resolver_match.url_name == 'usuarios' %}active{% endif %}">Usuarios</a>
+                <a href="{% url 'admin_personalizado:permisos' %}" class="sidebar-link {% if request.resolver_match.url_name == 'permisos' %}active{% endif %}">Permisos</a>
+            </nav>
+        </aside>
+        <div class="admin-main">
+            <header class="admin-header">
+                <div class="admin-header-left">
+                    <img src="{% static 'img/logo_sena.svg' %}" alt="Logo SENA" class="admin-logo" style="width:48px;height:auto;">
+                    <h1 class="admin-title">Panel de Administrador</h1>
+                </div>
+                <div class="admin-header-right">
+                    <a href="/admin/" class="logout-link" title="Ir al admin de Django">Admin</a>
+                </div>
+            </header>
+            <main class="admin-content">
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

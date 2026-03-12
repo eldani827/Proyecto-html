@@ -1,0 +1,51 @@
+{% extends 'admin_personalizado/base.html' %}
+{% load static %}
+
+{% block title %}Gestión de Permisos{% endblock %}
+
+{% block content %}
+<h2 class="page-title">Gestión de Permisos</h2>
+
+<section class="card">
+  <div class="card-header">
+    <form class="controls" method="get" action="{% url 'admin_personalizado:permisos' %}">
+      <label for="group">Seleccionar Grupo de Usuarios</label>
+      <select id="group" name="group" class="select" onchange="this.form.submit()">
+        {% for g in grupos %}
+          <option value="{{ g.name }}" {% if g.name == group_name %}selected{% endif %}>{{ g.name|capfirst }}</option>
+        {% endfor %}
+      </select>
+    </form>
+  </div>
+  <div class="card-body">
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="group" value="{{ group_name }}">
+      <table class="perms" role="table" aria-label="Permisos del grupo">
+        <thead>
+          <tr>
+            <th style="width:45%">Acción</th>
+            <th style="width:25%">Permiso</th>
+            <th class="switch" style="width:30%">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for code,label in scope %}
+          <tr>
+            <td>{{ label }}</td>
+            <td><span class="badge ok">Permiso</span></td>
+            <td class="switch">
+              <input type="checkbox" id="perm_{{ code }}" name="perm_{{ code }}" {% if code in current %}checked{% endif %} />
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="btns">
+        <button type="submit" class="btn save">Guardar</button>
+        <a href="{% url 'admin_personalizado:dashboard' %}" class="btn cancel">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}
