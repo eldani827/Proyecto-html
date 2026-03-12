@@ -31,6 +31,9 @@ DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 # Allow hosts can be configured with comma-separated env var
 _hosts = os.environ.get('DJANGO_ALLOWED_HOSTS', '')
 ALLOWED_HOSTS = [h.strip() for h in _hosts.split(',') if h.strip()] if _hosts else ['127.0.0.1', 'localhost', '0.0.0.0']
+# Allow Django test client host used in tests
+if 'testserver' not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append('testserver')
 
 
 # Application definition
@@ -42,10 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Gesicom',
-    'Usuarios.apps.UsuariosConfig',
-    'cuentas.apps.CuentasConfig',
-    'admin_personalizado.apps.AdminPersonalizadoConfig',
+    'GESICOM',
+    'INSTRUCTOR.apps.UsuariosConfig',
+    'CUENTAS.apps.CuentasConfig',
+    'ADMIN.apps.AdminPersonalizadoConfig',
 ]
 
 MIDDLEWARE = [
@@ -117,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
     {
-        'NAME': 'Gesicom.validators.EightCharUpperNumberOrSpecialValidator',
+        'NAME': 'GESICOM.validators.EightCharUpperNumberOrSpecialValidator',
     },
 ]
 

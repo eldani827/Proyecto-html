@@ -51,6 +51,11 @@ def login_view(request):
 	if rol not in ROLE_ROUTES:
 		rol = ''
 
+	# Mostrar mensaje de cuenta creada si viene el parámetro ?created=1
+	success_msg = None
+	if request.method == 'GET' and request.GET.get('created'):
+		success_msg = 'Cuenta creada correctamente. Por favor inicia sesión.'
+
 	if request.method == 'POST':
 		entrada_usuario = (request.POST.get('username', '') or '').strip()
 		contraseña = request.POST.get('password', '')
@@ -93,11 +98,20 @@ def login_view(request):
 			'username': entrada_usuario,
 		})
 
-	return render(request, 'login.html', {'role': rol})
+	# Si no es POST (GET), mostrar la plantilla y el posible mensaje de cuenta creada
+	context = {'role': rol}
+	if success_msg:
+		context['success'] = success_msg
+	return render(request, 'login.html', context)
 
 def register_view(request):
 	rol = request.GET.get('role') or request.POST.get('role') or ''
 	if request.method == 'POST':
+		# Log de depuración: capturar los datos enviados por la interfaz
+		try:
+			logger.debug('register_view POST data: %s', dict(request.POST))
+		except Exception:
+			logger.exception('No se pudo serializar request.POST')
 		nombre_usuario = (request.POST.get('username', '') or '').strip()
 		correo = (request.POST.get('email', '') or '').strip().lower()
 		contraseña1 = request.POST.get('password1', '')
@@ -131,8 +145,9 @@ def register_view(request):
 				g, _ = Group.objects.get_or_create(name='usuario')
 				usuario.groups.add(g)
 				usuario.save()
-			# No iniciamos sesión automáticamente: redirigir al inicio de sesión para que el usuario entre
-			return redirect('login')
+				logger.info('Usuario creado desde register_view: %s (pk=%s)', usuario.username, getattr(usuario, 'pk', None))
+				# No iniciamos sesión automáticamente: redirigir al inicio de sesión con indicador 'created'
+				return redirect('/login/?created=1')
 		except IntegrityError:
 			errores.append('El usuario o correo ya existe.')
 			return render(request, 'register.html', {

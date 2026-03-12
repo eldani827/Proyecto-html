@@ -4,7 +4,7 @@ Rutas (URLconf) del proyecto SENNOVA.
 `urlpatterns` asocia las rutas HTTP con las vistas correspondientes.
 Los comentarios y nombres están en español para facilitar la exposición:
 - Las rutas principales (`login`, `register`, `home`, etc.) apuntan a vistas
-    definidas en las apps `Usuarios` y `Gesicom`.
+    definidas en las apps `INSTRUCTOR` y `GESICOM`.
 - También hay rutas para el panel de administración y el flujo de
     recuperación de contraseña (password reset) usando las vistas de Django.
 
@@ -15,9 +15,9 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
-from Gesicom import views as gesicom_views
-from Usuarios import views as usuarios_views
-from cuentas import views as cuentas_views
+from GESICOM import views as gesicom_views
+from INSTRUCTOR import views as usuarios_views
+from CUENTAS import views as cuentas_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),

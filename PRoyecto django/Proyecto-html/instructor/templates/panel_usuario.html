@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GESICOM - Panel del Usuario</title>
-    <link rel="stylesheet" href="{% static 'usuarios/panel_usuario.css' %}">
+    <link rel="stylesheet" href="{% static 'instructor/panel_usuario.css' %}">
 </head>
 <body>
 
@@ -24,7 +24,7 @@
 
     <div class="user-menu-container">
         <div class="user-menu-toggle">
-            <img src="{% static 'usuarios/usuario.png' %}" alt="Avatar" class="avatar">
+            <img src="{% static 'instructor/usuario.png' %}" alt="Avatar" class="avatar">
             <span>{{ user.first_name|default:user.username }}</span>
             <ul class="user-dropdown">
                 <li><a href="#perfil">Perfil</a></li>
@@ -44,7 +44,7 @@
 
     <section class="welcome-section">
         <div>
-            <img src="{% static 'usuarios/usuario.png' %}" alt="avatar" class="welcome-avatar">
+            <img src="{% static 'instructor/usuario.png' %}" alt="avatar" class="welcome-avatar">
         </div>
         <div>
             <h2>Bienvenido, {{ user.first_name|default:user.username }}</h2>
