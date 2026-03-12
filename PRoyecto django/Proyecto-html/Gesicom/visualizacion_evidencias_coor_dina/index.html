@@ -11,13 +11,15 @@
 <div class="contenedor">
 
 <header>
-<img src="logo.png" class="logo">
+<h2>GESICOM</h2>
+
 <nav>
 <a href="#">Inicio</a>
 <a href="#">Editar</a>
 <a href="#">Guardar</a>
 <a href="#">Cerrar sesión</a>
 </nav>
+
 </header>
 
 
@@ -31,13 +33,6 @@
 <option value="IFPI">IFPI</option>
 <option value="Tuga">Tuga</option>
 <option value="Lem">Lem</option>
-</select>
-
-<label>Estado:</label>
-<select id="filtroEstado">
-<option value="todos">Todos</option>
-<option value="Revisado">Revisado</option>
-<option value="En revision">En revisión</option>
 </select>
 
 </div>
@@ -56,34 +51,44 @@
 </tr>
 </thead>
 
+
 <tbody>
 
-<tr data-evidencia="Depos" data-estado="Revisado">
+<tr data-evidencia="Depos">
 <td>Juan Pérez</td>
 <td>Depos</td>
 <td>Informe técnico</td>
 <td>12/03/2026</td>
-<td class="revisado">Revisado</td>
-<td>Correcto</td>
+
+<td>
+<select class="estado">
+<option value="revision">En revisión</option>
+<option value="revisado">Revisado</option>
+</select>
+</td>
+
+<td><input type="text" placeholder="Comentario"></td>
+
 </tr>
 
-<tr data-evidencia="Givit" data-estado="En revision">
+
+<tr data-evidencia="Givit">
 <td>Ana López</td>
 <td>Givit</td>
 <td>Documento PDF</td>
 <td>11/03/2026</td>
-<td class="revision">En revisión</td>
-<td>Pendiente</td>
+
+<td>
+<select class="estado">
+<option value="revision">En revisión</option>
+<option value="revisado">Revisado</option>
+</select>
+</td>
+
+<td><input type="text" placeholder="Comentario"></td>
+
 </tr>
 
-<tr data-evidencia="IFPI" data-estado="Revisado">
-<td>Carlos Gómez</td>
-<td>IFPI</td>
-<td>Actividad práctica</td>
-<td>10/03/2026</td>
-<td class="revisado">Revisado</td>
-<td>Bien hecho</td>
-</tr>
 
 </tbody>
 
@@ -94,32 +99,26 @@
 
 <script>
 
-const filtroEvidencia = document.getElementById("filtroEvidencia");
-const filtroEstado = document.getElementById("filtroEstado");
-
+const filtro = document.getElementById("filtroEvidencia");
 const filas = document.querySelectorAll("#tablaEvidencias tbody tr");
 
-function filtrar(){
+filtro.addEventListener("change",()=>{
 
-const evidencia = filtroEvidencia.value;
-const estado = filtroEstado.value;
+const valor = filtro.value;
 
-filas.forEach(fila =>{
+filas.forEach(fila=>{
 
-const ev = fila.dataset.evidencia;
-const es = fila.dataset.estado;
+const evidencia = fila.dataset.evidencia;
 
-const mostrarEvidencia = evidencia === "todas" || evidencia === ev;
-const mostrarEstado = estado === "todos" || estado === es;
-
-fila.style.display = mostrarEvidencia && mostrarEstado ? "" : "none";
+if(valor==="todas" || evidencia===valor){
+fila.style.display="";
+}else{
+fila.style.display="none";
+}
 
 });
 
-}
-
-filtroEvidencia.addEventListener("change",filtrar);
-filtroEstado.addEventListener("change",filtrar);
+});
 
 </script>
 
