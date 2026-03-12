@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, Group, Permission
 from django.core.paginator import Paginator
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 import csv
 
@@ -14,7 +13,6 @@ USER_PERMISSIONS_SCOPE = [
 ]
 
 
-@login_required
 def dashboard(request):
     total_users = User.objects.count()
     total_groups = Group.objects.count()
@@ -26,7 +24,6 @@ def dashboard(request):
     })
 
 
-@login_required
 def usuarios(request):
     qs = User.objects.all().order_by('username')
     paginator = Paginator(qs, 10)
@@ -37,7 +34,6 @@ def usuarios(request):
     })
 
 
-@login_required
 def permisos(request):
     grupos = Group.objects.all().order_by('name')
     
@@ -83,7 +79,6 @@ def permisos(request):
     })
 
 
-@login_required
 def usuarios_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="usuarios.csv"'
