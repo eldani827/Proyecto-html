@@ -1,0 +1,351 @@
+/* merge: resolved */
+/* Estilos globales y utilidades */
+:root {
+  --text: #000000;
+  --primary: #39A900;
+
+}
+html { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans";
+  color: var(--text);
+}
+
+h1 {
+  color: #00304D;
+}
+
+.container { max-width: 1100px; margin: 0 auto; padding: 1rem; }
+.btn { display: inline-block; padding: .6rem 1rem; border-radius: 8px; background: var(--primary); color: #fff; text-decoration: none; }
+/* Alertas y tablas (feedback y listado) */
+.alert-success { background: #e6ffed; color: #0f5132; border: 1px solid #b7f3c9; padding: 10px; border-radius: 6px; }
+.alert-error { background: #ffe6e6; color: #842029; border: 1px solid #f5c2c7; padding: 10px; border-radius: 6px; }
+.table { width: 100%; border-collapse: collapse; }
+.table th, .table td { padding: 12px; border-bottom: 1px solid #eee; }
+.table th { background: #f8fafc; text-align: left; }
+.table-responsive { overflow-x: auto; }
+@media (max-width: 600px) { .table th, .table td { padding: 10px; font-size: 14px; } }
+
+/* Barra de filtros del listado */
+.filter-bar { display: flex; gap: .6rem; align-items: center; margin: 0 0 1rem; }
+.filter-bar label { font-weight: 600; color: var(--muted); }
+.filter-bar select { border: 1px solid var(--border); border-radius: 8px; padding: .4rem .6rem; }
+
+/* Estilos específicos de la página de login (scope por clase) */
+:root {
+  --bg: #ffffff;
+  --card: #F6F6F6;
+  --input: #00304D;
+  --accent: #00304D;
+  --accent-2: #00304D;
+  --text: #000000;
+  --muted: #00304D;
+  --danger: #ef4444;
+}
+
+* { box-sizing: border-box; }
+html, body.login-body { height: 100%; }
+body.login-body {
+  margin: 0; display: grid; place-items: center; min-height: 100vh;
+  background: #ffffff;
+  color: #000000;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+  padding-top: clamp(96px, 12vw, 160px);
+}
+
+.login-card {
+  width: 100%; max-width: clamp(340px, 92vw, 600px); background: #ffffff;
+  border: 3px solid #00304D;
+  border-radius: 18px; padding: clamp(1rem, 3vw, 1.6rem); box-shadow: 0 18px 32px rgba(0,0,0,0.12);
+  margin: 1rem auto;
+  position: relative;
+  overflow-wrap: anywhere;
+}
+
+.login-brand { display: grid; place-items: center; gap: .6rem; margin-bottom: 1.25rem; }
+.login-brand .logo { width: 96px; height: 96px; border-radius: 50%; background: #00304D; }
+.login-brand .logo-img { width: 96px; height: 96px; object-fit: contain; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.12); }
+.login-brand h1 { font-size: 2rem; margin: 0; color: #000000; }
+.login-subtitle { margin: 0 0 1.5rem; color: var(--muted); font-size: .95rem; }
+.login-card form { display: grid; gap: .9rem; }
+.login-card label { font-size: clamp(.9rem, 2.2vw, 1rem); color: var(--muted); }
+.password-label { display: inline-flex; align-items: center; gap: .5rem; }
+.toggle-password { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border: none; background: #50E5F9; color: #00304D; border-radius: 8px; padding: 2px; cursor: pointer; }
+.toggle-password:hover { background: #50E5F9; }
+.toggle-password svg { width: 28px; height: 28px; }
+
+/* Input de contraseña con icono a la izquierda */
+.password-field { display: grid; gap: .3rem; }
+.login-card .input.password-with-icon { padding-left: 0; }
+.username-field { display: grid; gap: .3rem; }
+.login-card .input.username-with-icon { padding-left: 0; }
+
+/* Fila con icono externo a la izquierda */
+.input-row { display: flex; align-items: center; gap: .6rem; min-width: 0; }
+.input-row .input-icon.left,
+.input-row .toggle-password.left {
+  position: static;
+  transform: none;
+  width: clamp(44px, 6vw, 52px);
+  height: clamp(44px, 6vw, 52px);
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: #50E5F9;
+}
+.input-row .input-icon.left { color: #00304D; }
+.input-row .input-icon.left svg,
+.input-row .toggle-password.left svg { width: 32px; height: 32px; }
+.login-card .input {
+  flex: 1; min-width: 0; width: 100%; background: #ffffff; color: #000000; border: 2px solid #00304D;
+  border-radius: 12px; padding: clamp(.85rem, 2.2vw, 1rem) clamp(.95rem, 2.4vw, 1.2rem); outline: none; transition: border-color .15s ease, box-shadow .15s ease;
+  position: relative; z-index: 20;
+  pointer-events: auto;
+  font-size: clamp(.92rem, 2.2vw, 1rem);
+}
+
+.login-card .input:focus { border-color: #7c3aed; box-shadow: 0 0 0 4px rgba(124,58,237,.15); }
+.login-card .actions { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .5rem; margin-top: .5rem; }
+.login-card .btn {
+  appearance: none; border: none; cursor: pointer; padding: clamp(.9rem, 2.4vw, 1rem) clamp(1rem, 3vw, 1.4rem); border-radius: 999px;
+  background: #39A900; color: #ffffff; font-weight: 700;
+  box-shadow: 0 4px 10px rgba(57,169,0,.18); transition: transform .08s ease, box-shadow .15s ease;
+  display: inline-block; margin: 0 auto; font-size: clamp(.95rem, 2.2vw, 1rem);
+}
+
+.login-card .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 16px rgba(57,169,0,.28); }
+.login-card .helper { font-size: .85rem; color: var(--muted); }
+.login-card .error { background: rgba(239,68,68,.1); color: #fecaca; border: 1px solid rgba(239,68,68,.35); padding: .65rem .8rem; border-radius: 10px; margin-bottom: .75rem; }
+.login-card .footer { margin-top: 1rem; text-align: center; font-size: .8rem; color: var(--muted); background: transparent; }
+.login-card a { color: #39A900; text-decoration: none; }
+.login-card a:hover { text-decoration: underline; }
+/* En acciones del login, el enlace 'No tienes cuenta?' debe verse centrado y neutro */
+.login-card .actions .no-account { color: #000000; }
+/* Fondo suave y padding para enlaces de ayuda y registro dentro de acciones */
+.login-card .actions a.helper,
+.login-card .actions a.no-account {
+  display: inline-block;
+  background: #50E5F9;
+  color: #000000;
+  padding: .25rem .5rem;
+  border-radius: .375rem;
+}
+.login-card .actions a.helper:hover,
+.login-card .actions a.no-account:hover {
+  background: #50E5F9;
+}
+/* En el pie del login, centrar el enlace y usar color neutro */
+.login-card .footer { text-align: center; }
+.login-card .footer a { color: #000000; display: inline-block; margin-top: .35rem; }
+/* Asegura separación y distribución vertical del helper */
+.login-card .helper { display: block; margin-top: .25rem; }
+
+/* Jerarquía visual: título/subtítulo en registro */
+.auth-title { margin: 0 0 .6rem; font-size: clamp(1.8rem, 3.6vw, 2.6rem); line-height: 1.2; color: #39A900; font-weight: 800; letter-spacing: .3px; text-align: center; }
+.auth-subtitle { margin: 0 0 1.25rem; font-size: clamp(.95rem, 2.4vw, 1.05rem); color: var(--muted); text-align: center; }
+.login-card form { margin-top: .75rem; }
+
+/* Icono centrado sobre el título de login */
+.login-card .login-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: .5rem;
+}
+.login-card .login-logo svg {
+  width: 128px;
+  height: 128px;
+  color: #00304D;
+  background: #50E5F9;
+  border-radius: 50%;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+/* Header superior para páginas de autenticación */
+.topbar.topbar-auth { width: 100%; display: flex; align-items: center; justify-content: flex-start; padding: .75rem 1rem; background: transparent; border-bottom: 0; position: static; }
+.brand-left { display: flex; align-items: center; gap: .5rem; }
+.brand-left .logo-img { width: 120px; height: auto; object-fit: contain; }
+.topbar.topbar-auth .logo-img { position: fixed; top: 8px; left: 8px; width: clamp(120px, 18vw, 220px); height: auto; object-fit: contain; z-index: 1000; pointer-events: none; }
+
+/* Separación del contenido respecto al logo fijo */
+header.topbar.topbar-auth + .card { margin-top: clamp(96px, 12vw, 140px); }
+@media (max-width: 480px) {
+  header.topbar.topbar-auth + .card { margin-top: clamp(84px, 16vw, 110px); }
+}
+
+/* Registro usa el mismo layout que login-card */
+.card { background: #ffffff; border: 3px solid #00304D; border-radius: 20px; padding: 2.2rem; box-shadow: 0 22px 36px rgba(0,0,0,0.12); }
+.brand { display: grid; place-items: center; gap: .6rem; margin-bottom: 1.25rem; }
+.brand .logo-img { width: 96px; height: 96px; object-fit: contain; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,.12); }
+.brand h1 { font-size: 2rem; margin: 0; color: #000000; }
+.actions { display: flex; align-items: center; justify-content: center; gap: .75rem; margin-top: .5rem; }
+.actions-center { justify-content: center; }
+
+/* merge: resolved */
+/* Estilos del portal GESICOM */
+:root {
+  --bg: #ffffff;
+  --primary: #39A900;
+  --card: #ffffff;
+  --muted: #00304D;
+  --border: #F6F6F6;
+}
+
+body { margin: 0; background: var(--bg); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+/* Layout general: asegura footer al fondo cuando el contenido es corto */
+html { height: 100%; }
+body:not(.login-body) { min-height: 100vh; display: flex; flex-direction: column; }
+.topbar { display: flex; align-items: center; justify-content: space-between; padding: .75rem 1rem; background: var(--primary); color: #fff; }
+.logo-img { width: 140px; height: auto; object-fit: contain; border-radius: 4px; }
+.nav a { color: #cbd5e1; text-decoration: none; margin-left: 1rem; }
+.nav a:hover { color: #fff; }
+main.main { padding: clamp(1rem, 3vw, 2rem); flex: 1 0 auto; }
+.title { margin: 0 0 .25rem; }
+.subtitle { margin: 0 0 1.25rem; color: var(--muted); }
+.card .subtitle { text-align: center; font-size: 2.4rem; line-height: 1.2; color: #39A900; font-weight: 800; letter-spacing: .3px; }
+.card label { font-size: 1rem; color: #00304D; font-weight: 600; }
+
+/* Reset form input block */
+.email-field { max-width: clamp(340px, 92vw, 620px); margin: 0 auto; background: #F6F6F6; border: 2px solid #00304D; border-radius: 16px; padding: clamp(.9rem, 2.6vw, 1.2rem); box-shadow: 0 12px 20px rgba(0,0,0,.08); }
+.email-field .input-row { display: flex; align-items: center; justify-content: center; gap: .6rem; }
+.email-field .input-icon.left { background: #50E5F9; border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; width: 56px; height: 56px; }
+.email-field .input-icon.left svg { width: 36px; height: 36px; }
+.email-field .input { flex: 1; min-width: 0; width: 100%; }
+
+@media (max-width: 480px) {
+  .card { padding: 1.2rem; border-radius: 16px; }
+  .card .subtitle { font-size: clamp(1.6rem, 6vw, 2rem); }
+}
+.roles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,.06); }
+.card-icon img { width: 54px; height: 54px; }
+.btn { border: none; padding: .6rem .9rem; border-radius: 8px; background: var(--primary); color: #fff; cursor: pointer; text-decoration: none; display: inline-block; }
+.btn:hover { filter: brightness(1.05); }
+.footer { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: 1rem; background: #39A900; color: #ffffff; border-top: none; width: 100%; margin-top: auto; min-height: clamp(120px, 22vh, 260px); }
+.auth-footer { width: 100%; margin-top: auto; }
+.footer .sena { font-weight: 700; letter-spacing: .6px; }
+.footer-left { display: flex; align-items: center; gap: .5rem; }
+.footer-social { display: flex; align-items: center; }
+.circle { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border); margin-left: .5rem; }
+.footer .circle { border: none; color: #ffffff; }
+.footer .footer-social .circle.fb { background: #1877F2; }
+.footer .footer-social .circle.x { background: #000000; }
+.footer .footer-social .circle.in { background: #0A66C2; }
+.footer .footer-social .circle svg { width: 18px; height: 18px; fill: #ffffff; }
+.footer .circle:hover { filter: brightness(1.1); }
+
+/* Variante landing para parecer a la imagen (home) */
+.topbar.topbar-landing { background: #ffffff; color: #000000; border-bottom: 1px solid var(--border); }
+.topbar.topbar-landing .logo-img { width: 150px; height: auto; object-fit: contain; }
+.topbar.topbar-landing .nav a { color: #39A900; font-weight: 600; }
+.topbar.topbar-landing .nav a:hover { color: #000000; text-decoration: underline; }
+
+.landing .title { text-align: center; font-size: 3rem; color: #39A900; letter-spacing: .3px; font-weight: 700; }
+.landing .subtitle { text-align: center; font-size: 1.1rem; color: var(--muted); margin-bottom: 1.75rem; }
+.landing .roles-grid { max-width: 720px; margin: 0 auto; grid-template-columns: repeat(2, 240px); gap: 1.25rem; justify-content: center; }
+.landing .card { background: #F6F6F6; border: none; border-radius: 8px; padding: 1rem; box-shadow: none; }
+.landing .card-icon { width: 120px; height: 120px; margin: 0 auto 1rem; background: #F6F6F6; border-radius: 4px; display: grid; place-items: center; }
+.landing .card-icon img { width: 70px; height: 70px; object-fit: contain; }
+.landing .card h2 { margin: .5rem 0 .75rem; color: #000000; font-weight: 700; }
+.landing .btn { background: #39A900; border-radius: 999px; padding: .5rem .9rem; font-weight: 600; }
+
+.footer.footer-landing { background: #39A900; color: #ffffff; border-top: none; min-height: clamp(120px, 22vh, 260px); }
+.footer.footer-landing .sena { font-weight: 700; }
+.footer.footer-landing .circle { color: #ffffff; border-color: rgba(255,255,255,.5); }
+.footer.footer-landing .address { font-size: .9rem; opacity: .9; }
+
+/* Fondo general claro para la página de inicio */
+body { background: #ffffff; }
+
+/* Paleta blanco/verde para las secciones de roles */
+:root {
+  --bg: #ffffff;
+  --muted: #00304D;
+  --accent: #39A900;
+}
+
+html { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
+body { margin: 0; background: #ffffff; color: #000000; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+.container { max-width: 1100px; margin: 0 auto; padding: 1rem; }
+.role-header { display: flex; align-items: center; justify-content: space-between; padding: .75rem 1rem; border-bottom: 1px solid #F6F6F6; }
+.role-header h1 { margin: 0; color: var(--accent); }
+.link { color: var(--accent); text-decoration: none; margin-left: 1rem; }
+.link:hover { text-decoration: underline; }
+
+/* Tabla genérica para roles */
+.data-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+.data-table thead th { background: var(--accent); color: #fff; text-align: left; padding: .6rem .75rem; }
+.data-table tbody td { border-bottom: 1px solid #F6F6F6; padding: .55rem .75rem; }
+.data-table tbody tr:nth-child(odd) { background: #F6F6F6; }
+.status { padding: .2rem .5rem; border-radius: 999px; font-size: .85rem; }
+.status-ok { background: #F6F6F6; color: #007832; }
+.status-warn { background: #fef9c3; color: #854d0e; }
+/* Íconos SVG en tarjetas de roles */
+.icon { width: 70px; height: 70px; fill: #39A900; }
+
+/* Estilos del menú (menu.html) para coincidir con la captura */
+.cuadro { max-width: 920px; margin: 2rem auto; background: #F6F6F6; border-radius: 16px; padding: 1.5rem; border: 8px solid #007832; }
+.cuadro > img { width: 160px; height: auto; }
+.botones { display: flex; gap: 1rem; justify-content: flex-end; margin-bottom: 1rem; }
+.botones button { background: none; border: none; color: #000000; font-weight: 600; text-transform: capitalize; cursor: pointer; }
+.botones button:hover { color: #39A900; text-decoration: underline; }
+.imagenes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; align-items: center; }
+.imagenes img { width: 180px; height: auto; background: #ffffff; border-radius: 24px; padding: 1.2rem; box-shadow: 0 6px 16px rgba(0,0,0,.08); }
+
+/* Encabezado del formulario de evidencias */
+.inicio { display: flex; align-items: center; gap: 1rem; background: #39A900; color: #ffffff; padding: .75rem 1rem; border-top-left-radius: 8px; border-top-right-radius: 8px; }
+.inicio img { width: 70px; height: 70px; object-fit: contain; }
+.inicio h1 { margin: 0; font-size: 1.6rem; letter-spacing: .5px; }
+
+/* Campos del formulario para estilo limpio */
+form label { font-weight: 700; color: #000000; }
+.input-linea { border: 2px solid #00304D; border-radius: 8px; padding: .5rem .75rem; }
+fieldset { border: 2px solid #00304D; border-radius: 10px; padding: .75rem 1rem; }
+input[type="submit"] { background: #39A900; color: #ffffff; border: none; border-radius: 999px; padding: .6rem 1.4rem; font-weight: 700; cursor: pointer; }
+input[type="submit"]:hover { filter: brightness(1.05); }
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .topbar { flex-wrap: wrap; gap: .5rem; }
+  .topbar .nav a { margin-left: .5rem; }
+  .landing .roles-grid { grid-template-columns: 1fr; max-width: 420px; }
+  .landing .card-icon { width: 100px; height: 100px; }
+  .cuadro { margin: 1rem; padding: 1rem; border-width: 6px; }
+.imagenes { grid-template-columns: 1fr; }
+}
+
+.usuario-wrap { padding: clamp(1rem, 4vw, 2rem); }
+.usuario-wrap .container { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: clamp(1rem, 4vw, 2rem); min-height: min(680px, 80vh); }
+.usuario-wrap .left h1 { margin: 0 0 .5rem; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.1; color: #000000; }
+.usuario-wrap .left h1 span { color: #39A900; }
+.usuario-wrap .left p.main { margin: 0; padding: 0; font-size: clamp(1rem, 2.6vw, 1.25rem); color: #00304D; }
+.usuario-wrap .left p.sub { margin: .3rem 0 0; font-size: clamp(.95rem, 2.4vw, 1.1rem); color: #00304D; opacity: .9; }
+.usuario-wrap .right { display: grid; place-items: center; }
+.usuario-wrap .right img { width: clamp(240px, 42vw, 540px); height: auto; object-fit: contain; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,.08); }
+
+@media (max-width: 900px) {
+  .usuario-wrap .container { grid-template-columns: 1fr; text-align: center; }
+  .usuario-wrap .right img { width: clamp(220px, 60vw, 420px); }
+}
+  .imagenes img { width: 100%; max-width: 280px; margin: 0 auto; }
+  .login-card { max-width: 95%; padding: 1.25rem; }
+  body.login-body { padding-top: 120px; }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .landing .roles-grid { grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+}
+/* ===== Listado de evidencias: orden y paginación ===== */
+.sort-link { color: #00304D; text-decoration: none; }
+.sort-link.active-sort { font-weight: 600; }
+.sort-indicator { margin-left: 6px; font-size: 12px; color: #00304D; }
+.pagination { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+.page-select select { padding: 6px 8px; }
+.page-info { color: #555; }

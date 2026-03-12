@@ -12,8 +12,14 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
+import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Añadir la ruta de los nuevos módulos al sys.path
+import sys
+sys.path.append(os.path.join(BASE_DIR, 'PRoyecto django', 'Proyecto-html'))
 
 
 # Quick-start development settings - unsuitable for production
@@ -38,6 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'admin_personalizado',
+    'Gesicom',
+    'Usuarios.apps.UsuariosConfig',
+    'cuentas',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +64,10 @@ ROOT_URLCONF = 'sennova.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'PRoyecto django', 'Proyecto-html', 'Gesicom', 'templates'),
+            os.path.join(BASE_DIR, 'PRoyecto django', 'Proyecto-html', 'Usuarios', 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -120,6 +132,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
     BASE_DIR / 'img',
+    os.path.join(BASE_DIR, 'PRoyecto django', 'Proyecto-html', 'Gesicom', 'static'),
 ]
 
 # (Se mantienen los valores mínimos, sin configuración extra)

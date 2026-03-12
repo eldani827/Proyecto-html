@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registrarse · Usuarios</title>
+  <link rel="stylesheet" href="{% static 'usuarios/main.css' %}">
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#39A900" />
+  <link rel="icon" href="{% static 'CSS/img/gesicom.jpeg' %}" />
+  <link rel="apple-touch-icon" href="{% static 'CSS/img/gesicom.jpeg' %}" />
+  <meta name="robots" content="noindex" />
+  <meta name="description" content="Registrarse en el portal Usuarios" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="generator" content="Usuarios" />
+</head>
+<body class="login-body">
+  <header class="topbar topbar-auth">
+    <div class="brand-left">
+      <img src="{% static 'CSS/img/gesicom.jpeg' %}" alt="Logo GESICOM" class="logo-img" />
+    </div>
+  </header>
+  <main class="login-card" role="main">
+    {% if role %}
+      <h2 class="auth-title">Registrarse</h2>
+      <p class="auth-subtitle">Para <strong>{{ role|title }}</strong></p>
+    {% else %}
+      <h2 class="auth-title">Regístrate para continuar</h2>
+    {% endif %}
+
+    {% if errors %}
+    <div class="error" role="alert">
+      <ul>
+        {% for e in errors %}<li>{{ e }}</li>{% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <form action="" method="post" novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="role" value="{{ role|default:'' }}" />
+      <div class="username-field">
+        <label for="username">Usuario</label>
+        <div class="input-row">
+          <div class="input-icon left" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="32" height="32" role="img" aria-hidden="true">
+              <circle cx="12" cy="7.5" r="4" stroke="#00304D" stroke-width="2" fill="none" />
+              <path d="M6 20c0-3 3.5-5 6-5s6 2 6 5" stroke="#00304D" stroke-width="2" fill="none" stroke-linecap="round" />
+            </svg>
+          </div>
+          <input id="username" name="username" type="text" class="input username-with-icon" placeholder="Tu usuario" value="{{ username|default:'' }}" required />
+        </div>
+      </div>
+      <div class="username-field">
+        <label for="email">Correo electrónico</label>
+        <div class="input-row">
+          <div class="input-icon left" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="32" height="32" role="img" aria-hidden="true">
+              <path d="M3 5h18v14H3z" stroke="#00304D" stroke-width="2" fill="none" />
+              <path d="M3 7l9 6 9-6" stroke="#00304D" stroke-width="2" fill="none" />
+            </svg>
+          </div>
+          <input id="email" name="email" type="email" class="input username-with-icon" placeholder="tu@correo.com" value="{{ email|default:'' }}" required />
+        </div>
+      </div>
+      <div class="password-field">
+        <label for="password1">Contraseña</label>
+        <div class="input-row">
+          <button type="button" id="toggle-password1" class="toggle-password left" aria-label="Mostrar u ocultar contraseña" aria-pressed="false">
+            <svg viewBox="0 0 24 24" width="32" height="32" role="img" aria-hidden="true">
+              <path d="M1 12s4-7 11-7c3 0 5.7 1 7.8 2.6" stroke="#1a73e8" stroke-width="2" fill="none"/>
+              <path d="M23 12s-4 7-11 7c-3 0-5.7-1-7.8-2.6" stroke="#1a73e8" stroke-width="2" fill="none"/>
+              <path d="M3 3l18 18" stroke="#1a73e8" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <input id="password1" name="password1" type="password" class="input password-with-icon" minlength="8" maxlength="8" required />
+        </div>
+      </div>
+      <div class="password-field">
+        <label for="password2">Confirmar contraseña</label>
+        <div class="input-row">
+          <button type="button" id="toggle-password2" class="toggle-password left" aria-label="Mostrar u ocultar contraseña" aria-pressed="false">
+            <svg viewBox="0 0 24 24" width="32" height="32" role="img" aria-hidden="true">
+              <path d="M1 12s4-7 11-7c3 0 5.7 1 7.8 2.6" stroke="#1a73e8" stroke-width="2" fill="none"/>
+              <path d="M23 12s-4 7-11 7c-3 0-5.7-1-7.8-2.6" stroke="#1a73e8" stroke-width="2" fill="none"/>
+              <path d="M3 3l18 18" stroke="#1a73e8" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <input id="password2" name="password2" type="password" class="input password-with-icon" minlength="8" maxlength="8" required />
+        </div>
+      </div>
+      <div class="actions actions-center">
+        <button type="submit" class="btn">Crear cuenta</button>
+        <a href="{% url 'login' %}?role={{ role|default:'' }}" class="helper">¿Ya tienes cuenta? Inicia sesión</a>
+      </div>
+    </form>
+  </main>
+  <script>
+    (function(){
+      function setupToggle(btnId, inputId){
+        var input = document.getElementById(inputId);
+        var btn = document.getElementById(btnId);
+        if(!input || !btn) return;
+        var visible = false;
+        btn.addEventListener('click', function(){
+          visible = !visible;
+          input.type = visible ? 'text' : 'password';
+          btn.setAttribute('aria-pressed', visible ? 'true' : 'false');
+        });
+      }
+      setupToggle('toggle-password1','password1');
+      setupToggle('toggle-password2','password2');
+    })();
+  </script>
+</body>
+</html>

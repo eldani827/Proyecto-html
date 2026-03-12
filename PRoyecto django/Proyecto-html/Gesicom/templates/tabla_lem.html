@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GESICOM - LEM</title>
+<link href="{% static 'CSS/main.css' %}" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container">
+
+    <header>
+      <div class="logo-container">
+<img src="{% static 'CSS/img/areas.png' %}" alt="GESICOM" class="logo">
+      </div>
+
+      <nav>
+        <a href="#">Inicio</a>
+        <a href="#">Editar</a>
+        <a href="#">Guardar</a>
+        <a href="#">Cerrar sesión</a>
+      </nav>
+    </header>
+
+    <main>
+      <div class="titulo">
+        <h2>LEM</h2>
+      </div>
+
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <table>
+          <thead>
+            <tr>
+              <th>NOMBRE</th>
+              <th>FECHA DE EVIDENCIA</th>
+              <th>EVIDENCIA</th>
+              <th>AÑADIR COMENTARIO</th>
+              <th>ESTADO DE EVIDENCIA</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for i in range(1, 4) %}
+            <tr>
+              <td><input type="text" name="nombre{{ i }}" placeholder="Ingrese su nombre"></td>
+              <td><input type="date" name="fecha{{ i }}"></td>
+              <td><input type="file" name="evidencia{{ i }}" accept=".pdf,.doc,.docx,.jpg,.png"></td>
+              <td><textarea name="comentario{{ i }}" maxlength="500" placeholder="Escriba su comentario (máx. 500 caracteres)"></textarea></td>
+              <td><input type="text" name="estado{{ i }}" placeholder="Estado de evidencia"></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div class="boton-guardar">
+          <button type="submit">Guardar Evidencias</button>
+        </div>
+
+      </form>
+    </main>
+  </div>
+</body>
+
+</html>
