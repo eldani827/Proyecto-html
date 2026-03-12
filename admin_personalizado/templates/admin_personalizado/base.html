@@ -27,6 +27,7 @@
                 <a href="{% url 'admin_personalizado:dashboard' %}" class="sidebar-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Inicio</a>
                 <a href="{% url 'admin_personalizado:usuarios' %}" class="sidebar-link {% if request.resolver_match.url_name == 'usuarios' %}active{% endif %}">Usuarios</a>
                 <a href="{% url 'admin_personalizado:permisos' %}" class="sidebar-link {% if request.resolver_match.url_name == 'permisos' %}active{% endif %}">Permisos</a>
+                <a href="{% url 'role_instructor' %}" class="sidebar-link {% if request.resolver_match.url_name == 'role_instructor' %}active{% endif %}">Panel Instructor</a>
             </nav>
         </aside>
         <div class="admin-main">

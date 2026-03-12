@@ -17,11 +17,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Añadir la ruta de los nuevos módulos al sys.path
-import sys
-sys.path.append(os.path.join(BASE_DIR, 'PRoyecto django', 'Proyecto-html'))
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -65,8 +60,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'PRoyecto django', 'Proyecto-html', 'Gesicom', 'templates'),
-            os.path.join(BASE_DIR, 'PRoyecto django', 'Proyecto-html', 'Usuarios', 'templates'),
+            BASE_DIR / 'Gesicom' / 'templates',
+            BASE_DIR / 'Usuarios' / 'templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -132,8 +127,12 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
     BASE_DIR / 'img',
-    os.path.join(BASE_DIR, 'PRoyecto django', 'Proyecto-html', 'Gesicom', 'static'),
+    BASE_DIR / 'Gesicom' / 'static',
 ]
+
+# Media files (Evidencias subidas por compañeros)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # (Se mantienen los valores mínimos, sin configuración extra)
 
