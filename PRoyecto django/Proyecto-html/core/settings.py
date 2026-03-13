@@ -45,11 +45,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-        'GESICOM',  # Corrected casing
-        'INSTRUCTOR.apps.UsuariosConfig',  # Updated to match actual module name
-        'CUENTAS.apps.CuentasConfig',  # Updated to match actual module name
-        'ADMIN.apps.AdminPersonalizadoConfig',  # Updated to match actual module name
-        'SENNOVA',  # Corrected casing
+    'Gesicom.apps.GesicomConfig',
+    'instructor.apps.UsuariosConfig',
+    'cuentas.apps.CuentasConfig',
+    'ADMIN.apps.AdminPersonalizadoConfig',
+    'SENNOVA',
 ]
 
 # Middleware: capas que procesan la petición/respuesta.
@@ -116,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
     {
-        'NAME': 'GESICOM.validators.EightCharUpperNumberOrSpecialValidator',
+        'NAME': 'Gesicom.validators.EightCharUpperNumberOrSpecialValidator',
     },
 ]
 

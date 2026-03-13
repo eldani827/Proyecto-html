@@ -5,7 +5,7 @@ from pathlib import Path
 
 def main():
     # Ensure project root (where manage.py lives) is on sys.path so apps
-    # (like GESICOM) can be imported reliably when running management commands.
+    # (like Gesicom) can be imported reliably when running management commands.
     project_root = Path(__file__).resolve().parent
     project_root_str = str(project_root)
     if project_root_str not in sys.path:

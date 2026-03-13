@@ -13,7 +13,7 @@ print('sys.path first entries:')
 for p in sys.path[:6]:
     print('  ', p)
 
-for name in ('GESICOM', 'INSTRUCTOR', 'CUENTAS'):
+for name in ('Gesicom', 'instructor', 'cuentas'):
     try:
         importlib.import_module(name)
         print(f'Imported {name} OK')

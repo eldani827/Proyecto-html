@@ -189,12 +189,26 @@ def evidencia(request):
         observaciones = request.POST.get('observaciones', '').strip()
 
         errores = []
+
+        # Validaciones
         if not (enlace or archivo):
             errores.append('Debe proporcionar un enlace o adjuntar un archivo (al menos uno).')
         if not nombre:
             errores.append('El nombre es obligatorio.')
         if not proyecto:
             errores.append('Debe seleccionar el proyecto.')
+
+        # Validar tamaño de archivo (máximo 10MB)
+        if archivo and archivo.size > 10 * 1024 * 1024:
+            errores.append('El archivo es demasiado grande. Tamaño máximo: 10MB.')
+
+        # Validar tipos de archivo permitidos
+        if archivo:
+            extensiones_permitidas = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx',
+                                     '.txt', '.jpg', '.jpeg', '.png', '.zip', '.rar']
+            nombre_archivo = archivo.name.lower()
+            if not any(nombre_archivo.endswith(ext) for ext in extensiones_permitidas):
+                errores.append(f'Tipo de archivo no permitido. Extensiones permitidas: {", ".join(extensiones_permitidas)}')
 
         if errores:
             return render(request, 'formulario.html', {
@@ -207,17 +221,27 @@ def evidencia(request):
                 'observaciones': observaciones,
             })
 
+        # Crear el envío
         envio = Envio(
             usuario=request.user,
             nombre=nombre,
             proyecto=proyecto,
             tipo_evidencia=tipo_evidencia,
-            link_evidencia=enlace,
+            link_evidencia=enlace if enlace else None,
             archivo_evidencia=archivo,
             observaciones=observaciones,
         )
         envio.save()
-        return render(request, 'formulario.html', {'exito': True})
+
+        # Mensaje de éxito con información del archivo
+        mensaje_exito = 'Evidencia enviada correctamente'
+        if archivo:
+            mensaje_exito += f'. Archivo guardado: {envio.archivo_evidencia.name}'
+
+        return render(request, 'formulario.html', {
+            'exito': True,
+            'mensaje_exito': mensaje_exito
+        })
 
     return render(request, 'formulario.html')
 

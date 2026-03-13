@@ -46,12 +46,19 @@ def dashboard(request):
 	total_grupos = Group.objects.count()
 	usuarios_activos = User.objects.filter(is_active=True).count()
 
+	# Calcular porcentaje de usuarios activos
+	if total_usuarios > 0:
+		usuarios_activos_porcentaje = round((usuarios_activos / total_usuarios) * 100)
+	else:
+		usuarios_activos_porcentaje = 0
+
 	context = {
 		'total_usuarios': total_usuarios,
 		'total_grupos': total_grupos,
 		'usuarios_activos': usuarios_activos,
+		'usuarios_activos_porcentaje': usuarios_activos_porcentaje,
 	}
-	return render(request, 'admin_personalizado/dashboard.html', context)
+	return render(request, 'admin_personalizado/dashboard_modern.html', context)
 
 
 @user_passes_test(_requerir_administrador, login_url='access_denied')
@@ -185,10 +192,32 @@ def permisos(request):
 @user_passes_test(_requerir_administrador, login_url='access_denied')
 def gestionar_usuarios(request):
 	"""Gestiona la lista de usuarios del sistema."""
+
+	if request.method == 'POST':
+		# Procesar actualización masiva de roles
+		usuarios_actualizados = 0
+		for key, value in request.POST.items():
+			if key.startswith('role_'):
+				try:
+					usuario_id = int(key.replace('role_', ''))
+					usuario = User.objects.get(id=usuario_id)
+
+					# Limpiar grupos existentes y asignar nuevo rol si se seleccionó
+					usuario.groups.clear()
+					if value:
+						grupo = Group.objects.get(id=int(value))
+						usuario.groups.add(grupo)
+					usuarios_actualizados += 1
+				except (ValueError, User.DoesNotExist, Group.DoesNotExist):
+					continue
+
+		messages.success(request, f'Se actualizaron {usuarios_actualizados} usuarios correctamente.')
+		return redirect('admin_personalizado:gestionar_usuarios')
+
 	busqueda = request.GET.get('q', '').strip()
-	
+
 	lista_usuarios = User.objects.all().prefetch_related('groups').order_by('-date_joined')
-	
+
 	# Filtrar por búsqueda
 	if busqueda:
 		lista_usuarios = lista_usuarios.filter(
@@ -197,12 +226,15 @@ def gestionar_usuarios(request):
 			Q(first_name__icontains=busqueda) |
 			Q(last_name__icontains=busqueda)
 		)
-	
+
+	grupos_disponibles = Group.objects.all().order_by('name')
+
 	context = {
 		'usuarios': lista_usuarios,
 		'busqueda': busqueda,
+		'grupos_disponibles': grupos_disponibles,
 	}
-	return render(request, 'admin_personalizado/gestionar_usuarios.html', context)
+	return render(request, 'admin_personalizado/gestionar_usuarios_modern.html', context)
 
 
 @login_required
@@ -281,41 +313,51 @@ def crear_usuario(request):
 @user_passes_test(_requerir_administrador, login_url='access_denied')
 def detalle_usuario(request, usuario_id):
 	"""Detalle y edición de un usuario."""
+	from Gesicom.models import Envio
+
 	usuario = get_object_or_404(User, id=usuario_id)
 	grupos_disponibles = Group.objects.all()
 	grupos_usuario = usuario.groups.all()
-	
+
+	# Obtener evidencias del usuario
+	evidencias = Envio.objects.filter(usuario=usuario).order_by('-fecha_envio')
+
+	# Calcular estadísticas de evidencias
+	total_evidencias = evidencias.count()
+	evidencias_con_archivo = evidencias.exclude(archivo_evidencia='').count()
+	evidencias_con_link = evidencias.exclude(link_evidencia='').exclude(link_evidencia=None).count()
+
 	if request.method == 'POST':
 		accion = request.POST.get('action')
-		
+
 		if accion == 'update_profile':
 			usuario.first_name = request.POST.get('first_name', '').strip()
 			usuario.last_name = request.POST.get('last_name', '').strip()
 			usuario.email = request.POST.get('email', '').strip()
 			usuario.save()
 			messages.success(request, f'Perfil de {usuario.username} actualizado correctamente.')
-			
+
 		elif accion == 'update_status':
 			activo = request.POST.get('is_active') == 'on'
 			usuario.is_active = activo
 			usuario.save()
 			estado = "activado" if activo else "desactivado"
 			messages.success(request, f'Usuario {usuario.username} {estado} correctamente.')
-			
+
 		elif accion == 'update_groups':
 			ids_grupos = request.POST.getlist('grupos')
 			usuario.groups.set(ids_grupos)
 			messages.success(request, f'Grupos del usuario {usuario.username} actualizados.')
-			
+
 		elif accion == 'change_password':
 			nueva_contraseña = request.POST.get('nueva_password', '')
 			confirmar_contraseña = request.POST.get('confirmar_password', '')
-			
+
 			errores = _validar_contraseña(nueva_contraseña)
-			
+
 			if nueva_contraseña != confirmar_contraseña:
 				errores.append('Las contraseñas no coinciden.')
-			
+
 			if errores:
 				for error in errores:
 					messages.error(request, error)
@@ -323,15 +365,19 @@ def detalle_usuario(request, usuario_id):
 				usuario.set_password(nueva_contraseña)
 				usuario.save()
 				messages.success(request, f'Contraseña de {usuario.username} cambiada correctamente.')
-		
+
 		return redirect('admin_personalizado:detalle_usuario', usuario_id=usuario_id)
-	
+
 	context = {
 		'usuario': usuario,
 		'grupos_disponibles': grupos_disponibles,
 		'grupos_usuario': grupos_usuario,
+		'evidencias': evidencias,
+		'total_evidencias': total_evidencias,
+		'evidencias_con_archivo': evidencias_con_archivo,
+		'evidencias_con_link': evidencias_con_link,
 	}
-	return render(request, 'admin_personalizado/detalle_usuario.html', context)
+	return render(request, 'admin_personalizado/detalle_usuario_modern.html', context)
 
 
 @login_required
