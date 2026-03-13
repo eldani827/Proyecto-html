@@ -15,9 +15,9 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
-from Gesicom import views as gesicom_views
-from instructor import views as usuarios_views
-from cuentas import views as cuentas_views
+from GESICOM import views as gesicom_views
+from INSTRUCTOR import views as usuarios_views
+from CUENTAS import views as cuentas_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),

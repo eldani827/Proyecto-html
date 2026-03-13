@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>GESICOM Evidencias</title>
+
+<link rel="stylesheet" href="CSS/estilos.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar">
+<div class="tituloSistema">
+Sistema de Gestión de Evidencias
+</div>
+</div>
+
+<div class="container">
+
+<h2>Gestión de Evidencias</h2>
+
+<div class="filtro">
+
+<label><b>Filtro de Evidencia:</b></label>
+
+<select id="filtro" onchange="filtrarTabla()">
+<option value="todos">Todos</option>
+<option value="Depos">Depos</option>
+<option value="Givit">Givit</option>
+<option value="IFPI">IFPI</option>
+<option value="Tuga">Tuga</option>
+<option value="Lem">Lem</option>
+</select>
+
+</div>
+
+<table id="tabla">
+
+<tr>
+<th>EVIDENCIA</th>
+<th>FECHA</th>
+<th>ESTADO</th>
+<th>COMENTARIO</th>
+</tr>
+
+<tr data-evidencia="Depos">
+<td><b>Depos</b></td>
+<td><input type="date"></td>
+<td><input type="text" placeholder="Estado"></td>
+<td><input type="text" placeholder="Comentario"></td>
+</tr>
+
+<tr data-evidencia="Givit">
+<td><b>Givit</b></td>
+<td><input type="date"></td>
+<td><input type="text"></td>
+<td><input type="text"></td>
+</tr>
+
+<tr data-evidencia="IFPI">
+<td><b>IFPI</b></td>
+<td><input type="date"></td>
+<td><input type="text"></td>
+<td><input type="text"></td>
+</tr>
+
+<tr data-evidencia="Tuga">
+<td><b>Tuga</b></td>
+<td><input type="date"></td>
+<td><input type="text"></td>
+<td><input type="text"></td>
+</tr>
+
+<tr data-evidencia="Lem">
+<td><b>Lem</b></td>
+<td><input type="date"></td>
+<td><input type="text"></td>
+<td><input type="text"></td>
+</tr>
+
+</table>
+
+</div>
+
+<script>
+
+function filtrarTabla(){
+
+let filtro = document.getElementById("filtro").value;
+let filas = document.querySelectorAll("#tabla tr[data-evidencia]");
+
+filas.forEach(function(fila){
+
+let tipo = fila.getAttribute("data-evidencia");
+
+if(filtro === "todos" || filtro === tipo){
+fila.style.display = "";
+}
+else{
+fila.style.display = "none";
+}
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

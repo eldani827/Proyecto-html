@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
-from Gesicom.models import Envio
+from GESICOM.models import Envio
 from datetime import date, timedelta
 import random
 

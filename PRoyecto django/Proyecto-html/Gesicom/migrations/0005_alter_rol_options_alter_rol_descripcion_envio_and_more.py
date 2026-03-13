@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Gesicom', '0004_delete_rol'),
+        ('GESICOM', '0004_delete_rol'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 

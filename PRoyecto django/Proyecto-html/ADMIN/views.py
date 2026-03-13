@@ -313,7 +313,7 @@ def crear_usuario(request):
 @user_passes_test(_requerir_administrador, login_url='access_denied')
 def detalle_usuario(request, usuario_id):
 	"""Detalle y edición de un usuario."""
-	from Gesicom.models import Envio
+	from GESICOM.models import Envio
 
 	usuario = get_object_or_404(User, id=usuario_id)
 	grupos_disponibles = Group.objects.all()

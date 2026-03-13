@@ -45,9 +45,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Gesicom.apps.GesicomConfig',
-    'instructor.apps.UsuariosConfig',
-    'cuentas.apps.CuentasConfig',
+    'GESICOM.apps.GesicomConfig',
+    'INSTRUCTOR.apps.UsuariosConfig',
+    'CUENTAS.apps.CuentasConfig',
     'ADMIN.apps.AdminPersonalizadoConfig',
 ]
 
@@ -120,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
     {
-        'NAME': 'Gesicom.validators.EightCharUpperNumberOrSpecialValidator',
+        'NAME': 'GESICOM.validators.EightCharUpperNumberOrSpecialValidator',
     },
 ]
 
